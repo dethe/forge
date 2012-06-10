@@ -59,22 +59,22 @@ function draw(event){
 document.onkeydown = function(event) {
   		switch (event.keyCode) {
     		case 87: // Left
-    		    key.s = false;
+    		    key.s = key.d = key.a = false;
       			key.w = key.w_ = true;
     		break;
 
     		case 65: // Up
-    		    key.d = false;
+    		    key.d = key.w = key.s = false;
       			key.a = key.a_ = true;
     		break;
 
     		case 83: // Right
-		        key.w = false;
+		        key.w = key.a = key.d = false;
       			key.s = key.s_ = true;
     		break;
 
     		case 68: // Down
-		        key.a = false;
+		        key.a = key.w = key.s = false;
       			key.d = key.d_ = true;
     		break;
   		}
@@ -85,21 +85,29 @@ document.onkeyup = function(event) {
     		case 87: // Left
       			key.w = key.w_ = false;
   			    key.s = key.s_;
+  			    key.d = key.d_;
+  			    key.a = key.a_;
     		break;
 
     		case 65: // Up
       			key.a = key.a_ = false;
       			key.d = key.d_;
+      			key.s = key.s_;
+      			key.w = key.w_;
     		break;
 
     		case 83: // Right
       			key.s = key.s_ = false;
       			key.w = key.w_;
+      			key.a = key.a_;
+      			key.d = key.d_;
     		break;
 
     		case 68: // Down
       			key.d = key.d_ = false;
       			key.a = key.a_;
+      			key.s = key.s_;
+      			key.w = key.w_;
     		break;
   		}
 };
