@@ -40,6 +40,22 @@ var key = {
 	d_: false
 }
 
+//====================================\\
+//ITEMS THAT CAN BE USED IN WORLD ARRAY
+//====================================\\
+//BARRELS: barrel, barrels1, barrels1
+//BUCKETS
+//DIRT: dirtNW, dirtN, dirtNE, dirtE, dirtSE, dirtS, dirtSW, dirtW, dirt1, dirt2, dirt3
+//DIRT_ROCKS: dirtrocks1, dirtrocks2
+//DARK_DIRT: ddirtNW, ddirtN, ddirtNE, ddirtE, ddirtSE, ddirtS, ddirtSW, ddirtW, ddirt1, ddirt2, ddirt3
+//DARK_DIRT_ROCKS: ddirtrocks1, ddirtrocks2
+//GRASS:
+//GRASS_ALT:
+//WATER:
+//WATER_AND_GRASS
+
+var world = [[], [], []]
+
 //starts the game
 function init(){
 	return setInterval(draw, 1000/60);
