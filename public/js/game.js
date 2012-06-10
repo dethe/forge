@@ -4,12 +4,17 @@ var frame = 0;
 
 var keycode;
 
-//loads the character image
+//loads images
 var character = new Image();
 character.src = 'public/graphics/male_walkcycle.png';
-
 var pants = new Image();
 pants.src = 'public/graphics/male_pants.png';
+var barrels = new Image();
+barrels.src = 'public/graphics/barrels.png';
+var grass = new Image();
+grass.src = 'public/graphics/grass.png';
+var dirt = new Image();
+dirt.src = 'public/graphics/dirt.png';
 
 //all the character stats will go here
 var characterInfo = {
@@ -37,8 +42,6 @@ var key = {
 
 //starts the game
 function init(){
-	WIDTH = canvas.width;
-	HEIGHT = canvas.height;
 	return setInterval(draw, 1000/60);
 }
 
@@ -52,9 +55,13 @@ function draw(event){
 	frame += 1;
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	WIDTH = canvas.width;
+	HEIGHT = canvas.height;
 	clear();
-	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
-	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
+	drawworld();
+	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
+	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
+	
 	if(key.w === true){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
@@ -82,6 +89,25 @@ function draw(event){
 		characterInfo.sx = 0;
 	}
 }
+
+function drawworld(){
+	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 96, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 128, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	
+	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 0, 128, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 0, 96, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 0, 64, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 64, 64, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2), 32, 32);
+};
 
 document.onkeydown = function(event) {
   		switch (event.keyCode) {
