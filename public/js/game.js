@@ -91,7 +91,22 @@ function draw(event){
 }
 
 function drawworld(){
+	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 96, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 64, 128, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	
+	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 0, 128, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
+	ctx.drawImage(dirt, 0, 96, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
+	ctx.drawImage(dirt, 0, 64, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2), 32, 32);
 	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2), 32, 32);
+	ctx.drawImage(dirt, 64, 64, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2), 32, 32);
 };
 
 document.onkeydown = function(event) {
