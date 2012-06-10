@@ -82,8 +82,7 @@ function draw(event){
 	
 	if (characterInfo.sx === 576){
 	    characterInfo.sx = 64;
-    }
-	
+    };
 	
 	if(key.w === false && key.a === false && key.s === false && key.d === false){
 		characterInfo.sx = 0;
@@ -96,7 +95,6 @@ function drawworld(){
 	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+32, 32, 32);
 	ctx.drawImage(dirt, 64, 96, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
 	ctx.drawImage(dirt, 64, 128, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
-	
 	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
 	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
 	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+64, 32, 32);
