@@ -47,14 +47,11 @@ function draw(event){
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
 	if(key.w == true){
 		characterInfo.y -= characterInfo.speed;
-	};
-	if(key.a == true){
+	}else if(key.a == true){
 		characterInfo.x -= characterInfo.speed;
-	};
-	if(key.s == true){
+	}else if(key.s == true){
 		characterInfo.y += characterInfo.speed;
-	};
-	if(key.d == true){
+	}else if(key.d == true){
 		characterInfo.x += characterInfo.speed;
 	};
 }
