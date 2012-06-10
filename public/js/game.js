@@ -67,11 +67,11 @@ function draw(event){
 	}else if(key.d === true){
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
-	};
+	}
 	
 	if((frame % 5 === 0) && (key.w|| key.a || key.s || key.d)){
 		characterInfo.sx += 64;
-	};
+	}
 	
 	if (characterInfo.sx === 576){
 	    characterInfo.sx = 64;
@@ -80,7 +80,7 @@ function draw(event){
 	
 	if(key.w === false && key.a === false && key.s === false && key.d === false){
 		characterInfo.sx = 0;
-	};
+	}
 }
 
 document.onkeydown = function(event) {
