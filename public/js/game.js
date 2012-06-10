@@ -1,11 +1,15 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+var frame = 0;
 
 var keycode;
 
 //loads the character image
 var character = new Image();
 character.src = 'public/graphics/male_walkcycle.png';
+
+var pants = new Image();
+pants.src = 'public/graphics/male_pants.png';
 
 //all the character stats will go here
 var characterInfo = {
@@ -41,18 +45,36 @@ function clear(){
 
 //draws on the canvas every 60th of a second
 function draw(event){
+	frame += 1;
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	clear();
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
+	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
 	if(key.w == true){
+		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
 	}else if(key.a == true){
+		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
 	}else if(key.s == true){
+		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
 	}else if(key.d == true){
+		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
+	};
+	
+	if((frame/5)%2 == 0 && (key.w == true || key.a == true || key.s == true || key.d == true)){
+		characterInfo.sx += 64;
+	};
+	
+	if(characterInfo.sx == 576){
+		characterInfo.sx = 64;
+	};
+	
+	if(key.w == false && key.a == false && key.s == false && key.d == false){
+		characterInfo.sx = 0;
 	};
 }
 
