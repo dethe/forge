@@ -25,14 +25,14 @@ var characterInfo = {
 
 //lists what keys are pressed
 var key = {
-	w:false,
+	w: false,
 	w_: false,
-	a:false,
-	a_: false;
-	s:false,
-	s_: false;
-	d:false
-	d_: false;
+	a: false,
+	a_: false,
+	s: false,
+	s_: false,
+	d: false,
+	d_: false
 }
 
 //starts the game
@@ -55,29 +55,30 @@ function draw(event){
 	clear();
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, characterInfo.x, characterInfo.y, characterInfo.w, characterInfo.h);
-	if(key.w == true){
+	if(key.w === true){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
-	}else if(key.a == true){
+	}else if(key.a === true){
 		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
-	}else if(key.s == true){
+	}else if(key.s === true){
 		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
-	}else if(key.d == true){
+	}else if(key.d === true){
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
 	};
 	
-	if((frame/5)%2 == 0 && (key.w == true || key.a == true || key.s == true || key.d == true)){
+	if((frame % 5 === 0) && (key.w|| key.a || key.s || key.d)){
 		characterInfo.sx += 64;
 	};
 	
-	if(characterInfo.sx == 576){
-		characterInfo.sx = 64;
-	};
+	if (characterInfo.sx === 576){
+	    characterInfo.sx = 64;
+    }
 	
-	if(key.w == false && key.a == false && key.s == false && key.d == false){
+	
+	if(key.w === false && key.a === false && key.s === false && key.d === false){
 		characterInfo.sx = 0;
 	};
 }
