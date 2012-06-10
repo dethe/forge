@@ -22,9 +22,13 @@ var characterInfo = {
 //lists what keys are pressed
 var key = {
 	w:false,
+	w_: false,
 	a:false,
+	a_: false;
 	s:false,
+	s_: false;
 	d:false
+	d_: false;
 }
 
 //starts the game
