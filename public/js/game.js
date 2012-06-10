@@ -3,10 +3,13 @@ var ctx = canvas.getContext("2d");
 
 var keycode;
 
+//loads the character image
 var character = new Image();
 character.src = 'public/graphics/male_walkcycle.png';
+
+//all the character stats will go here
 var characterInfo = {
-	name:"BOB",
+	name:"ForgePlayer",
 	speed: 3,
 	x:30,
 	y:30,
@@ -16,6 +19,7 @@ var characterInfo = {
 	h:64,
 }
 
+//lists what keys are pressed
 var key = {
 	w:false,
 	a:false,
@@ -23,16 +27,19 @@ var key = {
 	d:false
 }
 
+//starts the game
 function init(){
 	WIDTH = canvas.width;
 	HEIGHT = canvas.height;
 	return setInterval(draw, 1000/60);
 }
 
+//function to clear the canvas
 function clear(){
 	ctx.clearRect(0, 0, WIDTH, HEIGHT);
 }
 
+//draws on the canvas every 60th of a second
 function draw(event){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
