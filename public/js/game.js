@@ -27,16 +27,16 @@ var characterInfo = {
 	h:64,
 }
 
-//lists what keys are pressed
-var key = {
-	w: false,
-	w_: false,
-	a: false,
-	a_: false,
-	s: false,
-	s_: false,
-	d: false,
-	d_: false
+//lists what direction we're moving ( _m is to remember previous keys still pressed )
+var move = {
+	up: false,
+	up_m: false,
+	left: false,
+	left_m: false,
+	down: false,
+	down_m: false,
+	right: false,
+	right_m: false
 }
 
 //====================================\\
@@ -85,31 +85,33 @@ function draw(event){
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	
-	if(key.w){
+
+	if(move.up=== true){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
-	}else if(key.a){
+	}else if(move.left === true){
 		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
-	}else if(key.s){
+	}else if(move.down === true){
 		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
-	}else if(key.d){
+	}else if(move.right === true){
+
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
-	};
+	}
 	
-	if((frame % 5 === 0) && (key.w|| key.a || key.s || key.d)){
+	if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right)){
 		characterInfo.sx += 64;
-	};
+	}
 	
 	if (characterInfo.sx === 576){
 	    characterInfo.sx = 64;
     };
 	
-	if(key.w === false && key.a === false && key.s === false && key.d === false){
+	if(move.up=== false && move.left === false && move.down === false && move.right === false){
 		characterInfo.sx = 0;
-	};
+	}
 }
 
 function drawworld(){
@@ -168,56 +170,64 @@ function drawworld(){
 
 document.onkeydown = function(event) {
   		switch (event.keyCode) {
-    		case 87: // Left
-    		    key.s = key.d = key.a = false;
-      			key.w = key.w_ = true;
+    		case 87: // 'w' key
+    		case 38: // up arrow
+    		    move.down = move.right = move.left = false;
+      			move.up= move.up_m = true;
     		break;
 
-    		case 65: // Up
-    		    key.d = key.w = key.s = false;
-      			key.a = key.a_ = true;
+    		case 65: // 'a' key
+    		case 37: // left arrow
+    		    move.right = move.up= move.down = false;
+      			move.left = move.left_m = true;
     		break;
 
-    		case 83: // Right
-		        key.w = key.a = key.d = false;
-      			key.s = key.s_ = true;
+    		case 83: // 's' key
+    		case 40: // down arrow
+		        move.up= move.left = move.right = false;
+      			move.down = move.down_m = true;
     		break;
 
-    		case 68: // Down
-		        key.a = key.w = key.s = false;
-      			key.d = key.d_ = true;
+    		case 68: // 'd' key
+    	    case 39: // right arrow
+		        move.left = move.up= move.down = false;
+      			move.right = move.right_m = true;
     		break;
   		}
 };
 
 document.onkeyup = function(event) {
   		switch (event.keyCode) {
-    		case 87: // Left
-      			key.w = key.w_ = false;
-  			    key.s = key.s_;
-  			    key.d = key.d_;
-  			    key.a = key.a_;
+    		case 87: // 'w' key
+    		case 38: // up arrow
+      			move.up= move.up_m = false;
+  			    move.down = move.down_m;
+  			    move.right = move.right_m;
+  			    move.left = move.left_m;
     		break;
 
-    		case 65: // Up
-      			key.a = key.a_ = false;
-      			key.d = key.d_;
-      			key.s = key.s_;
-      			key.w = key.w_;
+    		case 65: // 'a' key
+    		case 37: // left arrow
+      			move.left = move.left_m = false;
+      			move.right = move.right_m;
+      			move.down = move.down_m;
+      			move.up= move.up_m;
     		break;
 
-    		case 83: // Right
-      			key.s = key.s_ = false;
-      			key.w = key.w_;
-      			key.a = key.a_;
-      			key.d = key.d_;
+    		case 83: // 's' key
+    		case 40: // down arrow
+      			move.down = move.down_m = false;
+      			move.up= move.up_m;
+      			move.left = move.left_m;
+      			move.right = move.right_m;
     		break;
 
-    		case 68: // Down
-      			key.d = key.d_ = false;
-      			key.a = key.a_;
-      			key.s = key.s_;
-      			key.w = key.w_;
+    		case 68: // 'd' key
+    	    case 39: // right arrow
+      			move.right = move.right_m = false;
+      			move.left = move.left_m;
+      			move.down = move.down_m;
+      			move.up= move.up_m;
     		break;
   		}
 };
