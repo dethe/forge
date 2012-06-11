@@ -1,7 +1,6 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var frame = 0;
-
 var keycode;
 
 //loads images
@@ -54,7 +53,15 @@ var key = {
 //WATER:
 //WATER_AND_GRASS
 
-var world = [[], [], []]
+var world = [
+	["dirtNW", "dirtN", "dirtN", "dirtN", "dirtNE"],
+	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
+	["dirtSW", "dirtS", "dirtS", "dirtS", "dirtSE"]
+]
+
+var worldorigin = [2, 2]
 
 //starts the game
 function init(){
@@ -78,16 +85,16 @@ function draw(event){
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	
-	if(key.w === true){
+	if(key.w){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
-	}else if(key.a === true){
+	}else if(key.a){
 		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
-	}else if(key.s === true){
+	}else if(key.s){
 		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
-	}else if(key.d === true){
+	}else if(key.d){
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
 	};
@@ -106,21 +113,57 @@ function draw(event){
 }
 
 function drawworld(){
-	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
-	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
-	ctx.drawImage(dirt, 64, 160, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+32, 32, 32);
-	ctx.drawImage(dirt, 64, 96, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
-	ctx.drawImage(dirt, 64, 128, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
-	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
-	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
-	ctx.drawImage(dirt, 32, 128, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2)+64, 32, 32);
-	ctx.drawImage(dirt, 0, 128, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2)+64, 32, 32);
-	ctx.drawImage(dirt, 0, 96, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2)+32, 32, 32);
-	ctx.drawImage(dirt, 0, 64, 32, 32, -characterInfo.x + (WIDTH/2)-32, -characterInfo.y + (HEIGHT/2), 32, 32);
-	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2), -characterInfo.y + (HEIGHT/2), 32, 32);
-	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2)+32, -characterInfo.y + (HEIGHT/2), 32, 32);
-	ctx.drawImage(dirt, 32, 64, 32, 32, -characterInfo.x + (WIDTH/2)+64, -characterInfo.y + (HEIGHT/2), 32, 32);
-	ctx.drawImage(dirt, 64, 64, 32, 32, -characterInfo.x + (WIDTH/2)+96, -characterInfo.y + (HEIGHT/2), 32, 32);
+	for(var i = 0; i < world.length; i++){
+		for(var e = 0; e < world[i].length; e++){
+			var image = {
+				g:dirt,
+				sx:0,
+				sy:0,
+				w:32,
+				h:32,
+				x:  ((e - worldorigin[0])*32) + ((WIDTH/2) - characterInfo.x),
+				y: ((i - worldorigin[1])*32) + ((HEIGHT/2) - characterInfo.y)
+			}
+			if(world[i][e] === "dirtNW"){
+				image.g = dirt;
+				image.sx = 0;
+				image.sy = 64;
+			}else if(world[i][e] === "dirtN"){
+				image.g = dirt;
+				image.sx = 32;
+				image.sy = 64;
+			}else if(world[i][e] === "dirtNE"){
+				image.g = dirt;
+				image.sx = 64;
+				image.sy = 64;
+			}else if(world[i][e] === "dirtE"){
+				image.g = dirt;
+				image.sx = 64;
+				image.sy = 96;
+			}else if(world[i][e] === "dirtSE"){
+				image.g = dirt;
+				image.sx = 64;
+				image.sy = 128;
+			}else if(world[i][e] === "dirtS"){
+				image.g = dirt;
+				image.sx = 32;
+				image.sy = 128;
+			}else if(world[i][e] === "dirtSW"){
+				image.g = dirt;
+				image.sx = 0;
+				image.sy = 128;
+			}else if(world[i][e] === "dirtW"){
+				image.g = dirt;
+				image.sx = 0;
+				image.sy = 96;
+			}else if(world[i][e] === "dirt"){
+				image.g = dirt;
+				image.sx = 64;
+				image.sy = 160;
+			}
+			ctx.drawImage(image.g, image.sx, image.sy, image.w, image.h, image.x, image.y, image.w, image.h)
+		};
+	};
 };
 
 document.onkeydown = function(event) {
