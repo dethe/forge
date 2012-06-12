@@ -21,7 +21,6 @@ function loadImages(){
 }
 
 var terrain = loadImages('grass', 'dirt', 'barrels');
-console.log(terrain);
 
 //all the character stats will go here
 var characterInfo = {
