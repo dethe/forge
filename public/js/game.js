@@ -8,14 +8,20 @@ var character = new Image();
 character.src = 'public/graphics/male_walkcycle.png';
 var pants = new Image();
 pants.src = 'public/graphics/male_pants.png';
-var barrels = new Image();
-barrels.src = 'public/graphics/barrels.png';
-var grass = new Image();
-grass.src = 'public/graphics/grass.png';
-var dirt = new Image();
-dirt.src = 'public/graphics/dirt.png';
-var bat = new Image();
-bat.src = 'public/graphics/bat.png';
+
+function loadImages(){
+    var ret = {};
+    // Every function has a list of arguments which is almost, but not quite, an array. This is how we turn it into an array:
+    var args = Array.prototype.slice.call(arguments);
+    args.forEach(function(name){
+        ret[name] = new Image();
+        ret[name].src = 'public/graphics/' + name + '.png';
+    });
+    return ret;
+}
+
+var terrain = loadImages('grass', 'dirt', 'barrels');
+console.log(terrain);
 
 //all the character stats will go here
 var characterInfo = {
@@ -119,53 +125,11 @@ var monsters = [
 
 
 var world = [
-	["dirtNW", "dirtN", "dirtN", "dirtNE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirtE"],
-	["dirtSW", "dirtS", "dirtS", "dirtSE"]
+	["grass_NW", "grass_N", "grass_N", "grass_N", "grass_NE", null, null, null, "dirt_NW", "dirt_N", "dirt_N", "dirt_N", "dirt_NE"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_E", null, null, null, "dirt_W", "dirt_C", "dirt_C", "dirt_C", "dirt_E"],
+	["grass_SW", "grass_S", "grass_S", "grass_S", "grass_SE", null, null, null, "dirt_W", "dirt_C", "dirt_C", "dirt_C", "dirt_E"],
+	[null, null,null, null,null, null,null, null,"dirt_W", "dirt_C", "dirt_C", "dirt_C", "dirt_E"],
+	[null, null,null, null,null, null,null, null,"dirt_SW", "dirt_S", "dirt_S", "dirt_S", "dirt_SE"]
 ]
 
 var worldorigin = [0, 42]
@@ -225,18 +189,35 @@ function draw(){
 	}
 }
 
+var offsets = {
+    NW: {x: 0, y: 64},
+    N: {x: 32, y: 64},
+    NE: {x: 64, y: 64},
+    E: {x: 64, y: 96},
+    SE: {x: 64, y: 128},
+    S: {x: 32, y: 128},
+    SW: {x: 0, y: 128},
+    W: {x: 0, y: 96},
+    C: {x: 32, y: 96}
+}
+
 function drawworld(){
 	for(var i = 0; i < world.length; i++){
 		for(var e = 0; e < world[i].length; e++){
+		    if (!world[i][e]) continue;
+		    var tile_offset = world[i][e].split('_'),
+		        tile = terrain[tile_offset[0]],
+		        offset = offsets[tile_offset[1]];
 			var image = {
-				g:dirt,
-				sx:0,
-				sy:0,
+				g:tile,
+				sx:offset.x,
+				sy:offset.y,
 				w:32,
 				h:32,
 				x:  ((e - worldorigin[0])*32) + ((WIDTH/2) - characterInfo.x),
 				y: ((i - worldorigin[1])*32) + ((HEIGHT/2) - characterInfo.y)
 			}
+<<<<<<< HEAD
 			if(world[i][e] === "dirtNW"){
 				image.g = dirt;
 				image.sx = 0;
@@ -274,6 +255,8 @@ function drawworld(){
 				image.sx = 32;
 				image.sy = 96;
 			}
+=======
+>>>>>>> 22c09ad796492642cff58ffe96a5b78ab3f60a5a
 			ctx.drawImage(image.g, image.sx, image.sy, image.w, image.h, image.x, image.y, image.w, image.h)
 		};
 	};
