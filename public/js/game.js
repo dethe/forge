@@ -64,7 +64,9 @@ function Monster(sprite, x, y, direction){
     this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
 }
 Monster.prototype.move = function(dx, dy){
-    this.animate_idx = (this.animate_idx + 1) % 3;
+	if(frame % 5 === 0){
+		this.animate_idx = (this.animate_idx + 1) % 3;
+	};
     this.x += dx;
     this.y += dy;
 };
