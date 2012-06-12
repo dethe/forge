@@ -53,6 +53,67 @@ var move = {
 //WATER:
 //WATER_AND_GRASS
 
+function Monster(sprite, x, y, direction){
+    this.x = x;
+    this.y = y;
+    this.sprite = new Image();
+    this.sprite.src = sprite;
+    this.animate_idx = 0;
+    this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
+}
+Monster.prototype.move = function(dx, dy){
+    this.animate_idx = (this.animate_idx + 1) % 3;
+    this.x += dx;
+    this.y += dy;
+};
+Monster.prototype.faceEast = function(){
+    this.direction = 3;
+};
+Monster.prototype.faceWest = function(){
+    this.direction = 1;
+};
+Monster.prototype.faceNorth = function(){
+    this.direction = 0;
+};
+Monster.prototype.faceSouth = function(){
+    this.direction = 2;
+};
+Monster.prototype.maybeTurn = function(){
+    var roll = Math.round(Math.random() * 1000);
+    if (roll < 200){
+        this.direction = (this.direction + 3) % 4;
+    }else if (roll > 800){
+        this.direction = (this.direction + 1) % 4;
+    }
+};
+Monster.prototype.walk = function(){
+    var dx, dy;
+    if (this.direction % 2){
+        // if direction is odd we're going east - west
+        dx = (this.direction - 2); // move one pixel left or right
+        dy = 0;
+    }else{
+        // otherwise we're going north - south
+        dx = 0;
+        dy = (this.direction - 1); // move one pixel up or down
+    }
+    this.move(dx, dy);
+    if (!(this.x % 32) || !(this.y % 32)){
+        this.maybeTurn();
+    }
+}
+Monster.prototype.draw = function(ctx){
+    // drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
+    ctx.drawImage(this.sprite, this.animate_idx * 32, this.direction * 32, 32, 32, this.x, this.y, 32, 32);
+}
+
+var monsters = [
+    new Monster('public/graphics/bat.png', 500,500, 0),
+    new Monster('public/graphics/snake.png', 750,200,2),
+    new Monster('public/graphics/slime.png', 300,600,1)
+]
+
+
 var world = [
 	["dirtNW", "dirtN", "dirtN", "dirtN", "dirtNE"],
 	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
@@ -74,7 +135,7 @@ function clear(){
 }
 
 //draws on the canvas every 60th of a second
-function draw(event){
+function draw(){
 	frame += 1;
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -82,6 +143,10 @@ function draw(event){
 	HEIGHT = canvas.height;
 	clear();
 	drawworld();
+	monsters.forEach(function(monster){
+	    monster.walk();
+	    monster.draw(ctx);
+    });
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	
@@ -231,5 +296,6 @@ document.onkeyup = function(event) {
     		break;
   		}
 };
+
 
 init();
