@@ -217,46 +217,6 @@ function drawworld(){
 				x:  ((e - worldorigin[0])*32) + ((WIDTH/2) - characterInfo.x),
 				y: ((i - worldorigin[1])*32) + ((HEIGHT/2) - characterInfo.y)
 			}
-<<<<<<< HEAD
-			if(world[i][e] === "dirtNW"){
-				image.g = dirt;
-				image.sx = 0;
-				image.sy = 64;
-			}else if(world[i][e] === "dirtN"){
-				image.g = dirt;
-				image.sx = 32;
-				image.sy = 64;
-			}else if(world[i][e] === "dirtNE"){
-				image.g = dirt;
-				image.sx = 64;
-				image.sy = 64;
-			}else if(world[i][e] === "dirtE"){
-				image.g = dirt;
-				image.sx = 64;
-				image.sy = 96;
-			}else if(world[i][e] === "dirtSE"){
-				image.g = dirt;
-				image.sx = 64;
-				image.sy = 128;
-			}else if(world[i][e] === "dirtS"){
-				image.g = dirt;
-				image.sx = 32;
-				image.sy = 128;
-			}else if(world[i][e] === "dirtSW"){
-				image.g = dirt;
-				image.sx = 0;
-				image.sy = 128;
-			}else if(world[i][e] === "dirtW"){
-				image.g = dirt;
-				image.sx = 0;
-				image.sy = 96;
-			}else if(world[i][e] === "dirt"){
-				image.g = dirt;
-				image.sx = 32;
-				image.sy = 96;
-			}
-=======
->>>>>>> 22c09ad796492642cff58ffe96a5b78ab3f60a5a
 			ctx.drawImage(image.g, image.sx, image.sy, image.w, image.h, image.x, image.y, image.w, image.h)
 		};
 	};
