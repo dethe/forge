@@ -119,14 +119,56 @@ var monsters = [
 
 
 var world = [
-	["dirtNW", "dirtN", "dirtN", "dirtN", "dirtNE"],
-	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
-	["dirtW", "dirt", "dirt", "dirt", "dirtE"],
-	["dirtSW", "dirtS", "dirtS", "dirtS", "dirtSE"]
+	["dirtNW", "dirtN", "dirtN", "dirtNE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtW", "dirt", "dirt", "dirtE"],
+	["dirtSW", "dirtS", "dirtS", "dirtSE"]
 ]
 
-var worldorigin = [2, 2]
+var worldorigin = [0, 42]
 
 //starts the game
 function init(){
@@ -229,8 +271,8 @@ function drawworld(){
 				image.sy = 96;
 			}else if(world[i][e] === "dirt"){
 				image.g = dirt;
-				image.sx = 64;
-				image.sy = 160;
+				image.sx = 32;
+				image.sy = 96;
 			}
 			ctx.drawImage(image.g, image.sx, image.sy, image.w, image.h, image.x, image.y, image.w, image.h)
 		};
