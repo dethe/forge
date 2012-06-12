@@ -14,6 +14,8 @@ var grass = new Image();
 grass.src = 'public/graphics/grass.png';
 var dirt = new Image();
 dirt.src = 'public/graphics/dirt.png';
+var bat = new Image();
+bat.src = 'public/graphics/bat.png';
 
 //all the character stats will go here
 var characterInfo = {

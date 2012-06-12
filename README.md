@@ -19,7 +19,6 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 ### Coding:
 
 - collisions with scenery / monsters
-- Monsters
 - Databases (personal database and online database)
 - NPC's
 - Server for multiplayer
