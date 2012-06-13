@@ -113,7 +113,7 @@ Monster.prototype.walk = function(){
         dy = (this.direction - 1); // move one pixel up or down
     }
     this.move(dx, dy);
-    if (!(this.x % 32) || !(this.y % 32)){
+    if (!(frame % 32)){
         this.maybeTurn();
     }
 }
