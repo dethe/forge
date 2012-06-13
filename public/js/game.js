@@ -61,6 +61,7 @@ var move = {
 //WATER_AND_GRASS
 
 function Monster(sprite, x, y, direction){
+	this.d = 1;
     this.x = x;
     this.y = y;
     this.sprite = new Image();
@@ -69,8 +70,13 @@ function Monster(sprite, x, y, direction){
     this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
 }
 Monster.prototype.move = function(dx, dy){
+	if(this.animate_idx === 2){
+		this.d = -1;
+	}else if(this.animate_idx === 0){
+		this.d = 1;
+	}
 	if(frame % 5 === 0){
-		this.animate_idx = (this.animate_idx + 1) % 3;
+		this.animate_idx = (this.animate_idx + this.d);
 	};
     this.x += dx;
     this.y += dy;
@@ -124,14 +130,22 @@ var monsters = [
 
 
 var world = [
-	["grass_NW", "grass_N", "grass_N", "grass_N", "grass_NE", null, null, null, "dirt_NW", "dirt_N", "dirt_N", "dirt_N", "dirt_NE"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_E", null, null, null, "dirt_W", "dirt_C", "dirt_C", "dirt_C", "dirt_E"],
-	["grass_SW", "grass_S", "grass_S", "grass_S", "grass_SE", null, null, null, "dirt_W", "dirt_C", "dirt_C", "dirt_C", "dirt_E"],
-	[null, null,null, null,null, null,null, null,"dirt_W", "dirt_C", "dirt_C", "dirt_C", "dirt_E"],
-	[null, null,null, null,null, null,null, null,"dirt_SW", "dirt_S", "dirt_S", "dirt_S", "dirt_SE"]
+	["grass_NW", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_NE"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
+	["grass_SW", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_SE"],
 ]
 
-var worldorigin = [0, 42]
+var worldorigin = [0, 0]
 
 //starts the game
 function init(){
@@ -197,7 +211,10 @@ var offsets = {
     S: {x: 32, y: 128},
     SW: {x: 0, y: 128},
     W: {x: 0, y: 96},
-    C: {x: 32, y: 96}
+    C: {x: 32, y: 96},
+    C2: {x: 64, y: 160},
+    C3: {x: 32, y: 160},
+    C4: {x: 0, y: 160}
 }
 
 function drawworld(){
