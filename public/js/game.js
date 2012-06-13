@@ -3,6 +3,12 @@ var ctx = canvas.getContext("2d");
 var frame = 0;
 var keycode;
 
+// UTILITIES
+
+var isArray = Array.isArray || function(obj) {
+    return Object.prototype.toString.call(obj) == '[object Array]';
+  };
+
 //loads images
 var character = new Image();
 character.src = 'public/graphics/male_walkcycle.png';
