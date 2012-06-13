@@ -11,18 +11,21 @@ var isArray = Array.isArray || function(obj) {
   };
 
 //loads images
-var character = new Image();
-character.src = 'public/graphics/male_walkcycle.png';
-var pants = new Image();
-pants.src = 'public/graphics/male_pants.png';
+var character = loadImage('male_walkcycle');
+var pants = loadImage('male_pants');
+
+function loadImage(names){
+    var img = new Image();
+    img.src = 'public/graphics/' + name + '.png';
+    return img;
+}
 
 function loadImages(){
     var ret = {};
     // Every function has a list of arguments which is almost, but not quite, an array. This is how we turn it into an array:
     var args = Array.prototype.slice.call(arguments);
     args.forEach(function(name){
-        ret[name] = new Image();
-        ret[name].src = 'public/graphics/' + name + '.png';
+        ret[name] = loadImage(name);
     });
     return ret;
 }
