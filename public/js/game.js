@@ -20,7 +20,7 @@ function loadImages(){
     return ret;
 }
 
-var terrain = loadImages('grass', 'dirt', 'barrels');
+var terrain = loadImages('grass', 'dirt', 'barrels', 'sand', 'water');
 
 //all the character stats will go here
 var characterInfo = {
@@ -130,19 +130,23 @@ var monsters = [
 
 
 var world = [
-	["grass_NW", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_N", "grass_NE"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_W", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_C", "grass_E"],
-	["grass_SW", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_S", "grass_SE"],
+	["water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C"],
+	["water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C"],
+	["water_C", "water_C", "sand_NW", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_N", "sand_NE", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_W", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_C", "sand_E", "water_C", "water_C"],
+	["water_C", "water_C", "sand_SW", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_S", "sand_SE", "water_C", "water_C"],
+	["water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C"],
+	["water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C", "water_C"]
 ]
 
 var worldorigin = [0, 0]
