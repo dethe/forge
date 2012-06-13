@@ -18,6 +18,7 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 
 ### Coding:
 
+- Parse the world file once at initialization instead of on each frame
 - collisions with scenery / monsters
 - Databases (personal database and online database)
 - NPC's

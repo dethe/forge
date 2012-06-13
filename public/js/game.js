@@ -11,23 +11,25 @@ var isArray = Array.isArray || function(obj) {
   };
 
 //loads images
-var character = new Image();
-character.src = 'public/graphics/male_walkcycle.png';
-var pants = new Image();
-pants.src = 'public/graphics/male_pants.png';
-var shirt = new Image();
-shirt.src = 'public/graphics/male_shirt.png';
+var character = loadImage('male_walkcycle');
+var pants = loadImage('male_pants');
+var shirt = loadImage('male_shirt')
+
+function loadImage(name){
+    var img = new Image();
+    img.src = 'public/graphics/' + name + '.png';
+    return img;
+};
 
 function loadImages(){
     var ret = {};
     // Every function has a list of arguments which is almost, but not quite, an array. This is how we turn it into an array:
     var args = Array.prototype.slice.call(arguments);
     args.forEach(function(name){
-        ret[name] = new Image();
-        ret[name].src = 'public/graphics/' + name + '.png';
+        ret[name] = loadImage(name);
     });
     return ret;
-}
+};
 
 var terrain = loadImages('grass', 'dirt', 'barrels', 'sand', 'water');
 
@@ -230,23 +232,34 @@ var offsets = {
     C4: {x: 0, y: 160}
 }
 
+function drawTile(spec, tx, ty){
+    var tile_offset = spec.split('_'),
+        tile = terrain[tile_offset[0]],
+        offset = offsets[tile_offset[1]];
+	var image = {
+		g:tile,
+		sx:offset.x,
+		sy:offset.y,
+		w:32,
+		h:32,
+		x:  ((tx - worldorigin[0])*32) + ((WIDTH/2) - characterInfo.x),
+		y: ((ty - worldorigin[1])*32) + ((HEIGHT/2) - characterInfo.y)
+	}
+	ctx.drawImage(image.g, image.sx, image.sy, image.w, image.h, image.x, image.y, image.w, image.h)
+}
+
 function drawworld(){
 	for(var i = 0; i < world.length; i++){
 		for(var e = 0; e < world[i].length; e++){
-		    if (!world[i][e]) continue;
-		    var tile_offset = world[i][e].split('_'),
-		        tile = terrain[tile_offset[0]],
-		        offset = offsets[tile_offset[1]];
-			var image = {
-				g:tile,
-				sx:offset.x,
-				sy:offset.y,
-				w:32,
-				h:32,
-				x:  ((e - worldorigin[0])*32) + ((WIDTH/2) - characterInfo.x),
-				y: ((i - worldorigin[1])*32) + ((HEIGHT/2) - characterInfo.y)
-			}
-			ctx.drawImage(image.g, image.sx, image.sy, image.w, image.h, image.x, image.y, image.w, image.h)
+		    var spec = world[i][e];
+		    if (!spec) continue;
+		    if (isArray(spec)){
+		        spec.forEach(function(subspec){
+		            drawTile(subspec,e,i);
+	            });
+	        }else{
+	            drawTile(spec,e,i);
+            }
 		};
 	};
 };
