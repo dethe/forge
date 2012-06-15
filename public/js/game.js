@@ -36,9 +36,9 @@ var terrain = loadImages('grass', 'dirt', 'barrels', 'sand', 'water');
 //all the character stats will go here
 var characterInfo = {
 	name:'ForgePlayer',
-	speed: 3,
-	x:30,
-	y:30,
+	speed: 4,
+	x:640,
+	y:320,
 	sx:0,
 	sy:0,
 	w:64,
@@ -146,9 +146,9 @@ var world = [
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_NW', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_NE', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
+	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', ['sand_C', 'grass_NW'], ['sand_C', 'grass_N'], ['sand_C', 'grass_NE'], 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
+	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', ['sand_C', 'grass_W'], ['sand_C', 'grass_C'], ['sand_C', 'grass_E'], 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
+	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', ['sand_C', 'grass_SW'], ['sand_C', 'grass_S'], ['sand_C', 'grass_SE'], 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
@@ -160,7 +160,7 @@ var world = [
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C']
 ]
 
-var worldorigin = [24, 9]
+var worldorigin = [0, 0]
 
 //starts the game
 function init(){
@@ -188,18 +188,17 @@ function draw(){
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(shirt, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h)
-
-	if(move.up=== true){
+	
+	if(move.up && findCharTile(0, characterInfo.speed*2) !== 'water_C'){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
-	}else if(move.left === true){
+	}else if(move.left && findCharTile(characterInfo.speed*2, 0) !== 'water_C'){
 		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
-	}else if(move.down === true){
+	}else if(move.down && findCharTile(0, -characterInfo.speed*2) !== 'water_C'){
 		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
-	}else if(move.right === true){
-
+	}else if(move.right && findCharTile(-characterInfo.speed*2, 0) !== 'water_C'){
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
 	}
@@ -217,6 +216,24 @@ function draw(){
 	}
 }
 
+function findCharTile(xOffset, yOffset, findCollision){
+	var tile;
+	var tilesY = Math.round((characterInfo.y - yOffset) / 32);
+	var tilesX = Math.round((characterInfo.x - xOffset) / 32);
+	tile = world[tilesY][tilesX];
+	if(!!findCollision && isArray(world[tilesY][tilesX])){
+		if(world[tilesY][tilesX][0] === 'water_C'){
+			return true;
+		}else{
+			return false;
+		}
+	}else if(!!findCollision){
+		return false;
+	}else{
+		return tile;
+	}
+}
+
 var offsets = {
     NW: {x: 0, y: 64},
     N: {x: 32, y: 64},
@@ -229,7 +246,11 @@ var offsets = {
     C: {x: 32, y: 96},
     C2: {x: 64, y: 160},
     C3: {x: 32, y: 160},
-    C4: {x: 0, y: 160}
+    C4: {x: 0, y: 160},
+    INW: {x: 32, y: 0},
+    INE: {x: 64, y: 0},
+    ISW: {x: 32, y: 32},
+    ISE: {x: 64, y: 32}
 }
 
 function drawTile(spec, tx, ty){
