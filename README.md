@@ -7,23 +7,26 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 ### Coding:
 
 - Character moves around with W-A-S-D
-
-- The world now has an array representation that you can change
+- The world is stored in an array
+- monsters
+- collisions
 
 ### Art:
 
-- NOTHING SO FAR…
+- Black Shirt
+- Black Pants (they were dark green before so I changed their color)
 
 ## What we need to do
 
 ### Coding:
 
 - Parse the world file once at initialization instead of on each frame
-- collisions with scenery / monsters
+- better AI for monsters each type of monster should have tons of different attributes (can be stored in objects)
 - Databases (personal database and online database)
 - NPC's
 - Server for multiplayer
 - Create worlds and maps for singleplayer and multiplayer
+- Minimap
 - leveling up / exp
 - inventory
 - Gold
