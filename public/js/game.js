@@ -189,16 +189,16 @@ function draw(){
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(shirt, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h)
 	
-	if(move.up && findCharTile(0, characterInfo.speed*2) !== 'water_C'){
+	if(move.up && findCharTile(0, characterInfo.speed) !== 'water_C'){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
-	}else if(move.left && findCharTile(characterInfo.speed*2, 0) !== 'water_C'){
+	}else if(move.left && findCharTile(characterInfo.speed + 5, 0) !== 'water_C'){
 		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
-	}else if(move.down && findCharTile(0, -characterInfo.speed*2) !== 'water_C'){
+	}else if(move.down && findCharTile(0, -characterInfo.speed - 64) !== 'water_C'){
 		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
-	}else if(move.right && findCharTile(-characterInfo.speed*2, 0) !== 'water_C'){
+	}else if(move.right && findCharTile(-characterInfo.speed - 40, 0) !== 'water_C'){
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
 	}
