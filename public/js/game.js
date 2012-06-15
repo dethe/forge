@@ -13,7 +13,8 @@ var isArray = Array.isArray || function(obj) {
 //loads images
 var character = loadImage('male_walkcycle');
 var pants = loadImage('male_pants');
-var shirt = loadImage('male_shirt')
+var shirt = loadImage('male_shirt');
+var bandana = loadImage('red_bandana');
 
 function loadImage(name){
     var img = new Image();
@@ -40,7 +41,7 @@ var characterInfo = {
 	x:640,
 	y:320,
 	sx:0,
-	sy:0,
+	sy:128,
 	w:64,
 	h:64,
 }
@@ -57,24 +58,10 @@ var move = {
 	right_m: false
 }
 
-//====================================\\
-//ITEMS THAT CAN BE USED IN WORLD ARRAY
-//====================================\\
-//BARRELS: barrel, barrels1, barrels1
-//BUCKETS
-//DIRT: dirtNW, dirtN, dirtNE, dirtE, dirtSE, dirtS, dirtSW, dirtW, dirt1, dirt2, dirt3
-//DIRT_ROCKS: dirtrocks1, dirtrocks2
-//DARK_DIRT: ddirtNW, ddirtN, ddirtNE, ddirtE, ddirtSE, ddirtS, ddirtSW, ddirtW, ddirt1, ddirt2, ddirt3
-//DARK_DIRT_ROCKS: ddirtrocks1, ddirtrocks2
-//GRASS:
-//GRASS_ALT:
-//WATER:
-//WATER_AND_GRASS
-
 function Monster(sprite, x, y, direction){
 	this.d = 1;
-    this.x = x;
-    this.y = y;
+    this.x = x + characterInfo.x;
+    this.y = y + characterInfo.y;
     this.sprite = new Image();
     this.sprite.src = sprite;
     this.animate_idx = 0;
@@ -134,11 +121,16 @@ Monster.prototype.draw = function(ctx){
 }
 
 var monsters = [
-    new Monster('public/graphics/bat.png', 500,500, 0),
-    new Monster('public/graphics/snake.png', 750,200,2),
-    new Monster('public/graphics/slime.png', 300,600,1)
+    new Monster('public/graphics/bat.png', 800,500, 0),
+    new Monster('public/graphics/slime.png', 800,300,1)
 ]
 
+var monsterInfo = {
+	bat: {
+		flying:true,
+		speed:4
+	}
+}
 
 var world = [
 	['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
@@ -185,9 +177,11 @@ function draw(){
 	    monster.walk();
 	    monster.draw(ctx);
     });
+    
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(shirt, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h)
+	ctx.drawImage(shirt, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
+	ctx.drawImage(bandana, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	
 	if(move.up && findCharTile(0, characterInfo.speed, true)){
 		characterInfo.sy = 0;
@@ -224,11 +218,21 @@ function draw(){
 	}
 }
 
-function findCharTile(xOffset, yOffset, findCollision){
+function findCharTile(xOffset, yOffset, findCollision, xANDy){
 	var tile;
-	var tilesY = Math.round((characterInfo.y - yOffset) / 32);
-	var tilesX = Math.round((characterInfo.x - xOffset) / 32);
-	tile = world[tilesY][tilesX];
+	var cx = characterInfo.x;
+	var cy = characterInfo.y;
+	if(!!xANDy){
+		cx = xANDy.x;
+		cy = xANDy.y;
+		var tilesY = Math.round((cy - yOffset - characterInfo.y) / 32);
+		var tilesX = Math.round((cx - xOffset - characterInfo.x) / 32);
+		tile = world[tilesY][tilesX];
+	}else{
+		var tilesY = Math.round((cy - yOffset) / 32);
+		var tilesX = Math.round((cx - xOffset) / 32);
+		tile = world[tilesY][tilesX];
+	}
 	if(!!findCollision && isArray(world[tilesY][tilesX])){
 		if(world[tilesY][tilesX][0] === 'collision'){
 			return false;
