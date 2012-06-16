@@ -116,7 +116,6 @@ Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
 		var distanceX = WIDTH/2 - (this.x - characterInfo.x);
 		var distanceY = HEIGHT/2 - (this.y - characterInfo.y);
-		console.log('distanceX: %s, characterX: %s, %s.x: %s', distanceX, characterInfo.x, this.name, (this.x - characterInfo.x));
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
