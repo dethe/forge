@@ -64,8 +64,9 @@ function Monster(sprite, x, y, direction){
 	this.d = 1;
 	this.x = x + characterInfo.x;
 	this.y = y + characterInfo.y;
+	this.name = sprite;
 	this.sprite = new Image();
-	this.sprite.src = sprite;
+	this.sprite.src = 'public/graphics/' + sprite + '.png';
 	this.animate_idx = 0;
 	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
 }
@@ -78,8 +79,8 @@ Monster.prototype.move = function(dx, dy){
 	if(frame % 5 === 0){
 		this.animate_idx = (this.animate_idx + this.d);
 	}
-	this.x += dx;
-	this.y += dy;
+	this.x += dx * monsterInfo[this.name].speed;
+	this.y += dy * monsterInfo[this.name].speed;
 };
 Monster.prototype.faceEast = function(){
 	this.direction = 3;
@@ -123,14 +124,16 @@ Monster.prototype.draw = function(ctx){
 };
 
 var monsters = [
-	new Monster('public/graphics/bat.png', 800,500, 0),
-	new Monster('public/graphics/slime.png', 800,300,1)
+	new Monster('bat', 800,500, 0),
+	new Monster('slime', 800,300,1)
 ];
 
 var monsterInfo = {
 	bat: {
-		flying:true,
-		speed:4
+		speed:1.5
+	},
+	slime: {
+		speed:1
 	}
 };
 
