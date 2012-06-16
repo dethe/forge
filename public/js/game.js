@@ -83,7 +83,7 @@ var bandana = loadImage('red_bandana');
 //all the character stats will go here
 var characterInfo = {
 	name:'ForgePlayer',
-	speed: 4,
+	speed: 3,
 	x:640,
 	y:320,
 	sx:0,
@@ -111,16 +111,22 @@ var move = {
 //
 /////////////////////////////////////////
 
+
 function Monster(sprite, x, y, direction){
 	this.d = 1;
 	this.x = x + characterInfo.x;
 	this.y = y + characterInfo.y;
-	this.name = sprite;
 	this.sprite = new Image();
 	this.sprite.src = 'public/graphics/' + sprite + '.png';
 	this.animate_idx = 0;
 	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
-}
+	this.name = sprite;
+	this.HP = monsterInfo[sprite].HP;
+	this.damage = monsterInfo[sprite].damage;
+	this.sensing = monsterInfo[sprite].sensing;
+	this.AI = monsterInfo[sprite].AI;
+	this.AIxy = 'x';
+};
 Monster.prototype.move = function(dx, dy){
 	if(this.animate_idx === 2){
 		this.d = -1;
@@ -145,14 +151,6 @@ Monster.prototype.faceNorth = function(){
 Monster.prototype.faceSouth = function(){
 	this.direction = 2;
 };
-Monster.prototype.maybeTurn = function(){
-	var roll = Math.round(Math.random() * 1000);
-	if (roll < 200){
-		this.direction = (this.direction + 3) % 4;
-	}else if (roll > 800){
-		this.direction = (this.direction + 1) % 4;
-	}
-};
 Monster.prototype.walk = function(){
 	var dx, dy;
 	if (this.direction % 2){
@@ -165,13 +163,52 @@ Monster.prototype.walk = function(){
 		dy = (this.direction - 1); // move one pixel up or down
 	}
 	this.move(dx, dy);
-	if (!(frame % 32)){
-		this.maybeTurn();
-	}
 };
+Monster.prototype.useAI = function(){
+	if(this.AI === 'normal'){
+		var distanceX = WIDTH/2 - (this.x - characterInfo.x);
+		var distanceY = HEIGHT/2 - (this.y - characterInfo.y);
+		if(distanceX < 10 && distanceX > -10){
+			this.AIxy = 'y';
+		}else if(distanceY < 10 && distanceY > -10){
+			this.AIxy = 'x';
+		};
+		if(this.AIxy === 'x'){
+			if(distanceX > 0){
+				this.faceEast();
+			}else{
+				this.faceWest();
+			};
+		}else{
+			if(distanceY < 0){
+				this.faceNorth();
+			}else{
+				this.faceSouth();
+			};
+		};
+		this.walk();
+	};
+}
 Monster.prototype.draw = function(ctx){
 	// drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
 	ctx.drawImage(this.sprite, this.animate_idx * 32, this.direction * 32, 32, 32, this.x - characterInfo.x, this.y - characterInfo.y, 32, 32);
+};
+
+var monsterInfo = {
+	bat: {
+		speed:2.2,
+		HP:7,
+		sensing:20,
+		damage:3,
+		AI:'normal'
+	},
+	slime: {
+		speed:1.2,
+		HP:12,
+		sensing:10,
+		damage:5,
+		AI:'normal'
+	}
 };
 
 var monsters = [
@@ -179,14 +216,6 @@ var monsters = [
 	new Monster('slime', 800,300,1)
 ];
 
-var monsterInfo = {
-	bat: {
-		speed:1.5
-	},
-	slime: {
-		speed:1
-	}
-};
 
 
 /////////////////////////////////////////
@@ -361,7 +390,7 @@ function drawGame(){
 	clear();
 	world.draw();
 	monsters.forEach(function(monster){
-		monster.walk();
+		monster.useAI();
 		monster.draw(ctx);
 	});
 	
