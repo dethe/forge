@@ -24,9 +24,9 @@ function World(){
 	];
 
 	var world = [];
-	
+
 	var worldorigin = [0, 0];
-	
+
 	var offsets = {
 		NW: {x: 0, y: 64},
 		N: {x: 32, y: 64},

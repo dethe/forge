@@ -1,22 +1,55 @@
+/////////////////////////////////////////
+//
+//           GLOBALS
+//
+/////////////////////////////////////////
+
+
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var frame = 0;
 var keycode;
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
+canvas.width = WIDTH;
+canvas.height = HEIGHT;
 
-// UTILITIES
+/////////////////////////////////////////
+//
+//           UTILITIES
+//
+/////////////////////////////////////////
+
+// Paul Irish's requestAnimationFrame polyfill
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = 
+          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
 
 // isArray function borrowed from the Underscore library
 var isArray = Array.isArray || function(obj) {
-	return Object.prototype.toString.call(obj) == '[object Array]';
-  };
-
-//loads images
-var character = loadImage('male_walkcycle');
-var pants = loadImage('male_pants');
-var shirt = loadImage('male_shirt');
-var bandana = loadImage('red_bandana');
+    return Object.prototype.toString.call(obj) == '[object Array]';
+};
 
 function loadImage(name){
 	var img = new Image();
@@ -35,6 +68,17 @@ function loadImages(){
 }
 
 
+/////////////////////////////////////////
+//
+//           PLAYER CHARACTER
+//
+/////////////////////////////////////////
+
+//loads images
+var character = loadImage('male_walkcycle');
+var pants = loadImage('male_pants');
+var shirt = loadImage('male_shirt');
+var bandana = loadImage('red_bandana');
 
 //all the character stats will go here
 var characterInfo = {
@@ -59,6 +103,13 @@ var move = {
 	right: false,
 	right_m: false
 };
+
+
+/////////////////////////////////////////
+//
+//           MONSTERS
+//
+/////////////////////////////////////////
 
 function Monster(sprite, x, y, direction){
 	this.d = 1;
@@ -137,12 +188,167 @@ var monsterInfo = {
 	}
 };
 
+
+/////////////////////////////////////////
+//
+//           START AND SWITCH SCENES
+//
+/////////////////////////////////////////
+
+var gameLoop, menuLoop;
+
 //starts the game
-function init(){
-    console.log('init');
+function initGame(){
 	window.world = World();
-	return setInterval(draw, 1000/60);
 }
+
+// show the menu
+function initMenu(){
+    window.menu = Menu();
+    // also init game, but don't start it yet
+    initGame();
+    showMenu();
+}
+
+function showGame(){
+    // turn off menu loop and event handlers
+    document.onclick = null;
+    if (menuLoop) cancelAnimationFrame(menuLoop);
+    // turn on game loop and event handlers
+    document.onkeydown = gameKeydown;
+    document.onkeyup = gameKeyup;
+	gameLoop = requestAnimationFrame(drawGame);
+}
+
+function showMenu(){
+    clear();
+    // turn off game loop and event handlers
+    document.onkeydown = null;
+    document.onkeyup = null;
+    if (gameLoop) cancelAnimationFrame(gameLoop);
+    // turn on menu loop and event handlers
+    document.onclick = menuClick;
+    menuLoop = requestAnimationFrame(drawMenu);
+}
+
+
+/////////////////////////////////////////
+//
+//           MENU
+//
+/////////////////////////////////////////
+
+function Menu(){
+    var buttonWidth = 120;
+    var buttonHeight = 40;
+    return [
+        UITitle('Welcome to the Forge game'),
+        UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight/2), buttonWidth, buttonHeight, showGame)
+    ];
+}
+
+function UIElement(text, x, y, w, h, draw, trigger){
+    this.text = text;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.draw = draw || function(){};
+    this.trigger = trigger || function(){};
+}
+
+UIElement.prototype.containsPoint = function(x,y){
+    if (x < this.x) return false;
+    if (y < this.y) return false;
+    if (x > this.x + this.w) return false;
+    if (y > this.y + this.h) return false;
+    return true;
+}
+
+function UIButton(text, x, y, w, h, trigger){
+    function draw(ctx){
+        ctx.fillStyle = 'blue';
+        roundRect(ctx, x, y, w, h, 10, true, true);
+        ctx.fillStyle = 'white';
+        ctx.font = '20pt Helvetica';
+        ctx.textAlign = 'center';
+        ctx.fillText(text, x + w/2, y + 30, w - 20);
+    }
+    return new UIElement(text, x, y, w, h, draw, trigger);
+}
+
+function UITitle(text){
+    function draw(ctx){
+        ctx.fillStyle = 'black';
+        ctx.font = '40pt Helvetica';
+        ctx.textAlign = 'center'
+        ctx.fillText(text, WIDTH/2, 80);
+    }
+    return new UIElement(text, 0, 0, WIDTH, 80, draw);
+}
+
+function drawMenu(time){
+    for (var i = 0; i < menu.length; i++){
+        menu[i].draw(ctx);
+    }
+    menuLoop = requestAnimationFrame(drawMenu);
+}
+
+function menuClick(evt){
+    for (var i = 0; i < menu.length; i++){
+        if (menu[i].containsPoint(evt.clientX, evt.clientY)){
+            menu[i].trigger();
+        }
+    }
+}
+
+/**
+ * Draws a rounded rectangle using the current state of the canvas. 
+ * If you omit the last three params, it will draw a rectangle 
+ * outline with a 5 pixel border radius 
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {Number} x The top left x coordinate
+ * @param {Number} y The top left y coordinate 
+ * @param {Number} width The width of the rectangle 
+ * @param {Number} height The height of the rectangle
+ * @param {Number} radius The corner radius. Defaults to 5;
+ * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
+ * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to true.
+ 
+ SOURCE: http://stackoverflow.com/questions/1255512/how-to-draw-a-rounded-rectangle-on-html-canvas
+ 
+ */
+function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+  if (typeof stroke == "undefined" ) {
+    stroke = true;
+  }
+  if (typeof radius === "undefined") {
+    radius = 5;
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  if (stroke) {
+    ctx.stroke();
+  }
+  if (fill){
+      ctx.fill();
+  }
+}
+
+/////////////////////////////////////////
+//
+//           BASIC DRAWING
+//
+/////////////////////////////////////////
 
 //function to clear the canvas
 function clear(){
@@ -150,10 +356,8 @@ function clear(){
 }
 
 //draws on the canvas every 60th of a second
-function draw(){
+function drawGame(){
 	frame += 1;
-	canvas.width = WIDTH;
-	canvas.height = HEIGHT;
 	clear();
 	world.draw();
 	monsters.forEach(function(monster){
@@ -199,12 +403,17 @@ function draw(){
 	if(move.up=== false && move.left === false && move.down === false && move.right === false){
 		characterInfo.sx = 0;
 	}
+	gameLoop = requestAnimationFrame(drawGame);
 }
 
 
+/////////////////////////////////////////
+//
+//           USER INTERACTION
+//
+/////////////////////////////////////////
 
-
-document.onkeydown = function(event) {
+var gameKeydown = function(event) {
 		switch (event.keyCode) {
 			case 87: // 'w' key
 			case 38: // up arrow
@@ -232,7 +441,7 @@ document.onkeydown = function(event) {
 		}
 };
 
-document.onkeyup = function(event) {
+var gameKeyup = function(event) {
 		switch (event.keyCode) {
 			case 87: // 'w' key
 			case 38: // up arrow
@@ -268,5 +477,5 @@ document.onkeyup = function(event) {
 		}
 };
 
-
-window.onload = init;
+// Start everything
+window.onload = initMenu();
