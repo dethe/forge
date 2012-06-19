@@ -1,8 +1,5 @@
 function World(){
 
-    var WIDTH = window.innerWidth;
-    var HEIGHT = window.innerHeight;
-
 	var worldspec = [
 		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
 		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
@@ -102,8 +99,8 @@ function World(){
          sy:offset.y,
          w:32,
          h:32,
-         x:  ((tx - worldorigin[0])*32) + ((WIDTH/2)),
-         y: ((ty - worldorigin[1])*32) + ((HEIGHT/2))
+         x: (tx - worldorigin[0]) * 32,
+         y: (ty - worldorigin[1]) * 32
      };
     }
     
@@ -112,7 +109,7 @@ function World(){
             for(var e = 0; e < world[i].length; e++){
                 for (var t = 0; t < world[i][e].length; t++){
                     var tile = world[i][e][t];
-                    ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x - characterInfo.x, tile.y - characterInfo.y, 32, 32);
+                    ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - characterInfo.x, tile.y + HEIGHT/2 - characterInfo.y, 32, 32);
                 }
             }
         }
@@ -120,7 +117,7 @@ function World(){
     
     parseWorld();
     return {
-        world: world,
+        world: world, 
         draw: drawworld,
         findCharTile: findCharTile
     };

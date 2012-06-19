@@ -14,6 +14,14 @@ var HEIGHT = window.innerHeight;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
+function resize(){
+    // put this in loops because Chrome doesn't reliably support resize events
+    window.WIDTH = window.innerWidth;
+    window.HEIGHT = window.innerHeight;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+}
+
 /////////////////////////////////////////
 //
 //           UTILITIES
@@ -317,6 +325,7 @@ function UITitle(text){
 }
 
 function drawMenu(time){
+    resize();
     for (var i = 0; i < menu.length; i++){
         menu[i].draw(ctx);
     }
@@ -386,6 +395,7 @@ function clear(){
 
 //draws on the canvas every 60th of a second
 function drawGame(){
+    resize();
 	frame += 1;
 	clear();
 	world.draw();
