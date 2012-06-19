@@ -67,7 +67,7 @@ function World(){
 				}
 			}
 		}
-	}
+	};
 
     function findCharTile(xOffset, yOffset, findCollision, xANDy){
     	var tile;
