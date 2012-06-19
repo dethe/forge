@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+	<title>Map Editor</title>
+	<link type="text/css" href="css/black-tie/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
+	<style>
+	    *{
+	        margin: 0;
+	        border: 0;
+	        padding: 0;
+        }
+        #map_container{
+            height: 100%;
+            float: left;
+            overflow: scroll;
+        }
+        #menu_container{
+            float: right;
+            width: 300px;
+            height: 100%;
+        }
+		#map{
+			width:6400px;
+			height:6400px;
+		}
+		.tile{
+		    width: 32px;
+		    height: 32px;
+		    display: inline-block;
+		}
+		
+		#terrain_menu{
+		    width: 120px;
+	    }
+	    
+	    #terrain_menu .tile{
+	        background-image: url('../public/graphics/grass.png');
+        }
+		
+		.AA { background-position: 0px 0px; }
+		.BA { background-position: -32px 0px; }
+		.CA { background-position: -64px 0px; }
+		.AB { background-position: 0px -32px; }
+		.BB { background-position: -32px -32px; }
+		.CB { background-position: -64px -32px; }
+		.AC { background-position: 0px -64px; }
+		.BC { background-position: -32px -64px; }
+		.CC { background-position: -64px -64px; }
+		.AD { background-position: 0px -96px; }
+		.BD { background-position: -32px -96px; }
+		.CD { background-position: -64px -96px; }
+		.AE { background-position: 0px -128px; }
+		.BE { background-position: -32px -128px; }
+		.CE { background-position: -64px -128px; }
+		.AF { background-position: 0px -160px; }
+		.BF { background-position: -32px -160px; }
+		.CF { background-position: -64px -160px; }
+		.AG { background-position: 0px -192px; }
+		.BG { background-position: -32px -192px; }
+		.CG { background-position: -64px -192px; }
+		.AH { background-position: 0px -224px; }
+		.BH { background-position: -32px -224px; }
+		.CH { background-position: -64px -224px; }
+		.AI { background-position: 0px -256px; }
+		.BI { background-position: -32px -256px; }
+		.CI { background-position: -64px -256px; }
+		.AJ { background-position: 0px -288px; }
+		.BJ { background-position: -32px -288px; }
+		.CJ { background-position: -64px -288px; }
+		.AK { background-position: 0px -320px; }
+		.BK { background-position: -32px -320px; }
+		.CK { background-position: -64px -320px; }
+		
+	</style>
+</head>
+<body>
+    <div id="workspace">
+        <div id="map_container">
+	        <div id="map"></div>
+	    </div>
+	    <div id="menu_container">
+    	    <h2>Terrain</h2>
+	        <select id="terrain">
+	            <option>Grass</option>
+	            <option>Reeds</option>
+	            <option>Sand</option>
+	            <option>Wheat</option>
+	            <option>Cement</option>
+	            <option>Dirt</option>
+	            <option>Dirt2</option>
+	            <option>GrassAlt</option>
+	            <option>Hole</option>
+	            <option>Lava</option>
+	            <option>LavaRock</option>
+	            <option>Water</option>
+	            <option>WaterAndGrass</option>
+            </select>
+            <div id="terrain_menu">
+            </div>
+            <h2>Other Landscape</h2>
+            <select id="landscape">
+                <option>Wheelbarrow</option>
+                <option>Barrels</option>
+                <option>Bridges</option>
+                <option>Buckets</option>
+                <option>Cabinets</option>
+                <option>CementStair</option>
+                <option>Chests</option>
+                <option>Furniture</option>
+                <option>Furniture2</option>
+            </select>
+            <div id="landsacape_menu">
+            </div>
+	    </div>
+	</div>
+	<script>
+	    var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+	    $('#map_container').width($('#workspace').width() - $('#menu_container').width());
+	    var map = $('#map');
+	    for (var i = 0; i < 4000; i++){
+	        map.append('<div class="tile"></div>');
+        }
+        var terrain = $('#terrain_menu');
+        for (var y = 0; y < 11; y++){
+            for (var x = 0; x < 3; x++){
+                terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
+            }
+        }
+        
+	</script>
+</body>
+</html>
