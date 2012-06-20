@@ -13,7 +13,7 @@
 	        padding: 0;
         }
         #map_container{
-            height: 100%;
+            height: 700px;
             float: left;
             overflow: scroll;
         }
@@ -23,13 +23,15 @@
             height: 100%;
         }
 		#map{
-			width:6400px;
-			height:6400px;
+			width:3200px;
+			height:3200px;
 		}
 		.tile{
 		    width: 32px;
 		    height: 32px;
 		    display: inline-block;
+		    outline:1px solid #000;
+		    margin-bottom: -4px;
 		}
 		
 		#terrain_menu{
@@ -39,7 +41,7 @@
 	    #terrain_menu .tile{
 	        background-image: url('../public/graphics/grass.png');
         }
-		
+        
 		.AA { background-position: 0px 0px; }
 		.BA { background-position: -32px 0px; }
 		.CA { background-position: -64px 0px; }
@@ -113,23 +115,48 @@
                 <option>Furniture2</option>
             </select>
             <div id="landsacape_menu">
+            	
             </div>
+            <br>
+            <input type="checkbox" id="lines" checked="true"> lines
 	    </div>
 	</div>
 	<script>
 	    var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 	    $('#map_container').width($('#workspace').width() - $('#menu_container').width());
 	    var map = $('#map');
-	    for (var i = 0; i < 4000; i++){
+	    for (var i = 0; i < 10000; i++){
 	        map.append('<div class="tile"></div>');
         }
         var terrain = $('#terrain_menu');
-        for (var y = 0; y < 11; y++){
+        for (var y = 0; y < 6; y++){
             for (var x = 0; x < 3; x++){
                 terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
             }
         }
+        $('#terrain').change(function(){
+        	$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
+        });
         
+        var tile = 'Grass';
+        var position = '0px 0px';
+        
+        $('#terrain_menu .tile').click(function(){
+        	tile = $("#terrain option:selected").text();
+        	position = $(this).css('background-position');
+        })
+        
+        $('#map .tile').click(function(){
+        	$(this).css('background-image', 'url(../public/graphics/' + tile + '.png)');
+        	$(this).css('background-position', position)
+        })
+        $('#lines').change(function(){
+        	if($('#lines').attr('checked') === 'checked'){
+        		$('#map .tile').css('outline', '1px solid #000');
+        	}else{
+        		$('#map .tile').css('outline', '0px solid #000');
+        	}
+        })
 	</script>
 </body>
 </html>
