@@ -84,9 +84,12 @@ function loadImages(){
 
 //loads images
 var character = loadImage('male_walkcycle');
-var pants = loadImage('male_pants');
+var black_pants = loadImage('male_pants');
+var brown_pants = loadImage('brown_pants')
 var shirt = loadImage('male_shirt');
 var bandana = loadImage('red_bandana');
+var sword = loadImage('sword');
+var eypatch = loadImage('eyepatch');
 
 //all the character stats will go here
 var characterInfo = {
@@ -405,9 +408,10 @@ function drawGame(){
 	});
 	
 	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(shirt, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
+	ctx.drawImage(brown_pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
+	ctx.drawImage(eypatch, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(bandana, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
+	ctx.drawImage(sword, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	
 	if(move.up && world.findCharTile(0, characterInfo.speed, true)){
 		characterInfo.sy = 0;
