@@ -140,10 +140,14 @@
         
         var tile = 'Grass';
         var position = '0px 0px';
+        var selected_tile = null;
         
         $('#terrain_menu .tile').click(function(){
+            if (selected_tile) selected_tile.css('outline', '');
+            selected_tile = $(this);
         	tile = $("#terrain option:selected").text();
-        	position = $(this).css('background-position');
+        	position = selected_tile.css('background-position');
+        	selected_tile.css('outline', '3px blue inset');
         })
         
         $('#map .tile').click(function(){
