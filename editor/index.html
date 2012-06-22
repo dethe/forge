@@ -30,7 +30,7 @@
 		    width: 32px;
 		    height: 32px;
 		    display: inline-block;
-		    outline:1px solid #000;
+		    outline:1px dashed #000;
 		    margin-bottom: -4px;
 		}
 		
@@ -143,11 +143,19 @@
         var selected_tile = null;
         
         $('#terrain_menu .tile').click(function(){
-            if (selected_tile) selected_tile.css('outline', '');
+            if (selected_tile) selected_tile.css('box-shadow', '');
             selected_tile = $(this);
         	tile = $("#terrain option:selected").text();
         	position = selected_tile.css('background-position');
-        	selected_tile.css('outline', '3px blue inset');
+        	selected_tile.css('box-shadow', 'inset 0 0 10px #000000');
+        })
+        
+        var MO_tile = null;
+        
+        $('#map .tile').mouseover(function(){
+        	if (MO_tile) MO_tile.css('box-shadow', '');
+        	MO_tile = $(this);
+        	MO_tile.css('box-shadow', 'inset 0 0 10px #000000');
         })
         
         $('#map .tile').click(function(){
@@ -156,9 +164,9 @@
         })
         $('#lines').change(function(){
         	if($('#lines').attr('checked') === 'checked'){
-        		$('#map .tile').css('outline', '1px solid #000');
+        		$('#map .tile').css('outline', '1px dashed #000');
         	}else{
-        		$('#map .tile').css('outline', '0px solid #000');
+        		$('#map .tile').css('outline', '0px dashed #000');
         	}
         })
 	</script>
