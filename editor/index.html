@@ -42,6 +42,10 @@
 	        background-image: url('../public/graphics/grass.png');
         }
         
+        .loader{
+            display: none;
+        }
+        
 		.AA { background-position: 0px 0px; }
 		.BA { background-position: -32px 0px; }
 		.CA { background-position: -64px 0px; }
@@ -102,6 +106,7 @@
             </select>
             <div id="terrain_menu">
             </div>
+            <!--
             <h2>Other Landscape</h2>
             <select id="landscape">
                 <option>Wheelbarrow</option>
@@ -114,20 +119,33 @@
                 <option>Furniture</option>
                 <option>Furniture2</option>
             </select>
-            <div id="landsacape_menu">
+            <div id="landscape_menu">
             	
             </div>
+            -->
             <br>
-            <input type="checkbox" id="lines" checked="true"> lines
+            <input type="checkbox" id="lines" checked="true">
+            <label for="lines">lines</label>
+            <p class="loadandsave">
+                <input type="file" class="loader" accept="application/json"/>
+                <button class="save">Save Map</button>
+                <button class="load">Load Map</button>
+            </p>
 	    </div>
 	</div>
 	<script>
 	    var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        
+        // Resize the map to fit everything except the menu area
 	    $('#map_container').width($('#workspace').width() - $('#menu_container').width());
+
 	    var map = $('#map');
+	    // Add all the map divs
 	    for (var i = 0; i < 10000; i++){
 	        map.append('<div class="tile"></div>');
         }
+        
+        // Initialize the terrain menu
         var terrain = $('#terrain_menu');
         for (var y = 0; y < 6; y++){
             for (var x = 0; x < 3; x++){
@@ -139,21 +157,27 @@
         });
         
         var tile = 'Grass';
-        var position = '0px 0px';
+        var position = 'tile AA';
         var selected_tile = null;
         
+        // Tile picking
         $('#terrain_menu .tile').click(function(){
             if (selected_tile) selected_tile.css('outline', '');
             selected_tile = $(this);
         	tile = $("#terrain option:selected").text();
-        	position = selected_tile.css('background-position');
+        	position = selected_tile.attr('class');
         	selected_tile.css('outline', '3px blue inset');
         })
         
+        // Tile painting
         $('#map .tile').click(function(){
-        	$(this).css('background-image', 'url(../public/graphics/' + tile + '.png)');
-        	$(this).css('background-position', position)
+            var self = $(this);
+        	self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
+        	self.attr('class', position)
+        	self.data('spec', tile + ' ' + self.attr('class').split(' ')[1]);
         })
+        
+        // Toggle lines in menu
         $('#lines').change(function(){
         	if($('#lines').attr('checked') === 'checked'){
         		$('#map .tile').css('outline', '1px solid #000');
@@ -161,6 +185,46 @@
         		$('#map .tile').css('outline', '0px solid #000');
         	}
         })
+        
+        // Save and load
+        
+        $('.save').click(function(evt){
+            var mapdata = $('#map .tile').map(function(){
+                return $(this).data('spec');
+            }).get();
+            var BlobBuilder = BlobBuilder || WebKitBlobBuilder || MozBlobBuilder || MSBlobBuilder;
+            var builder = new BlobBuilder();
+            builder.append(JSON.stringify(mapdata));
+            var blob = builder.getBlob('application/json');
+            var URL = window.URL || window.webkitURL;
+            var url = URL.createObjectURL(blob);
+            $('.loadandsave').append('<a href="' + url + '" >Download Map</a>');
+        });
+        
+        $('.load').click(function(evt){
+            $('.loader').click();
+            return false;
+        });
+        
+        $('.loader').change(function(evt){
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                console.log('loaded ', evt.target.result);
+                var mapdata = JSON.parse(evt.target.result);
+                $('#map .tile').each(function(idx){
+                   var self = $(this);
+                   var spec = mapdata[idx];
+                   var sspec = spec.split(' ');
+                   var tile = sspec[0];
+                   var position = sspec[1];
+                   self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
+                    self.attr('class', 'tile ' + position);
+                    self.data('spec', spec);
+                });
+            };
+            reader.readAsText(file, 'utf8');
+        });
 	</script>
 </body>
 </html>
