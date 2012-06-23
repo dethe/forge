@@ -167,7 +167,7 @@
         	tile = $("#terrain option:selected").text();
         	position = selected_tile.attr('class');
         	selected_tile.css('box-shadow', 'inset 0 0 10px #000000');
-        })
+        });
         
         var MO_tile = null;
         
@@ -175,7 +175,7 @@
         	if (MO_tile) MO_tile.css('box-shadow', '');
         	MO_tile = $(this);
         	MO_tile.css('box-shadow', 'inset 0 0 10px #000000');
-        })
+        });
         
         // Tile painting
         $('#map .tile').click(function(){
@@ -183,7 +183,7 @@
         	self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
         	self.attr('class', position)
         	self.data('spec', tile + ' ' + self.attr('class').split(' ')[1]);
-        })
+        });
         
         // Toggle lines in menu
         $('#lines').change(function(){
@@ -192,13 +192,13 @@
         	}else{
         		$('#map .tile').css('outline', '0px dashed #000');
         	}
-        })
+        });
         
         // Save and load
         
         $('.save').click(function(evt){
             var mapdata = $('#map .tile').map(function(){
-                return $(this).data('spec');
+                return $(this).data('spec') || '';
             }).get();
             var BlobBuilder = BlobBuilder || WebKitBlobBuilder || MozBlobBuilder || MSBlobBuilder;
             var builder = new BlobBuilder();
@@ -223,6 +223,7 @@
                 $('#map .tile').each(function(idx){
                    var self = $(this);
                    var spec = mapdata[idx];
+                   if (spec == '') return;
                    var sspec = spec.split(' ');
                    var tile = sspec[0];
                    var position = sspec[1];
