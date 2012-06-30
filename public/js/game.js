@@ -83,6 +83,14 @@ function loadImages(){
 /////////////////////////////////////////
 
 //loads images
+function load_char(){
+	var character = loadImage('male_walkcycle');
+	ctx.drawImage(character, 0, 0);
+	var ImgData = ctx.getImageData(0, 0, 64, 64);
+	return ImgData
+};
+console.log(load_char());
+var character = loadImage('male_walkcycle');
 var character = loadImage('male_walkcycle');
 var black_pants = loadImage('male_pants');
 var brown_pants = loadImage('brown_pants')
