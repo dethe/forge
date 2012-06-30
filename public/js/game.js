@@ -84,12 +84,20 @@ function loadImages(){
 
 //loads images
 function load_char(){
-	var character = loadImage('male_walkcycle');
+	//var character = loadImage('male_walkcycle');
+	// Nothing happens at first becaue the canvas is hidden
+	// If you show the map, then call load_char, it lists non-zero pixels
+	console.log(character);
 	ctx.drawImage(character, 0, 0);
 	var ImgData = ctx.getImageData(0, 0, 64, 64);
-	return ImgData
+	var imgarray = Array.prototype.slice.call(ImgData.data);
+	imgarray.forEach(function(pixel){
+	    if(pixel){
+	        console.log(pixel);
+        }
+    });
+	window.imdata = ImgData;
 };
-console.log(load_char());
 var character = loadImage('male_walkcycle');
 var character = loadImage('male_walkcycle');
 var black_pants = loadImage('male_pants');
@@ -252,6 +260,8 @@ function initGame(){
 
 // show the menu
 function initMenu(){
+    // test image data
+    load_char();
     window.menu = Menu();
     // also init game, but don't start it yet
     initGame();
