@@ -87,7 +87,6 @@ function load_char(){
 	//var character = loadImage('male_walkcycle');
 	// Nothing happens at first becaue the canvas is hidden
 	// If you show the map, then call load_char, it lists non-zero pixels
-	console.log(character);
 	ctx.drawImage(character, 0, 0);
 	var ImgData = ctx.getImageData(0, 0, 64, 64);
 	var imgarray = Array.prototype.slice.call(ImgData.data);
@@ -289,8 +288,35 @@ function showMenu(){
 }
 
 function chooseMap(){
-    
-    showGame();
+    var input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'application/json');
+    input.addEventListener('change', applyMap, false);
+    var evt = document.createEvent('MouseEvents');
+    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, false, false, false, false, 0, null);
+    input.dispatchEvent(evt);
+}
+
+function applyMap(evt){
+    if (this.files.length){
+        var file = this.files[0];
+        console.log('got a file, trying to read it');
+        try{
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                var mapdata = JSON.parse(evt.target.result);
+                console.log('Have the map: ', mapdata[0].slice(0,30));
+                console.log('map is %s x %s', mapdata.length, mapdata[0].length);
+                parseWorld(mapdata);
+                console.log('world parsed');
+                showGame();
+                console.log('game shown');
+            };
+            reader.readAsText(file, 'utf8');
+        }catch(e){
+            alert('failed to parse map file');
+        }
+    }
 }
 
 
@@ -504,6 +530,12 @@ var gameKeydown = function(event) {
 				move.left = move.up= move.down = false;
 				move.right = move.right_m = true;
 			break;
+			
+			case 27: // 'esc' key
+			    showMenu();
+			    break;
+			
+			//default: console.log(event.keyCode);
 		}
 };
 
