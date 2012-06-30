@@ -279,6 +279,11 @@ function showMenu(){
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
+function chooseMap(){
+    
+    showGame();
+}
+
 
 /////////////////////////////////////////
 //
@@ -291,7 +296,8 @@ function Menu(){
     var buttonHeight = 40;
     return [
         UITitle('Welcome to the Forge game'),
-        UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight/2), buttonWidth, buttonHeight, showGame)
+        UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
+        UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight * 2), buttonWidth, buttonHeight, chooseMap)
     ];
 }
 

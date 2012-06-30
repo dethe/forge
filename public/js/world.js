@@ -1,23 +1,23 @@
 function World(){
 
 	var worldspec = [
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_NW', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_N', 'sand_NE', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', ['sand_C', 'grass_NW'], ['sand_C', 'grass_N'], ['sand_C', 'grass_NE'], 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_NW', 'sand_ISE', 'sand_C', 'sand_C', 'sand_C', ['sand_C', 'grass_W'], ['sand_C', 'grass_C'], ['sand_C', 'grass_E'], 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', ['sand_C', 'grass_SW'], ['sand_C', 'grass_S'], ['sand_C', 'grass_SE'], 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_SW', 'sand_S', 'sand_INE', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], 'sand_SW', 'sand_INE', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_C', 'sand_E', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C','water_C' , ['collision', 'water_C'], 'sand_NW', 'sand_ISE', 'sand_C', 'sand_C', 'sand_INW', 'sand_S', 'sand_S', 'sand_S', 'sand_INE', 'sand_C', 'sand_C', 'sand_INW', 'sand_SE', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_W', 'sand_C', 'sand_C', 'sand_C', 'sand_E', 'water_C', 'water_C', 'water_C', 'sand_SW', 'sand_S', 'sand_S', 'sand_SE', 'water_C', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'sand_SW', 'sand_S', 'sand_S', 'sand_S', 'sand_SE', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], ['collision', 'water_C'], 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C'],
-		['water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C', 'water_C']
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand NW', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand N', 'sand NE', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', ['sand C', 'grass NW'], ['sand C', 'grass N'], ['sand C', 'grass NE'], 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand NW', 'sand ISE', 'sand C', 'sand C', 'sand C', ['sand C', 'grass W'], ['sand C', 'grass C'], ['sand C', 'grass E'], 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', 'sand C', ['sand C', 'grass SW'], ['sand C', 'grass S'], ['sand C', 'grass SE'], 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand SW', 'sand S', 'sand INE', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], 'sand SW', 'sand INE', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand C', 'sand E', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C','water C' , ['collision', 'water C'], 'sand NW', 'sand ISE', 'sand C', 'sand C', 'sand INW', 'sand S', 'sand S', 'sand S', 'sand INE', 'sand C', 'sand C', 'sand INW', 'sand SE', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand W', 'sand C', 'sand C', 'sand C', 'sand E', 'water C', 'water C', 'water C', 'sand SW', 'sand S', 'sand S', 'sand SE', 'water C', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'sand SW', 'sand S', 'sand S', 'sand S', 'sand SE', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], ['collision', 'water C'], 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C'],
+		['water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C', 'water C']
 	];
 
 	var world = [];
@@ -40,45 +40,46 @@ function World(){
 		INW: {x: 32, y: 0},
 		INE: {x: 64, y: 0},
 		ISW: {x: 32, y: 32},
-		ISE: {x: 64, y: 32}
-		AA { x: 0, y: 0p}
-		BA { x: 32 y: 0 }
-		CA { x: 64, y: 0 }
-		AB { x: 0, y: 32 }
-		BB { x: 32, y: 32 }
-		CB { x: 64, y: 32 }
-		AC { x: 0, y: 64 }
-		BC { x: 32, y: 64 }
-		CC { x: 64, y: 64 }
-		AD { x: 0, y: 96 }
-		BD { x: 32, y: 96 }
-		CD { x: 64, y: 96 }
-		AE { x: 0, y: 128 }
-		BE { x: 32, y: 128 }
-		CE { x: 64, y: 128 }
-		AF { x: 0, y: 160 }
-		BF { x: 32, y: 160 }
-		CF { x: 64, y: 160 }
-		AG { x: 0, y: 192 }
-		BG { x: 32, y: 192 }
-		CG { x: 64, y: 192 }
-		AH { x: 0, y: 224 }
-		BH { x: 32, y: 224 }
-		CH { x: 64, y: 224 }
-		AI { x: 0, y: 256 }
-		BI { x: 32, y: 256 }
-		CI { x: 64, y: 256 }
-		AJ { x: 0, y: 288 }
-		BJ { x: 32, y: 288 }
-		CJ { x: 64, y: 288 }
-		AK { x: 0, y: 320 }
-		BK { x: 32, y: 320 }
-		CK { x: 64, y: 320 }
+		ISE: {x: 64, y: 32},
+		AA: { x: 0, y: 0},
+		BA: { x: 32, y: 0 },
+		CA: { x: 64, y: 0 },
+		AB: { x: 0, y: 32 },
+		BB: { x: 32, y: 32 },
+		CB: { x: 64, y: 32 },
+		AC: { x: 0, y: 64 },
+		BC: { x: 32, y: 64 },
+		CC: { x: 64, y: 64 },
+		AD: { x: 0, y: 96 },
+		BD: { x: 32, y: 96 },
+		CD: { x: 64, y: 96 },
+		AE: { x: 0, y: 128 },
+		BE: { x: 32, y: 128 },
+		CE: { x: 64, y: 128 },
+		AF: { x: 0, y: 160 },
+		BF: { x: 32, y: 160 },
+		CF: { x: 64, y: 160 },
+		AG: { x: 0, y: 192 },
+		BG: { x: 32, y: 192 },
+		CG: { x: 64, y: 192 },
+		AH: { x: 0, y: 224 },
+		BH: { x: 32, y: 224 },
+		CH: { x: 64, y: 224 },
+		AI: { x: 0, y: 256 },
+		BI: { x: 32, y: 256 },
+		CI: { x: 64, y: 256 },
+		AJ: { x: 0, y: 288 },
+		BJ: { x: 32, y: 288 },
+		CJ: { x: 64, y: 288 },
+		AK: { x: 0, y: 320 },
+		BK: { x: 32, y: 320 },
+		CK: { x: 64, y: 320 }
 	};
 
 	var terrain = loadImages('grass', 'dirt', 'barrels', 'sand', 'water');
 
-	function parseWorld(){
+	function parseWorld(worldspec){
+	    world = [];
 		for(var i = 0; i < worldspec.length; i++){
 			var row = [];
 			world.push(row);
@@ -123,7 +124,7 @@ function World(){
     }
 
     function Tile(spec, tx, ty){
-     var tile_offset = spec.split('_'),
+     var tile_offset = spec.split(' '),
          tile = terrain[tile_offset[0]],
          offset = offsets[tile_offset[1]];
      return {
@@ -148,7 +149,7 @@ function World(){
         }
     }
     
-    parseWorld();
+    parseWorld(worldspec);
     return {
         world: world, 
         draw: drawworld,
