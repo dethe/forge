@@ -41,6 +41,39 @@ function World(){
 		INE: {x: 64, y: 0},
 		ISW: {x: 32, y: 32},
 		ISE: {x: 64, y: 32}
+		AA { x: 0, y: 0p}
+		BA { x: 32 y: 0 }
+		CA { x: 64, y: 0 }
+		AB { x: 0, y: 32 }
+		BB { x: 32, y: 32 }
+		CB { x: 64, y: 32 }
+		AC { x: 0, y: 64 }
+		BC { x: 32, y: 64 }
+		CC { x: 64, y: 64 }
+		AD { x: 0, y: 96 }
+		BD { x: 32, y: 96 }
+		CD { x: 64, y: 96 }
+		AE { x: 0, y: 128 }
+		BE { x: 32, y: 128 }
+		CE { x: 64, y: 128 }
+		AF { x: 0, y: 160 }
+		BF { x: 32, y: 160 }
+		CF { x: 64, y: 160 }
+		AG { x: 0, y: 192 }
+		BG { x: 32, y: 192 }
+		CG { x: 64, y: 192 }
+		AH { x: 0, y: 224 }
+		BH { x: 32, y: 224 }
+		CH { x: 64, y: 224 }
+		AI { x: 0, y: 256 }
+		BI { x: 32, y: 256 }
+		CI { x: 64, y: 256 }
+		AJ { x: 0, y: 288 }
+		BJ { x: 32, y: 288 }
+		CJ { x: 64, y: 288 }
+		AK { x: 0, y: 320 }
+		BK { x: 32, y: 320 }
+		CK { x: 64, y: 320 }
 	};
 
 	var terrain = loadImages('grass', 'dirt', 'barrels', 'sand', 'water');
