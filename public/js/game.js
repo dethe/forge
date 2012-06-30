@@ -91,7 +91,6 @@ function load_char(){
 };
 console.log(load_char());
 var character = loadImage('male_walkcycle');
-var character = loadImage('male_walkcycle');
 var black_pants = loadImage('male_pants');
 var brown_pants = loadImage('brown_pants')
 var shirt = loadImage('male_shirt');
