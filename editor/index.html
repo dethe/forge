@@ -52,10 +52,15 @@
         .S { border-bottom-color: black; }
         .W { border-left-color: black; }
 		
-		#terrain_menu{
-		    width: 96px;
+		#terrain_container{
+			width: 96px;
 		    height: 160px;
 		    overflow: hidden;
+		}
+		
+		#terrain_menu{
+		    width: 608px;
+		    height: 608px;
 	    }
 	    
 	    #terrain_menu .tile{
@@ -518,9 +523,11 @@
     	            <option>Water</option>
     	            <option>WaterAndGrass</option>
                 </select>
-            <div id="terrain_menu">
-        	    
-            </div>
+            <div id="terrain_container">
+            	<div id="terrain_menu">
+        		    
+            	</div>
+            </div>	
             <!--
             <h2>Other Landscape</h2>
             <select id="landscape">
