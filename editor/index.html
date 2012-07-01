@@ -59,8 +59,8 @@
 		}
 		
 		#terrain_menu{
-		    width: 608px;
-		    height: 608px;
+		    width: 640px;
+		    height: 640px;
 	    }
 	    
 	    #terrain_menu .tile{
@@ -578,8 +578,9 @@
         	var img = new Image();
         	img.src = '../public/graphics/' + $("#terrain option:selected").text() + '.png';
         	img.onload = function() {
-  				$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
+  				
 			}
+			$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
         });
         
         var tile = 'Grass';
