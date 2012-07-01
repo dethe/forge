@@ -53,7 +53,9 @@
         .W { border-left-color: black; }
 		
 		#terrain_menu{
-		    width: 120px;
+		    width: 96px;
+		    height: 160px;
+		    overflow: hidden;
 	    }
 	    
 	    #terrain_menu .tile{
@@ -500,8 +502,7 @@
 	            <div class="collision S E W"></div>
 	            <div class="collision nocollision"></div>
             </div>
-            <div id="terrain_menu">
-        	    <h2>Terrain</h2>
+            <h2>Terrain</h2>
     	        <select id="terrain">
     	            <option>Grass</option>
     	            <option>Reeds</option>
@@ -517,6 +518,8 @@
     	            <option>Water</option>
     	            <option>WaterAndGrass</option>
                 </select>
+            <div id="terrain_menu">
+        	    
             </div>
             <!--
             <h2>Other Landscape</h2>
@@ -559,21 +562,15 @@
         
         // Initialize the terrain menu
         var terrain = $('#terrain_menu');
-        for (var y = 0; y < 6; y++){
-            for (var x = 0; x < 3; x++){
-                terrain.append('<div class="tile ' + alpha[y] + alpha[x] + '"></div>');
+        for (var y = 0; y < 20; y++){
+            for (var x = 0; x < 20; x++){
+                terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
             }
         }
         $('#terrain').change(function(){
         	var img = new Image();
         	img.src = '../public/graphics/' + $("#terrain option:selected").text() + '.png';
         	img.onload = function() {
-        		terrain.empty();
-  				for (var y = 0; y < (this.width/32); y++){
-					for (var x = 0; x < (this.height/32); x++){
-						terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
-					}
-				}
   				$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
 			}
         });
