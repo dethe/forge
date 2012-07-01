@@ -561,11 +561,21 @@
         var terrain = $('#terrain_menu');
         for (var y = 0; y < 6; y++){
             for (var x = 0; x < 3; x++){
-                terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
+                terrain.append('<div class="tile ' + alpha[y] + alpha[x] + '"></div>');
             }
         }
         $('#terrain').change(function(){
-        	$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
+        	var img = new Image();
+        	img.src = '../public/graphics/' + $("#terrain option:selected").text() + '.png';
+        	img.onload = function() {
+        		terrain.empty();
+  				for (var y = 0; y < (this.width/32); y++){
+					for (var x = 0; x < (this.height/32); x++){
+						terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
+					}
+				}
+  				$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
+			}
         });
         
         var tile = 'Grass';
