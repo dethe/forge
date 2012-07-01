@@ -14,7 +14,7 @@ for (var x = 0; x < maxX ; x++){
     for (var y = 0; y < maxY; y++){
         var dx = x ? -32 * x : 0;
         var dy = y ? -32 * y : 0;
-        css.push('.' + alpha[x] + alpha[y] + '{ background-position: ' + dx + 'px ' + dy + 'px };');
+        css.push('.' + alpha[x] + alpha[y] + '{ background-position: ' + dx + 'px ' + dy + 'px; }');
         dx = Math.abs(dx);
         dy = Math.abs(dy);
         js.push(alpha[x] + alpha[y] + ': { x: ' + dx + ', y: ' + dy + ' },');
