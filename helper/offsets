@@ -17,7 +17,7 @@ for (var x = 0; x < maxX ; x++){
         css.push('.' + alpha[x] + alpha[y] + '{ background-position: ' + dx + 'px ' + dy + 'px };');
         dx = Math.abs(dx);
         dy = Math.abs(dy);
-        js.push(alpha[x] + alpha[y] + ': { x: ' + dx + ', y: ' + dy + ' };');
+        js.push(alpha[x] + alpha[y] + ': { x: ' + dx + ', y: ' + dy + ' },');
     }
 }
 
