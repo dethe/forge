@@ -26,13 +26,31 @@
 			width:640px;
 			height:640px;
 		}
-		.tile{
+		.tile, .collision{
 		    width: 32px;
 		    height: 32px;
 		    display: inline-block;
 		    outline:1px dashed #000;
 		    margin-bottom: -4px;
 		}
+		
+		#collision_menu{
+		    width: 160px;
+		    display: none;
+	    }
+	    
+	    .collision{
+	        width: 26px;
+	        height: 26px;
+	        border-width: 3px;
+	        border-style: solid;
+            border-color: transparent;
+        }
+        
+        .N { border-top-color: black; }
+        .E { border-right-color: black; }
+        .S { border-bottom-color: black; }
+        .W { border-left-color: black; }
 		
 		#terrain_menu{
 		    width: 120px;
@@ -88,23 +106,50 @@
 	        <div id="map"></div>
 	    </div>
 	    <div id="menu_container">
-    	    <h2>Terrain</h2>
-	        <select id="terrain">
-	            <option>Grass</option>
-	            <option>Reeds</option>
-	            <option>Sand</option>
-	            <option>Wheat</option>
-	            <option>Cement</option>
-	            <option>Dirt</option>
-	            <option>Dirt2</option>
-	            <option>GrassAlt</option>
-	            <option>Hole</option>
-	            <option>Lava</option>
-	            <option>LavaRock</option>
-	            <option>Water</option>
-	            <option>WaterAndGrass</option>
-            </select>
+	        <h2>Layers</h2>
+	        <div class="layers">
+    	        <input id="collision" type="radio" name="layer" /> <label for="collision">Collision</label><br />
+    	        <input id="base" type="radio" name="layer" checked="checked" /> <label for="base">Base</label><br />
+    	        <input id="middle" type="radio" name="layer" /> <label for="middle">Middle</label><br />
+    	        <input id="top" type="radio" name="layer" /> <label for="top">Top</label><br />
+    	        <input id="creature" type="radio" name="layer" /> <label for="creature">Creature</label><br />
+    	    </div>
+	        <div id="collision_menu">
+    	        <h2>Collisions</h2>
+	            <div class="collision N E S W"></div>
+	            <div class="collision N"></div>
+	            <div class="collision E"></div>
+	            <div class="collision S"></div>
+	            <div class="collision W"></div>
+	            <div class="collision N E"></div>
+	            <div class="collision N S"></div>
+	            <div class="collision N W"></div>
+	            <div class="collision E S"></div>
+	            <div class="collision E W"></div>
+	            <div class="collision S W"></div>
+	            <div class="collision N E S"></div>
+	            <div class="collision N E W"></div>
+	            <div class="collision N S W"></div>
+	            <div class="collision S E W"></div>
+	            <div class="collision nocollision"></div>
+            </div>
             <div id="terrain_menu">
+        	    <h2>Terrain</h2>
+    	        <select id="terrain">
+    	            <option>Grass</option>
+    	            <option>Reeds</option>
+    	            <option>Sand</option>
+    	            <option>Wheat</option>
+    	            <option>Cement</option>
+    	            <option>Dirt</option>
+    	            <option>Dirt2</option>
+    	            <option>GrassAlt</option>
+    	            <option>Hole</option>
+    	            <option>Lava</option>
+    	            <option>LavaRock</option>
+    	            <option>Water</option>
+    	            <option>WaterAndGrass</option>
+                </select>
             </div>
             <!--
             <h2>Other Landscape</h2>
@@ -214,11 +259,21 @@
             return false;
         });
         
+        $('.layers').on('change', 'input', function(evt){
+            var value = $('.layers input[name=layer]:checked').attr('id');
+            if (value === 'collision'){
+                $('#collision_menu').show();
+                $('#terrain_menu').hide();
+            }else{
+                $('#collision_menu').hide();
+                $('#terrain_menu').show();
+            }
+        });
+        
         $('.loader').change(function(evt){
             var file = this.files[0];
             var reader = new FileReader();
             reader.onload = function(evt){
-                console.log('loaded ', evt.target.result);
                 var mapdata = JSON.parse(evt.target.result);
                 $('#map .tile').each(function(idx){
                    var self = $(this);
