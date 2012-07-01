@@ -109,7 +109,7 @@ var eypatch = loadImage('eyepatch');
 var characterInfo = {
 	name:'ForgePlayer',
 	speed: 3,
-	x:640,
+	x:320,
 	y:320,
 	sx:0,
 	sy:128,
@@ -297,14 +297,6 @@ function chooseMap(){
     input.dispatchEvent(evt);
 }
 
-function partition(array, size){
-    // split a long array into an arrary of arrays, where where slices are of length size
-    var partitioned = [];
-    for (var i = 0; i < size; i++){
-        partitioned.push(array.slice(i*size, i*size + size));
-    }
-    return partitioned;
-}
 
 function applyMap(evt){
     if (this.files.length){
@@ -314,9 +306,7 @@ function applyMap(evt){
             reader.onload = function(evt){
                 var mapdata = JSON.parse(evt.target.result);
                 // mapdata from the editor comes as one array, but we want an array of arrays. Fortunately, map tiles are square
-                var mapsize = Math.sqrt(mapdata.length);
-                var tiledata = partition(mapdata, mapsize);
-                parseWorld(tiledata);
+                parseWorld(mapdata);
                 showGame();
             };
             reader.readAsText(file, 'utf8');
