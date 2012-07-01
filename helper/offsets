@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+console.log('process.argv: %j', process.argv);
+
+var maxX = parseInt(process.argv[2]);
+var maxY = parseInt(process.argv[3]);
+
+var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
+var css = [];
+var js = [];
+
+for (var x = 0; x < maxX ; x++){
+    for (var y = 0; y < maxY; y++){
+        var dx = x ? -32 * x : 0;
+        var dy = y ? -32 * y : 0;
+        css.push('.' + alpha[x] + alpha[y] + '{ background-position: ' + dx + 'px ' + dy + 'px };');
+        dx = Math.abs(dx);
+        dy = Math.abs(dy);
+        js.push(alpha[x] + alpha[y] + ': { x: ' + dx + ', y: ' + dy + ' };');
+    }
+}
+
+console.log('CSS for editor/index.html:');
+css.forEach(function(line){
+    console.log('\t\t' + line);
+});
+console.log('\nJS for public/js/world.js:');
+js.forEach(function(line){
+    console.log('\t' + line);
+});
+console.log('');
+        
