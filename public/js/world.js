@@ -76,7 +76,7 @@ function World(){
 		CK: { x: 64, y: 320 }
 	};
 
-	var terrain = loadImages('grass', 'dirt', 'barrels', 'sand', 'water');
+	var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass');
 
 	function parseWorld(worldspec){
 	    world = [];
@@ -102,6 +102,7 @@ function World(){
 			}
 		}
 	};
+	window.parseWorld = parseWorld;
 
     function findCharTile(xOffset, yOffset, findCollision, xANDy){
     	var tile;
@@ -125,7 +126,7 @@ function World(){
 
     function Tile(spec, tx, ty){
      var tile_offset = spec.split(' '),
-         tile = terrain[tile_offset[0]],
+         tile = terrain[tile_offset[0].toLowerCase()],
          offset = offsets[tile_offset[1]];
      return {
          g:tile,

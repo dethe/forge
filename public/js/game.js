@@ -297,20 +297,27 @@ function chooseMap(){
     input.dispatchEvent(evt);
 }
 
+function partition(array, size){
+    // split a long array into an arrary of arrays, where where slices are of length size
+    var partitioned = [];
+    for (var i = 0; i < size; i++){
+        partitioned.push(array.slice(i*size, i*size + size));
+    }
+    return partitioned;
+}
+
 function applyMap(evt){
     if (this.files.length){
         var file = this.files[0];
-        console.log('got a file, trying to read it');
         try{
             var reader = new FileReader();
             reader.onload = function(evt){
                 var mapdata = JSON.parse(evt.target.result);
-                console.log('Have the map: ', mapdata[0].slice(0,30));
-                console.log('map is %s x %s', mapdata.length, mapdata[0].length);
-                parseWorld(mapdata);
-                console.log('world parsed');
+                // mapdata from the editor comes as one array, but we want an array of arrays. Fortunately, map tiles are square
+                var mapsize = Math.sqrt(mapdata.length);
+                var tiledata = partition(mapdata, mapsize);
+                parseWorld(tiledata);
                 showGame();
-                console.log('game shown');
             };
             reader.readAsText(file, 'utf8');
         }catch(e){
