@@ -546,7 +546,7 @@
 	    </div>
 	</div>
 	<script>
-	    var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+	    var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         
         // Resize the map to fit everything except the menu area
 	    $('#map_container').width($('#workspace').width() - $('#menu_container').width());
@@ -559,8 +559,8 @@
         
         // Initialize the terrain menu
         var terrain = $('#terrain_menu');
-        for (var y = 0; y < 6; y++){
-            for (var x = 0; x < 3; x++){
+        for (var x = 0; x < 6; x++){
+            for (var y = 0; y < 6; y++){
                 terrain.append('<div class="tile ' + alpha[x] + alpha[y] + '"></div>');
             }
         }
