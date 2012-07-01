@@ -54,7 +54,7 @@
 		
 		#terrain_container{
 			width: 96px;
-		    height: 160px;
+		    height: 192px;
 		    overflow: hidden;
 		}
 		
@@ -510,18 +510,40 @@
             <h2>Terrain</h2>
     	        <select id="terrain">
     	            <option>Grass</option>
+    	            <option>GrassAlt</option>
+    	            <option>Plowed_Soil</option>
     	            <option>Reeds</option>
     	            <option>Sand</option>
+    	            <option>SandAndWater</option>
     	            <option>Wheat</option>
     	            <option>Cement</option>
+    	            <option>Cement_Stairs</option>
     	            <option>Dirt</option>
     	            <option>Dirt2</option>
-    	            <option>GrassAlt</option>
     	            <option>Hole</option>
     	            <option>Lava</option>
     	            <option>LavaRock</option>
     	            <option>Water</option>
     	            <option>WaterAndGrass</option>
+    	            <option>Furniture</option>
+    	            <option>Furniture2</option>
+    	            <option>Kitchen</option>
+    	            <option>Misc</option>
+    	            <option>Rocks</option>
+    	            <option>Barrels</option>
+    	            <option>Buckets</option>
+    	            <option>Fence</option>
+    	            <option>Fence_Alt</option>
+    	            <option>Farming_Fishing</option>
+    	            <option>Chests</option>
+    	            <option>Bridges</option>
+    	            <option>Cabinets</option>
+    	            <option>Tileset01</option>
+    	            <option>House_Tiles_Interior</option>
+    	            <option>House_Stairs_Interior</option>
+    	            <option>House_Tiles_Exterior</option>
+    	            <option>Dungeon</option>
+    	            <option>Blackish_Water</option>
                 </select>
             <div id="terrain_container">
             	<div id="terrain_menu">
@@ -576,9 +598,13 @@
         }
         $('#terrain').change(function(){
         	var img = new Image();
+        	var width = this.width;
         	img.src = '../public/graphics/' + $("#terrain option:selected").text() + '.png';
         	img.onload = function() {
-  				
+        		var width = this.width;
+        		var height = this.height;
+  				$('#terrain_container').width(width);
+  				$('#terrain_container').height(height);
 			}
 			$('#terrain_menu .tile').css('background-image', 'url(../public/graphics/' + $("#terrain option:selected").text() + '.png)');
         });
