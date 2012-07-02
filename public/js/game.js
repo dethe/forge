@@ -300,6 +300,9 @@ function showMenu(){
     document.onmousedown = function(){
     	click = true;
     }
+    document.onmouseup = function(){
+    	click = false;
+    }
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
