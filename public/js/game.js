@@ -19,7 +19,7 @@ var click = false;
 
 document.onmousemove = function(evt){
 	mouseX = evt.clientX;
-	mouseY = evt.ClientY
+	mouseY = evt.clientY
 }
 
 function resize(){
@@ -279,12 +279,14 @@ function initMenu(){
 
 function showGame(){
     // turn off menu loop and event handlers
+    console.log('showGame');
     document.onclick = null;
     if (menuLoop) cancelAnimationFrame(menuLoop);
     // turn on game loop and event handlers
     document.onkeydown = gameKeydown;
     document.onkeyup = gameKeyup;
 	gameLoop = requestAnimationFrame(drawGame);
+	return false;
 }
 
 function showMenu(){
@@ -302,6 +304,7 @@ function showMenu(){
 }
 
 function chooseMap(){
+    console.log('chooseMap');
     var input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'application/json');
@@ -309,6 +312,7 @@ function chooseMap(){
     var evt = document.createEvent('MouseEvents');
     evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, false, false, false, false, 0, null);
     input.dispatchEvent(evt);
+    return false;
 }
 
 
@@ -367,10 +371,7 @@ UIElement.prototype.containsPoint = function(x,y){
 
 function UIButton(text, x, y, w, h, trigger){
     function draw(ctx){
-    	var pt = false;
-    	if(this.containsPoint(mouseX, mouseY) === true){
-    		pt = true;
-    	}
+    	var pt = this.containsPoint(mouseX, mouseY);
         ctx.fillStyle = 'blue';
         roundRect(ctx, x, y, w, h, pt);
         ctx.fillStyle = 'black';
@@ -399,9 +400,9 @@ function drawMenu(time){
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
-function menuClick(){
+function menuClick(evt){
     for (var i = 0; i < menu.length; i++){
-        if (menu[i].containsPoint(mouseX, mouseY)){
+        if (menu[i].containsPoint(evt.clientX, evt.clientY)){
             menu[i].trigger();
         }
     }
