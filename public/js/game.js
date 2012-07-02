@@ -348,7 +348,7 @@ function Menu(){
     var buttonWidth = 288;
     var buttonHeight = 50;
     return [
-        UITitle('Welcome to the Forge game'),
+        UITitle('FORGE'),
         UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
         UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight * 2), buttonWidth, buttonHeight, chooseMap)
     ];
@@ -387,16 +387,18 @@ function UIButton(text, x, y, w, h, trigger){
 
 function UITitle(text){
     function draw(ctx){
-        ctx.fillStyle = 'black';
-        ctx.font = '40pt Helvetica';
+        ctx.fillStyle = '#900';
+        ctx.font = '140pt "8-bit Limit BRK"';
         ctx.textAlign = 'center'
-        ctx.fillText(text, WIDTH/2, 80);
+        ctx.fillText(text, WIDTH/2, 270);
     }
     return new UIElement(text, 0, 0, WIDTH, 80, draw);
 }
 
 function drawMenu(time){
     resize();
+    ctx.fillStyle = '#300';
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
     for (var i = 0; i < menu.length; i++){
         menu[i].draw(ctx);
     }
