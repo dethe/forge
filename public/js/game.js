@@ -350,7 +350,10 @@ function Menu(){
     return [
         UITitle('FORGE'),
         UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
-        UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight * 2), buttonWidth, buttonHeight, chooseMap)
+        UIButton('Multiplayer', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - buttonHeight, buttonWidth, buttonHeight, showGame),
+        UIButton('Settings', WIDTH/2 - (buttonWidth/2), HEIGHT/2, buttonWidth, buttonHeight),
+        UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + buttonHeight, buttonWidth, buttonHeight, chooseMap),
+        UIButton('Help', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight *2), buttonWidth, buttonHeight)
     ];
 }
 
@@ -397,7 +400,10 @@ function UITitle(text){
 
 function drawMenu(time){
     resize();
-    ctx.fillStyle = '#300';
+    var grd = ctx.createRadialGradient(WIDTH/2,105,300,WIDTH/2,420,800);
+    grd.addColorStop(0, "#500");
+    grd.addColorStop(1, "#100");
+    ctx.fillStyle = grd;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
     for (var i = 0; i < menu.length; i++){
         menu[i].draw(ctx);
@@ -440,7 +446,7 @@ function roundRect(ctx, x, y, width, height, pt) {
 		ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+(i*32+32), y, height, height);
 	}
 	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
-	ctx.drawImage(UI.button_default, 103, sy, 32, 28, x+(width-32), y, height, height);
+	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-32), y, height, height);
 }
 
 /////////////////////////////////////////
