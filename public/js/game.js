@@ -15,6 +15,7 @@ canvas.width = WIDTH;
 canvas.height = HEIGHT;
 var mouseX;
 var mouseY;
+var click = false;
 
 document.onmousemove = function(evt){
 	mouseX = evt.clientX;
@@ -294,6 +295,9 @@ function showMenu(){
     if (gameLoop) cancelAnimationFrame(gameLoop);
     // turn on menu loop and event handlers
     document.onclick = menuClick;
+    document.onmousedown = function(){
+    	click = true;
+    }
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
@@ -334,8 +338,8 @@ function applyMap(evt){
 /////////////////////////////////////////
 
 function Menu(){
-    var buttonWidth = 120;
-    var buttonHeight = 40;
+    var buttonWidth = 288;
+    var buttonHeight = 50;
     return [
         UITitle('Welcome to the Forge game'),
         UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
@@ -369,10 +373,10 @@ function UIButton(text, x, y, w, h, trigger){
     	}
         ctx.fillStyle = 'blue';
         roundRect(ctx, x, y, w, h, pt);
-        ctx.fillStyle = 'white';
-        ctx.font = '20pt Helvetica';
+        ctx.fillStyle = 'black';
+        ctx.font = '20pt "8-bit Limit BRK"';
         ctx.textAlign = 'center';
-        ctx.fillText(text, x + w/2, y + 30, w - 20);
+        ctx.fillText(text, x + w/2, y + 35, w - 20);
     }
     return new UIElement(text, x, y, w, h, draw, trigger);
 }
@@ -421,25 +425,16 @@ function menuClick(){
  */
 function roundRect(ctx, x, y, width, height, pt) {
 	var sy = 0;
-	if(pt === true){
+	if(pt && click){
+		sy = 28;
+	}else if(pt){
 		sy = 56;
 	}
-	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height)
-	/**
-	ctx.beginPath();
-	ctx.moveTo(x, y);
-	ctx.lineTo(x + width, y);
-	ctx.quadraticCurveTo(x + width, y, x + width, y);
-	ctx.lineTo(x + width, y + height);
-	ctx.quadraticCurveTo(x + width, y + height, x + width, y + height);
-	ctx.lineTo(x, y + height);
-	ctx.quadraticCurveTo(x, y + height, x, y + height);
-	ctx.lineTo(x, y);
-	ctx.quadraticCurveTo(x, y, x, y);
-	ctx.closePath();
-	ctx.stroke();
-	ctx.fill();
-	*/
+	for(i = 0; i < Math.round(width/32-2); i++){
+		ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+(i*32+32), y, height, height);
+	}
+	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
+	ctx.drawImage(UI.button_default, 103, sy, 32, 28, x+(width-32), y, height, height);
 }
 
 /////////////////////////////////////////
