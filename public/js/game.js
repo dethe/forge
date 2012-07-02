@@ -13,6 +13,13 @@ var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
+var mouseX;
+var mouseY;
+
+document.onmousemove = function(evt){
+	mouseX = evt.clientX;
+	mouseY = evt.ClientY
+}
 
 function resize(){
     // put this in loops because Chrome doesn't reliably support resize events
@@ -97,6 +104,7 @@ function load_char(){
     });
 	window.imdata = ImgData;
 };
+
 var character = loadImage('male_walkcycle');
 var black_pants = loadImage('male_pants');
 var brown_pants = loadImage('brown_pants')
@@ -104,6 +112,8 @@ var shirt = loadImage('male_shirt');
 var bandana = loadImage('red_bandana');
 var sword = loadImage('sword');
 var eypatch = loadImage('eyepatch');
+var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass');
+var UI = loadImages('button_default')
 
 //all the character stats will go here
 var characterInfo = {
@@ -353,8 +363,12 @@ UIElement.prototype.containsPoint = function(x,y){
 
 function UIButton(text, x, y, w, h, trigger){
     function draw(ctx){
+    	var pt = false;
+    	if(this.containsPoint(mouseX, mouseY) === true){
+    		pt = true;
+    	}
         ctx.fillStyle = 'blue';
-        roundRect(ctx, x, y, w, h, 10, true, true);
+        roundRect(ctx, x, y, w, h, pt);
         ctx.fillStyle = 'white';
         ctx.font = '20pt Helvetica';
         ctx.textAlign = 'center';
@@ -381,9 +395,9 @@ function drawMenu(time){
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
-function menuClick(evt){
+function menuClick(){
     for (var i = 0; i < menu.length; i++){
-        if (menu[i].containsPoint(evt.clientX, evt.clientY)){
+        if (menu[i].containsPoint(mouseX, mouseY)){
             menu[i].trigger();
         }
     }
@@ -405,30 +419,27 @@ function menuClick(evt){
  SOURCE: http://stackoverflow.com/questions/1255512/how-to-draw-a-rounded-rectangle-on-html-canvas
  
  */
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-  if (typeof stroke == "undefined" ) {
-    stroke = true;
-  }
-  if (typeof radius === "undefined") {
-    radius = 5;
-  }
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  ctx.lineTo(x + radius, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-  ctx.closePath();
-  if (stroke) {
-    ctx.stroke();
-  }
-  if (fill){
-      ctx.fill();
-  }
+function roundRect(ctx, x, y, width, height, pt) {
+	var sy = 0;
+	if(pt === true){
+		sy = 56;
+	}
+	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height)
+	/**
+	ctx.beginPath();
+	ctx.moveTo(x, y);
+	ctx.lineTo(x + width, y);
+	ctx.quadraticCurveTo(x + width, y, x + width, y);
+	ctx.lineTo(x + width, y + height);
+	ctx.quadraticCurveTo(x + width, y + height, x + width, y + height);
+	ctx.lineTo(x, y + height);
+	ctx.quadraticCurveTo(x, y + height, x, y + height);
+	ctx.lineTo(x, y);
+	ctx.quadraticCurveTo(x, y, x, y);
+	ctx.closePath();
+	ctx.stroke();
+	ctx.fill();
+	*/
 }
 
 /////////////////////////////////////////
