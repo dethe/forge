@@ -477,22 +477,24 @@ function drawGame(){
 	ctx.drawImage(bandana, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	ctx.drawImage(sword, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
 	
+	world.drawtop()
+	
 	if(move.up && world.findCharTile(0, characterInfo.speed, true)){
 		characterInfo.sy = 0;
 		characterInfo.y -= characterInfo.speed;
 	}else if(move.up){
 		characterInfo.sy = 0;
-	}else if(move.left && world.findCharTile(characterInfo.speed + 5, 0, true)){
+	}else if(move.left && world.findCharTile(characterInfo.speed, 0, true)){
 		characterInfo.sy = 64;
 		characterInfo.x -= characterInfo.speed;
 	}else if(move.left){
 		characterInfo.sy = 64;
-	}else if(move.down && world.findCharTile(0, -characterInfo.speed - 64, true)){
+	}else if(move.down && world.findCharTile(0, -characterInfo.speed, true)){
 		characterInfo.sy = 128;
 		characterInfo.y += characterInfo.speed;
 	}else if(move.down){
 		characterInfo.sy = 128;
-	}else if(move.right && world.findCharTile(-characterInfo.speed - 40, 0, true)){
+	}else if(move.right && world.findCharTile(-characterInfo.speed, 0, true)){
 		characterInfo.sy = 192;
 		characterInfo.x += characterInfo.speed;
 	}else if(move.right){
