@@ -463,6 +463,7 @@ function World(){
          tile = terrain[tile_offset[0].toLowerCase()],
          offset = offsets[tile_offset[1]];
      return {
+         spec: spec,
          g:tile,
          sx:offset.x,
          sy:offset.y,
@@ -489,7 +490,7 @@ function World(){
             for(var e = 0; e < world[i].length; e++){
                 for (var t = 0; t < world[i][e].length; t++){
                     var tile = world[i][e][t];
-                    if(tile === 'Farming_Fishing AA'){
+                    if(tile.spec === 'Farming_Fishing AA'){
                     	top.push([i, e, t])
                     }else{
                     	ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - characterInfo.x, tile.y + HEIGHT/2 - characterInfo.y, 32, 32);
