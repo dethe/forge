@@ -113,7 +113,7 @@ var shirt = loadImage('male_shirt');
 var bandana = loadImage('red_bandana');
 var sword = loadImage('sword');
 var eypatch = loadImage('eyepatch');
-var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass');
+var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing');
 var UI = loadImages('button_default')
 
 //all the character stats will go here
