@@ -409,8 +409,6 @@ function World(){
     	TT: { x: 608, y: 608 }
 	};
 
-	var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass');
-
 	function parseWorld(wspec){
 	    world = [];
 	    var worldspec = partition(wspec);

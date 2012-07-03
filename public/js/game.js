@@ -13,8 +13,8 @@ var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
-var mouseX;
-var mouseY;
+var mouseX = 0;
+var mouseY = 0;
 var click = false;
 
 document.onmousemove = function(evt){
