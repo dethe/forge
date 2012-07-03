@@ -381,7 +381,7 @@ function UIButton(text, x, y, w, h, trigger){
         ctx.fillStyle = 'blue';
         roundRect(ctx, x, y, w, h, pt);
         ctx.fillStyle = 'black';
-        ctx.font = '20pt "8-bit Limit BRK"';
+        ctx.font = '14pt "Press Start 2P"';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w/2, y + 35, w - 20);
     }
@@ -391,7 +391,7 @@ function UIButton(text, x, y, w, h, trigger){
 function UITitle(text){
     function draw(ctx){
         ctx.fillStyle = '#900';
-        ctx.font = '140pt "8-bit Limit BRK"';
+        ctx.font = '100pt "Press Start 2P"';
         ctx.textAlign = 'center'
         ctx.fillText(text, WIDTH/2, 270);
     }
