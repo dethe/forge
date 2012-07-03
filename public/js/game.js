@@ -91,42 +91,41 @@ function loadImages(){
 /////////////////////////////////////////
 
 //loads images
-function load_char(){
-	//var character = loadImage('male_walkcycle');
-	// Nothing happens at first becaue the canvas is hidden
-	// If you show the map, then call load_char, it lists non-zero pixels
-	ctx.drawImage(character, 0, 0);
-	var ImgData = ctx.getImageData(0, 0, 64, 64);
-	var imgarray = Array.prototype.slice.call(ImgData.data);
-	imgarray.forEach(function(pixel){
-	    if(pixel){
-	        console.log(pixel);
-        }
-    });
-	window.imdata = ImgData;
-};
 
-var character = loadImage('male_walkcycle');
-var black_pants = loadImage('male_pants');
-var brown_pants = loadImage('brown_pants')
-var shirt = loadImage('male_shirt');
-var bandana = loadImage('red_bandana');
-var sword = loadImage('sword');
-var eypatch = loadImage('eyepatch');
 var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing');
 var UI = loadImages('button_default')
 
-//all the character stats will go here
-var characterInfo = {
-	name:'ForgePlayer',
-	speed: 3,
-	x:320,
-	y:320,
-	sx:0,
-	sy:128,
-	w:64,
-	h:64
+function Character(){
+    // Attributes
+    this.name = 'ForgePlayer';
+    this.speed = 3;
+    
+    // Mapping info and state
+    this.position = {x: 320, y: 320};
+    this.size = {w: 64, h: 64};
+    this.spriteOffset = {x: 0, y: 128};
+    
+    // Load sprites
+    this.walkcycle = loadImage('male_walkcycle');
+    //this.black_pants = loadImage('male_pants');
+    this.brown_pants = loadImage('brown_pants')
+    this.shirt = loadImage('male_shirt');
+    this.bandana = loadImage('red_bandana');
+    this.sword = loadImage('sword');
+    this.eyepatch = loadImage('eyepatch');
+    
+}
+
+Character.prototype.draw = function(ctx){
+	ctx.drawImage(this.walkcycle, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.brown_pants, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.eyepatch, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, character.size.h);
+	ctx.drawImage(this.bandana, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.sword, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
 };
+
+var character = new Character();
+
 
 //lists what direction we're moving ( _m is to remember previous keys still pressed )
 var move = {
@@ -150,8 +149,8 @@ var move = {
 
 function Monster(sprite, x, y, direction){
 	this.d = 1;
-	this.x = x + characterInfo.x;
-	this.y = y + characterInfo.y;
+	this.x = x + character.position.x;
+	this.y = y + character.position.y;
 	this.sprite = new Image();
 	this.sprite.src = 'public/graphics/' + sprite + '.png';
 	this.animate_idx = 0;
@@ -202,8 +201,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = WIDTH/2 - (this.x - characterInfo.x);
-		var distanceY = HEIGHT/2 - (this.y - characterInfo.y);
+		var distanceX = WIDTH/2 - (this.x - character.position.x);
+		var distanceY = HEIGHT/2 - (this.y - character.position.y);
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -227,7 +226,7 @@ Monster.prototype.useAI = function(){
 }
 Monster.prototype.draw = function(ctx){
 	// drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
-	ctx.drawImage(this.sprite, this.animate_idx * 32, this.direction * 32, 32, 32, this.x - characterInfo.x, this.y - characterInfo.y, 32, 32);
+	ctx.drawImage(this.sprite, this.animate_idx * 32, this.direction * 32, 32, 32, this.x - character.position.x, this.y - character.position.y, 32, 32);
 };
 
 var monsterInfo = {
@@ -269,8 +268,6 @@ function initGame(){
 
 // show the menu
 function initMenu(){
-    // test image data
-    load_char();
     window.menu = Menu();
     // also init game, but don't start it yet
     initGame();
@@ -470,47 +467,44 @@ function drawGame(){
 		monster.useAI();
 		monster.draw(ctx);
 	});
+
+	character.draw(ctx);
+	world.drawtop();
 	
-	ctx.drawImage(character, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(brown_pants, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(eypatch, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(bandana, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	ctx.drawImage(sword, characterInfo.sx, characterInfo.sy, characterInfo.w, characterInfo.h, WIDTH/2, HEIGHT/2, characterInfo.w, characterInfo.h);
-	
-	world.drawtop()
-	
-	if(move.up && world.findCharTile(0, characterInfo.speed, true)){
-		characterInfo.sy = 0;
-		characterInfo.y -= characterInfo.speed;
-	}else if(move.up){
-		characterInfo.sy = 0;
-	}else if(move.left && world.findCharTile(characterInfo.speed, 0, true)){
-		characterInfo.sy = 64;
-		characterInfo.x -= characterInfo.speed;
+	// Move collision detection into the Character object
+	if(move.up){
+	    character.spriteOffset.y = 0; // face sprite up
+	    if (!world.findCollision(0, character.speed)){
+    		character.position.y -= character.speed;
+	    }
 	}else if(move.left){
-		characterInfo.sy = 64;
-	}else if(move.down && world.findCharTile(0, -characterInfo.speed, true)){
-		characterInfo.sy = 128;
-		characterInfo.y += characterInfo.speed;
+	    character.spriteOffset.y = 64; // face sprite left
+	    if (!world.findCollision(character.speed + 5, 0)){
+		    character.position.x -= character.speed;
+		}
 	}else if(move.down){
-		characterInfo.sy = 128;
-	}else if(move.right && world.findCharTile(-characterInfo.speed, 0, true)){
-		characterInfo.sy = 192;
-		characterInfo.x += characterInfo.speed;
+	    character.spriteOffset.y = 128; // face sprite down
+	    if (!world.findCollision(0, -character.speed - 64)){
+		    character.position.y += character.speed;
+		}
 	}else if(move.right){
-		characterInfo.sy = 192;
+		character.spriteOffset.y = 192;
+	    if(!world.findCollision(-character.speed - 40, 0)){
+    		character.position.x += character.speed;
+    	}
 	}
 	
+	// Move this animation state into the Character object
 	if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right)){
-		characterInfo.sx += 64;
+		character.spriteOffset.x += 64;
 	}
 	
-	if (characterInfo.sx === 576){
-		characterInfo.sx = 64;
+	if (character.spriteOffset.x === 576){
+		character.spriteOffset.x = 64;
 	}
 	
-	if(move.up=== false && move.left === false && move.down === false && move.right === false){
-		characterInfo.sx = 0;
+	if(! (move.up || move.left || move.down || move.right )){
+		character.spriteOffset.x = 0;
 	}
 	gameLoop = requestAnimationFrame(drawGame);
 }

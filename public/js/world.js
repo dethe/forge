@@ -426,36 +426,47 @@ function World(){
 				if (isArray(spec)){
 					spec.forEach(function(subspec){
 						if(subspec !== 'collision'){
-							location.push(Tile(subspec,e,i));
+							location.push(new Tile(subspec,e,i));
 						}else{
 						    location.collision = true;
 					    }
 					});
 				}else{
-					location.push(Tile(spec,e,i));
+					location.push(new Tile(spec,e,i));
 				}
 			}
 		}
 	};
 	window.parseWorld = parseWorld;
+	
+	function findCollision(xOffset, yOffset){
+		var tilesX = Math.round((character.position.x - xOffset) / 32);
+	    var tilesY = Math.round((character.position.y - yOffset) / 32);
+		var location = world[tilesY][tilesX];
+		if (location.collision) location[0].debug();
+		return location.collision;
+    }
 
+    // We don't actually use this function for anything
+    // We were only using it to find collisions, which we can
+    // do more simply with findCollision()
     function findCharTile(xOffset, yOffset, findCollision, xANDy){
     	var tile;
-    	var cx = characterInfo.x;
-    	var cy = characterInfo.y;
+    	var cx = character.position.x;
+    	var cy = character.position.y;
     	var tilesX, tilesY;
     	if(!!xANDy){
     		cx = xANDy.x;
     		cy = xANDy.y;
-    		tilesY = Math.round((cy - yOffset - characterInfo.y) / 32);
-    		tilesX = Math.round((cx - xOffset - characterInfo.x) / 32);
+    		tilesY = Math.round((cy - yOffset - character.position.y) / 32);
+    		tilesX = Math.round((cx - xOffset - character.position.x) / 32);
     		tile = world[tilesY][tilesX];
     	}else{
     		tilesY = Math.round((cy - yOffset) / 32);
     		tilesX = Math.round((cx - xOffset) / 32);
     		tile = world[tilesY][tilesX];
     	}
-    	if (findCollision) return !tile.collision;
+    	if (findCollision) return tile.collision;
     	return tile;
     }
 
@@ -463,17 +474,25 @@ function World(){
      var tile_offset = spec.split(' '),
          tile = terrain[tile_offset[0].toLowerCase()],
          offset = offsets[tile_offset[1]];
-     return {
-         spec: spec,
-         g:tile,
-         sx:offset.x,
-         sy:offset.y,
-         w:32,
-         h:32,
-         x: (tx - worldorigin[0]) * 32,
-         y: (ty - worldorigin[1]) * 32
-     };
+         this.spec = spec;
+         this.g = tile;
+         this.sx = offset.x;
+         this.sy = offset.y;
+         this.w = 32;
+         this.h = 32;
+         this.x =  (tx - worldorigin[0]) * 32;
+         this.y = (ty - worldorigin[1]) * 32;
     }
+    
+    Tile.prototype.draw = function(ctx){
+        ctx.drawImage(this.g, this.sx, this.sy, this.w, this.h, this.x + WIDTH/2 - character.position.x, this.y + HEIGHT/2 - character.position.y, this.w, this.h);
+    	
+    };
+    
+    Tile.prototype.debug = function(){
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(this.x + WIDTH/2 - character.position.x, this.y + HEIGHT/2 - character.position.y, this.w, this.h);
+    };
 
     function partition(array){
         // split a long array into an arrary of arrays, where where slices are of length size
@@ -491,10 +510,10 @@ function World(){
             for(var e = 0; e < world[i].length; e++){
                 for (var t = 0; t < world[i][e].length; t++){
                     var tile = world[i][e][t];
-                    if(tile.spec === 'Farming_Fishing AA' && tile.y > (characterInfo.y + 16)){
+                    if(tile.spec === 'Farming_Fishing AA' && tile.y > (character.position.y + 16)){
                     	top.push([i, e, t])
                     }else{
-                    	ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - characterInfo.x, tile.y + HEIGHT/2 - characterInfo.y, 32, 32);
+                        tile.draw(ctx);
                     }
                 }
             }
@@ -504,7 +523,7 @@ function World(){
     function drawworldtop(){
     	for(var z = 0; z < top.length; z++){
     		var tile = world[top[z][0]][top[z][1]][top[z][2]];
-    		ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - characterInfo.x, tile.y + HEIGHT/2 - characterInfo.y, 32, 32);
+    		ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - character.position.x, tile.y + HEIGHT/2 - character.position.y, 32, 32);
     	}
     }
     
@@ -513,6 +532,7 @@ function World(){
         world: world, 
         draw: drawworld,
         drawtop: drawworldtop,
-        findCharTile: findCharTile
+        findCharTile: findCharTile,
+        findCollision: findCollision
     };
 }
