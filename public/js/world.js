@@ -440,17 +440,21 @@ function World(){
 	window.parseWorld = parseWorld;
 	
 	function findCollision(xOffset, yOffset){
-		var tilesX = Math.round((character.position.x - xOffset) / 32);
-	    var tilesY = Math.round((character.position.y - yOffset) / 32);
+		var tilesX = Math.round((character.position.x + xOffset) / 32);
+	    var tilesY = Math.round((character.position.y + yOffset) / 32);
 		var location = world[tilesY][tilesX];
 		if (location.collision) location[0].debug();
+		if(frame%30 === 0){
+			console.log(location);
+		}
 		return location.collision;
     }
 
     // We don't actually use this function for anything
     // We were only using it to find collisions, which we can
     // do more simply with findCollision()
-    function findCharTile(xOffset, yOffset, findCollision, xANDy){
+    //WE NEED THIS FOR FINDING THE TILE A CHARACTER OR MONSTER IS ON AND FOR CHECKING MONSTERS COLLIDING WITH STUFF
+        function findCharTile(xOffset, yOffset, findCollision, xANDy){
     	var tile;
     	var cx = character.position.x;
     	var cy = character.position.y;

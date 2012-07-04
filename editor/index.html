@@ -24,15 +24,28 @@
             height: 100%;
         }
 		#map{
+			position:absolute;
 			width:640px;
 			height:640px;
 		}
+		#map2{
+			position:absolute;
+			width:640px;
+			height:640px;
+		}
+		#map3{
+			position:absolute;
+			width:640px;
+			height:640px;
+		}
+		
 		.tile, .collision{
 		    width: 32px;
 		    height: 32px;
 		    display: inline-block;
 		    outline:1px dashed #000;
 		    margin-bottom: -4px;
+		    background-color:rgba(0, 0, 0, 0);
 		}
 		
 		#collision_menu{
@@ -479,15 +492,15 @@
     <div id="workspace">
         <div id="map_container">
 	        <div id="map"></div>
+	        <div id="map2"></div>
+	        <div id="map3"></div>
 	    </div>
 	    <div id="menu_container">
 	        <h2>Layers</h2>
 	        <div class="layers">
-    	        <input id="collision" type="radio" name="layer" /> <label for="collision">Collision</label><br />
-    	        <input id="base" type="radio" name="layer" checked="checked" /> <label for="base">Base</label><br />
-    	        <input id="middle" type="radio" name="layer" /> <label for="middle">Middle</label><br />
-    	        <input id="top" type="radio" name="layer" /> <label for="top">Top</label><br />
-    	        <input id="creature" type="radio" name="layer" /> <label for="creature">Creature</label><br />
+    	        <input id="Layer1" type="radio" name="layer" /> <label for="base">Layer1</label><br />
+    	        <input id="Layer2" type="radio" name="layer" checked=checked" /> <label for="middle">Layer2</label><br />
+    	        <input id="Layer3" type="radio" name="layer" /> <label for="top">Layer3</label><br />
     	    </div>
 	        <div id="collision_menu">
     	        <h2>Collisions</h2>
@@ -590,10 +603,16 @@
         // Resize the map to fit everything except the menu area
 	    $('#map_container').width($('#workspace').width() - $('#menu_container').width());
 
-	    var map = $('#map');
+	    var map = 'map2';
 	    // Add all the map divs
 	    for (var i = 0; i < 400; i++){
-	        map.append('<div class="tile"></div>');
+	        $('#map').append('<div class="tile"></div>');
+        }
+	    for (var i = 0; i < 400; i++){
+	        $('#map2').append('<div class="tile"></div>');
+        }
+	    for (var i = 0; i < 400; i++){
+	        $('#map3').append('<div class="tile"></div>');
         }
         
         // Initialize the terrain menu
@@ -631,33 +650,39 @@
         
         var MO_tile = null;
         
-        $('#map .tile').mouseover(function(){
-        	if (MO_tile) MO_tile.css('box-shadow', '');
-        	MO_tile = $(this);
-        	MO_tile.css('box-shadow', 'inset 0 0 10px #000000');
-        });
+        function map_init(){
+        	$('#' + map + ' .tile').mouseover(function(){
+        		console.log('hi')
+        		if (MO_tile) MO_tile.css('box-shadow', '');
+        		MO_tile = $(this);
+        		MO_tile.css('box-shadow', 'inset 0 0 10px #000000');
+        	});
         
-        // Tile painting
-        $('#map .tile').click(function(){
-            var self = $(this);
-        	self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
-        	self.attr('class', position)
-        	self.data('spec', tile + ' ' + self.attr('class').split(' ')[1]);
-        });
+        	// Tile painting
+        	$('#' + map + ' .tile').click(function(){
+            	var self = $(this);
+            	console.log(self.parent())
+        		self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
+        		self.attr('class', position)
+        		self.data('spec', tile + ' ' + self.attr('class').split(' ')[1]);
+        	});
+        	
+        	// Toggle lines in menu
+        	$('#lines').change(function(){
+        		if($('#lines').attr('checked') === 'checked'){
+        			$('.tile').css('outline', '1px dashed #000');
+        		}else{
+        			$('.tile').css('outline', '0px dashed #000');
+        		}
+        	});
+        }
         
-        // Toggle lines in menu
-        $('#lines').change(function(){
-        	if($('#lines').attr('checked') === 'checked'){
-        		$('#map .tile').css('outline', '1px dashed #000');
-        	}else{
-        		$('#map .tile').css('outline', '0px dashed #000');
-        	}
-        });
+        
         
         // Save and load
         
         $('.save').click(function(evt){
-            var mapdata = $('#map .tile').map(function(){
+            var mapdata = $('#' + map + ' .tile').map(function(){
                 return $(this).data('spec') || '';
             }).get();
             var BlobBuilder = BlobBuilder || WebKitBlobBuilder || MozBlobBuilder || MSBlobBuilder;
@@ -690,7 +715,7 @@
             var reader = new FileReader();
             reader.onload = function(evt){
                 var mapdata = JSON.parse(evt.target.result);
-                $('#map .tile').each(function(idx){
+                $('#' + map + ' .tile').each(function(idx){
                    var self = $(this);
                    var spec = mapdata[idx];
                    if (spec == '') return;
@@ -704,6 +729,31 @@
             };
             reader.readAsText(file, 'utf8');
         });
+		
+		$('input[name=layer]').click(function(){
+			if(this.checked){
+				if(this.id === 'Layer1'){
+					map = 'map';
+					map_init();
+					$('#map').show();
+					$('#map2').hide();
+					$('#map3').hide();					
+				}else if(this.id === 'Layer2'){
+					map = 'map2';
+					map_init();
+					$('#map').show();
+					$('#map2').show();
+					$('#map3').hide();
+				}else if(this.id === 'Layer3'){
+					map = 'map3';
+					map_init();
+					$('#map').show();
+					$('#map2').show();
+					$('#map3').show();
+				}
+			}
+		})
+		map_init();
 	</script>
 </body>
 </html>

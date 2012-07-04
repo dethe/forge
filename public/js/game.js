@@ -472,24 +472,25 @@ function drawGame(){
 	world.drawtop();
 	
 	// Move collision detection into the Character object
+	//DO NOT CHANGE OFFSETS OR ELSE COLLISIONS WILL BE MESSED UP
 	if(move.up){
 	    character.spriteOffset.y = 0; // face sprite up
-	    if (!world.findCollision(0, character.speed)){
+	    if (!world.findCollision(10, -character.speed +32)){
     		character.position.y -= character.speed;
 	    }
 	}else if(move.left){
 	    character.spriteOffset.y = 64; // face sprite left
-	    if (!world.findCollision(character.speed + 5, 0)){
+	    if (!world.findCollision(-character.speed +10, 44)){
 		    character.position.x -= character.speed;
 		}
 	}else if(move.down){
 	    character.spriteOffset.y = 128; // face sprite down
-	    if (!world.findCollision(0, -character.speed - 64)){
+	    if (!world.findCollision(10, character.speed +45)){
 		    character.position.y += character.speed;
 		}
 	}else if(move.right){
 		character.spriteOffset.y = 192;
-	    if(!world.findCollision(-character.speed - 40, 0)){
+	    if(!world.findCollision(character.speed +20, 44)){
     		character.position.x += character.speed;
     	}
 	}
