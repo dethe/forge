@@ -16,6 +16,8 @@ canvas.height = HEIGHT;
 var mouseX = 0;
 var mouseY = 0;
 var click = false;
+var keydown = false;
+var keycode = 0;
 
 document.onmousemove = function(evt){
 	mouseX = evt.clientX;
@@ -93,7 +95,7 @@ function loadImages(){
 //loads images
 
 var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing');
-var UI = loadImages('button_default')
+var UI = loadImages('button_default', 'input')
 
 function Character(){
     // Attributes
@@ -300,6 +302,15 @@ function showMenu(){
     document.onmouseup = function(){
     	click = false;
     }
+    document.onkeydown = function(evt){
+    	keydown = true;
+    	keycode = evt.keyCode;
+    	console.log(String.fromCharCode(keycode))
+    }
+    document.onkeyup = function(evt){
+    	keydown = false;
+    	keycode = 0;
+    }
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
@@ -350,7 +361,8 @@ function Menu(){
         UIButton('Multiplayer', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - buttonHeight, buttonWidth, buttonHeight, showGame),
         UIButton('Settings', WIDTH/2 - (buttonWidth/2), HEIGHT/2, buttonWidth, buttonHeight),
         UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + buttonHeight, buttonWidth, buttonHeight, chooseMap),
-        UIButton('Help', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight *2), buttonWidth, buttonHeight)
+        UIButton('Help', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight *2), buttonWidth, buttonHeight),
+    	UITextbox('name', 50, 50, 200, 40)
     ];
 }
 
@@ -372,11 +384,92 @@ UIElement.prototype.containsPoint = function(x,y){
     return true;
 }
 
+function UITextbox(text, x, y, w, h){
+	this.clicked = false;
+	this.cursor = 0;
+	this.cursoron = false;
+	this.t = text;
+	this.lastframe = 0;
+	this.shift = false;
+	function draw(ctx){
+		var t2 = '';
+		var pt = this.containsPoint(mouseX, mouseY);
+		var sy = 0;
+		if(pt){
+			document.body.style.cursor = 'text';
+		}else{
+			document.body.style.cursor = 'auto';
+		}
+		if(pt && click){
+			clicked = true;
+			console.log(':)');
+		}else if(!pt && click){
+			clicked = false;
+			console.log(':(');
+		}
+		if(clicked === true){
+			sy = 20;
+		}
+		if(clicked){
+			if(frame%30 === 0){
+				if(cursoron){
+					cursoron = false;
+				}else{
+					cursoron = true;
+				}
+			}
+		}else{
+			cursoron = false;
+		}
+		if(key === 16 && keydown){
+			shift = true;
+		}
+		if(keydown === false){
+			shift = false;
+		}
+		if(keydown && clicked){
+			if((frame - lastframe) > 30){
+				lastframe = frame;
+				var key = keycode;
+				t = t.split('');
+				console.log(keydown)
+				
+				if(key >= 48 && key <= 90){
+					key = String.fromCharCode(keycode);
+					if(shift === false){
+						key = key.toLowerCase();
+					}
+					t.splice(t.length-cursor, 0, key);
+					
+				}
+			}
+		}
+		if(!keydown && clicked){
+			lastframe -= 30;
+		}
+		for(i = 0; i < t.length; i++){
+			t2 = t2 + t[i]
+		}
+		t=t2;
+		ctx.drawImage(UI.input, 32, sy, 32, 20, x+32, y, w-64, h);
+		ctx.drawImage(UI.input, 0, sy, 32, 20, x, y, 32, h);
+		ctx.drawImage(UI.input, 98, sy, 32, 20, x+(w-64+32), y, 32, h);
+		
+		ctx.fillStyle = 'black';
+        ctx.font = '13pt "Press Start 2P"';
+        ctx.fillText(t2, x +50, y + 30, w - 20);
+        if(cursoron){
+        	ctx.fillText('|', x + ((t2.length-cursor)*8 + +10), y + 30, w-20);
+        }
+	}
+	return new UIElement(text, x, y, w, h, draw);
+}
+
 function UIButton(text, x, y, w, h, trigger){
     function draw(ctx){
     	var pt = this.containsPoint(mouseX, mouseY);
-        ctx.fillStyle = 'blue';
-        roundRect(ctx, x, y, w, h, pt);
+        drawbutton(ctx, x, y, w, h, pt);
+        //we should put the text in the drawbutton function
         ctx.fillStyle = 'black';
         ctx.font = '14pt "Press Start 2P"';
         ctx.textAlign = 'center';
@@ -397,6 +490,7 @@ function UITitle(text){
 
 function drawMenu(time){
     resize();
+    frame += 1;
     var grd = ctx.createRadialGradient(WIDTH/2,105,300,WIDTH/2,420,800);
     grd.addColorStop(0, "#500");
     grd.addColorStop(1, "#100");
@@ -432,16 +526,14 @@ function menuClick(evt){
  SOURCE: http://stackoverflow.com/questions/1255512/how-to-draw-a-rounded-rectangle-on-html-canvas
  
  */
-function roundRect(ctx, x, y, width, height, pt) {
+function drawbutton(ctx, x, y, width, height, pt) {
 	var sy = 0;
 	if(pt && click){
 		sy = 28;
 	}else if(pt){
 		sy = 56;
 	}
-	for(i = 0; i < Math.round(width/32-2); i++){
-		ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+(i*32+32), y, height, height);
-	}
+	ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+32, y, width -64, height);
 	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
 	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-32), y, height, height);
 }
@@ -459,8 +551,8 @@ function clear(){
 
 //draws on the canvas every 60th of a second
 function drawGame(){
-    resize();
 	frame += 1;
+    resize();
 	clear();
 	world.draw();
 	monsters.forEach(function(monster){
