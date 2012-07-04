@@ -20,10 +20,14 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 
 ### Coding:
 
-- Parse the world file once at initialization instead of on each frame
+- Normalize x,y coordinates, use context.translate to keep it centred
+- Collisions: monster -> character, character -> monster
+- √ Collisions: character -> terrain
+- Collision: monster -> terrain
+- √ Parse the world file once at initialization instead of on each frame
 - better AI for monsters each type of monster should have tons of different attributes (can be stored in objects)
 - Databases (personal database and online database)
-- Map making palette
+- √ Map making palette
 - NPC's
 - Server for multiplayer
 - Create worlds and maps for singleplayer and multiplayer

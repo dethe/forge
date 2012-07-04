@@ -19,6 +19,8 @@ var click = false;
 var keydown = false;
 var keycode = 0;
 
+var DEBUG = false;
+
 document.onmousemove = function(evt){
 	mouseX = evt.clientX;
 	mouseY = evt.clientY
@@ -118,12 +120,26 @@ function Character(){
     
 }
 
+Character.prototype.centre = function(){
+    return ({x: this.position.x + this.size.w / 2, y: this.position.y + this.size.h / 2});
+}
+
 Character.prototype.draw = function(ctx){
 	ctx.drawImage(this.walkcycle, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
 	ctx.drawImage(this.brown_pants, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
 	ctx.drawImage(this.eyepatch, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, character.size.h);
 	ctx.drawImage(this.bandana, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
 	ctx.drawImage(this.sword, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	if (DEBUG){
+	    var radius = 24;
+	    ctx.beginPath();
+	    ctx.strokeStyle = 'green';
+	    ctx.arc(WIDTH/2 + this.size.w / 2, HEIGHT/2 + this.size.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.stroke();
+        if(frame%30 === 0){
+	        console.log('%s: %s, %s', this.name, this.position.x, this.position.y);
+	    }
+    }
 };
 
 var character = new Character();
@@ -141,6 +157,11 @@ var move = {
 	right_m: false
 };
 
+var NORTH = 0;
+var EAST = 3;
+var SOUTH = 2;
+var WEST = 1;
+
 
 /////////////////////////////////////////
 //
@@ -153,6 +174,8 @@ function Monster(sprite, x, y, direction){
 	this.d = 1;
 	this.x = x + character.position.x;
 	this.y = y + character.position.y;
+	this.w = 32;
+	this.h = 32;
 	this.sprite = new Image();
 	this.sprite.src = 'public/graphics/' + sprite + '.png';
 	this.animate_idx = 0;
@@ -173,8 +196,18 @@ Monster.prototype.move = function(dx, dy){
 	if(frame % 5 === 0){
 		this.animate_idx = (this.animate_idx + this.d);
 	}
-	this.x += dx * monsterInfo[this.name].speed;
-	this.y += dy * monsterInfo[this.name].speed;
+	var mc = this.centre();
+	var cc = character.centre();
+	var distanceToCharacter = Math.sqrt(Math.pow((cc.x -mc.x), 2) + Math.pow((cc.y - mc.y), 2)) - 40;
+	this.x += dx * Math.min(distanceToCharacter, monsterInfo[this.name].speed);
+	this.y += dy * Math.min(distanceToCharacter, monsterInfo[this.name].speed);
+    if(DEBUG && frame%30 === 0){
+                 console.log(distanceToCharacter);
+                 console.log('%s: %s, %s', this.name, this.x, this.y);
+    }
+	if (distanceToCharacter < this.speed){
+	    console.log('Collision with %s', this.name);
+    }
 };
 Monster.prototype.faceEast = function(){
 	this.direction = 3;
@@ -225,10 +258,24 @@ Monster.prototype.useAI = function(){
 		};
 		this.walk();
 	};
-}
+};
+
+Monster.prototype.centre = function(){
+    return {x: (this.x - character.position.x) + this.w / 2, y: (this.y - character.position.y) + this.h/2 };
+};
+
 Monster.prototype.draw = function(ctx){
 	// drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
-	ctx.drawImage(this.sprite, this.animate_idx * 32, this.direction * 32, 32, 32, this.x - character.position.x, this.y - character.position.y, 32, 32);
+	ctx.drawImage(this.sprite, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x - character.position.x, this.y - character.position.y, this.w, this.h);
+	if (DEBUG){
+	    var radius = 24;
+	    var mc = this.centre();
+	    var cc = {x: WIDTH / 2, y: HEIGHT / 2}
+	    ctx.beginPath();
+	    ctx.strokeStyle = 'green';
+	    ctx.arc(this.x - character.position.x + this.w / 2, this.y - character.position.y + this.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.stroke();
+    }
 };
 
 var monsterInfo = {
@@ -278,7 +325,6 @@ function initMenu(){
 
 function showGame(){
     // turn off menu loop and event handlers
-    console.log('showGame');
     document.onclick = null;
     if (menuLoop) cancelAnimationFrame(menuLoop);
     // turn on game loop and event handlers
@@ -315,7 +361,6 @@ function showMenu(){
 }
 
 function chooseMap(){
-    console.log('chooseMap');
     var input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'application/json');
