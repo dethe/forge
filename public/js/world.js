@@ -442,12 +442,16 @@ function World(){
 	function findCollision(xOffset, yOffset){
 		var tilesX = Math.round((character.position.x + xOffset) / 32);
 	    var tilesY = Math.round((character.position.y + yOffset) / 32);
-		var location = world[tilesY][tilesX];
-		if (location.collision) location[0].debug();
-		if(frame%30 === 0){
-			console.log(location);
-		}
-		return location.collision;
+	    try{
+		    var location = world[tilesY][tilesX];
+		    if (location.collision) location[0].debug();
+            // if(frame%30 === 0){
+            //              console.log(location);
+            // }
+		    return location.collision;
+		}catch(e){
+		    return true;
+	    }
     }
 
     // We don't actually use this function for anything
@@ -494,8 +498,10 @@ function World(){
     };
     
     Tile.prototype.debug = function(){
-        ctx.strokeStyle = 'red';
-        ctx.strokeRect(this.x + WIDTH/2 - character.position.x, this.y + HEIGHT/2 - character.position.y, this.w, this.h);
+        if (DEBUG){
+            ctx.strokeStyle = 'red';
+            ctx.strokeRect(this.x + WIDTH/2 - character.position.x, this.y + HEIGHT/2 - character.position.y, this.w, this.h);
+        }
     };
 
     function partition(array){
