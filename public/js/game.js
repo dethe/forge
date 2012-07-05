@@ -139,7 +139,7 @@ function loadImages(){
 
 //loads images
 
-var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing');
+var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
 var UI = loadImages('button_default', 'input')
 
 function Character(){

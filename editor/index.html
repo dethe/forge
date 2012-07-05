@@ -7,6 +7,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
+	<script type="text/javascript" src="../public/js/utils.js"></script>
 	<style>
 	    *{
 	        margin: 0;
@@ -498,9 +499,9 @@
 	    <div id="menu_container">
 	        <h2>Layers</h2>
 	        <div class="layers">
-    	        <input id="Layer1" type="radio" name="layer" /> <label for="base">Layer1</label><br />
-    	        <input id="Layer2" type="radio" name="layer" checked=checked" /> <label for="middle">Layer2</label><br />
-    	        <input id="Layer3" type="radio" name="layer" /> <label for="top">Layer3</label><br />
+    	        <input id="Layer1" type="radio" name="layer" /> <label for="Layer1">Layer 1</label><br />
+    	        <input id="Layer2" type="radio" name="layer" checked=checked" /> <label for="Layer2">Layer 2</label><br />
+    	        <input id="Layer3" type="radio" name="layer" /> <label for="Layer3">Layer 3</label><br />
     	    </div>
 	        <div id="collision_menu">
     	        <h2>Collisions</h2>
@@ -652,7 +653,6 @@
         
         function map_init(){
         	$('#' + map + ' .tile').mouseover(function(){
-        		console.log('hi')
         		if (MO_tile) MO_tile.css('box-shadow', '');
         		MO_tile = $(this);
         		MO_tile.css('box-shadow', 'inset 0 0 10px #000000');
@@ -661,7 +661,6 @@
         	// Tile painting
         	$('#' + map + ' .tile').click(function(){
             	var self = $(this);
-            	console.log(self.parent())
         		self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
         		self.attr('class', position)
         		self.data('spec', tile + ' ' + self.attr('class').split(' ')[1]);
@@ -677,14 +676,16 @@
         	});
         }
         
-        
-        
         // Save and load
         
         $('.save').click(function(evt){
-            var mapdata = $('#' + map + ' .tile').map(function(){
-                return $(this).data('spec') || '';
-            }).get();
+            var layers = ['#map', '#map2', '#map3'].map(function(id){
+                return $(id + ' .tile').map(function(){
+                    return $(this).data('spec') || '';
+                }).get();
+            });
+            var maparray = zip(layers);
+            var mapdata = partition(maparray);
             var BlobBuilder = BlobBuilder || WebKitBlobBuilder || MozBlobBuilder || MSBlobBuilder;
             var builder = new BlobBuilder();
             builder.append(JSON.stringify(mapdata));
@@ -710,22 +711,29 @@
             }
         });
         
+        
+        function loadLayer(mapdata, layername, layeridx){
+            $('#' + layername + ' .tile').each(function(locationidx){
+                var self = $(this);
+                var spec = mapdata[locationidx][layeridx];
+                if (spec == '') return;
+                var sspec = spec.split(' ');
+                var tile = sspec[0];
+                var position = sspec[1];
+                self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
+                 self.attr('class', 'tile ' + position);
+                 self.data('spec', spec);
+            });
+        }
+        
         $('.loader').change(function(evt){
             var file = this.files[0];
             var reader = new FileReader();
             reader.onload = function(evt){
-                var mapdata = JSON.parse(evt.target.result);
-                $('#' + map + ' .tile').each(function(idx){
-                   var self = $(this);
-                   var spec = mapdata[idx];
-                   if (spec == '') return;
-                   var sspec = spec.split(' ');
-                   var tile = sspec[0];
-                   var position = sspec[1];
-                   self.css('background-image', 'url(../public/graphics/' + tile + '.png)');
-                    self.attr('class', 'tile ' + position);
-                    self.data('spec', spec);
-                });
+                var mapdata = flatten(JSON.parse(evt.target.result));
+                loadLayer(mapdata, 'map', 0);
+                loadLayer(mapdata, 'map2', 1);
+                loadLayer(mapdata, 'map3', 2);
             };
             reader.readAsText(file, 'utf8');
         });
