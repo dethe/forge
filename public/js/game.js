@@ -143,8 +143,10 @@ var UI = loadImages('button_default', 'input')
 
 function Character(){
     // Attributes
-    this.name = 'ForgePlayer';
+    this.name = 'ForgeDev';
     this.speed = 3;
+    this.clothes = ['robe_skirt', 'blonde_hair', 'leather_belt', 'leather_armour', 'brown_shoes', 'shoulder_armor'];
+    this.animation = 'walk';
     
     // Mapping info and state
     this.position = {x: 320, y: 320};
@@ -152,13 +154,33 @@ function Character(){
     this.spriteOffset = {x: 0, y: 128};
     
     // Load sprites
-    this.walkcycle = loadImage('character/walkcycle/BODY_male');
-    this.brown_pants = loadImage('character/walkcycle/LEGS_robe_skirt');
-    this.shirt = loadImage('character/walkcycle/TORSO_leather_armor_shirt_white');
-    this.hair = loadImage('character/walkcycle/HEAD_hair_blonde');
-    this.belt = loadImage('character/walkcycle/BELT_leather');
-    this.armour = loadImage('character/walkcycle/TORSO_leather_armor_torso');
-    this.shoes = loadImage('character/walkcycle/FEET_shoes_brown');
+    this.walk_quiver = loadImage('character/walkcycle/BEHIND_quiver');
+    this.walk_leather_belt = loadImage('character/walkcycle/BELT_leather');
+    this.walk_rope_belt = loadImage('character/walkcycle/BELT_rope');
+    this.walk_walkcycle = loadImage('character/walkcycle/BODY_male');
+    this.walk_skeletonwalkcycle = loadImage('character/walkcycle/BODY_skeleton');
+    this.walk_plate_shoes = loadImage('character/walkcycle/FEET_plate_armor_shoes');
+    this.walk_brown_shoes = loadImage('character/walkcycle/FEET_shoes_brown');
+    this.walk_plate_gloves = loadImage('character/walkcycle/HANDS_plate_armor_gloves');
+    this.walk_helmet = loadImage('character/walkcycle/HEAD_chain_armor_helmet');
+    this.walk_chain_hood = loadImage('character/walkcycle/HEAD_chain_armor_hood');
+    this.walk_blonde_hair = loadImage('character/walkcycle/HEAD_hair_blonde');
+    this.walk_leather_hat = loadImage('character/walkcycle/HEAD_leather_armor_hat');
+    this.walk_plate_helmet = loadImage('character/walkcycle/HEAD_plate_armor_helmet');
+    this.walk_robe_hood = loadImage('character/walkcycle/HEAD_robe_hood');
+    this.walk_green_pants = loadImage('character/walkcycle/LEGS_pants_greenish');
+    this.walk_plate_pants = loadImage('character/walkcycle/LEGS_plate_armor_pants');
+    this.walk_robe_skirt = loadImage('character/walkcycle/LEGS_robe_skirt');
+    this.walk_chain_jacket_purple = loadImage('character/walkcycle/TORSO_chain_armor_jacket_purple');
+    this.walk_chain_armor = loadImage('character/walkcycle/TORSO_chain_armor_torso');
+    this.walk_bracers = loadImage('character/walkcycle/TORSO_leather_armor_bracers');
+    this.walk_white_shirt = loadImage('character/walkcycle/TORSO_leather_armor_shirt_white');
+    this.walk_shoulder_armor = loadImage('character/walkcycle/TORSO_leather_armor_shoulders');
+    this.walk_leather_armour = loadImage('character/walkcycle/TORSO_leather_armor_torso');
+    this.walk_plate_shoulder_armor = loadImage('character/walkcycle/TORSO_plate_armor_arms_shoulders');
+    this.walk_plate_armor = loadImage('character/walkcycle/TORSO_plate_armor_torso');
+    this.walk_robe_shirt = loadImage('character/walkcycle/TORSO_robe_shirt_brown');
+    this.walk_shield = loadImage('character/walkcycle/WEAPON_shield_cutout_body');
 }
 
 Character.prototype.centre = function(){
@@ -166,13 +188,10 @@ Character.prototype.centre = function(){
 }
 
 Character.prototype.draw = function(ctx){
-	ctx.drawImage(this.walkcycle, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.brown_pants, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.shirt, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.hair, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.belt, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.armour, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.shoes, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this[this.animation + '_' + 'skeletonwalkcycle'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	for(i=0; i < this.clothes.length; i++){
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	}
 	if (DEBUG){
 	    var radius = 24;
 	    ctx.beginPath();
@@ -183,6 +202,42 @@ Character.prototype.draw = function(ctx){
 	        console.log('%s: %s, %s', this.name, this.position.x, this.position.y);
 	    }
     }
+    
+    if(this.animation === 'walk'){
+    	if(move.up){
+			character.spriteOffset.y = 0; // face sprite up
+    		if (!world.findCollision(10, -character.speed +32)){
+    			character.position.y -= character.speed;
+	    	}
+		}else if(move.left){
+	    	character.spriteOffset.y = 64; // face sprite left
+	    	if (!world.findCollision(-character.speed +10, 44)){
+		   		character.position.x -= character.speed;
+			}
+		}else if(move.down){
+	    character.spriteOffset.y = 128; // face sprite down
+	    	if (!world.findCollision(10, character.speed +45)){
+		    	character.position.y += character.speed;
+			}
+		}else if(move.right){
+			character.spriteOffset.y = 192;
+	    	if(!world.findCollision(character.speed +20, 44)){
+    			character.position.x += character.speed;
+    		}
+		}
+	}
+	// Move this animation state into the Character object
+	if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right)){
+		character.spriteOffset.x += 64;
+	}
+	
+	if (character.spriteOffset.x === 576){
+		character.spriteOffset.x = 64;
+	}
+	
+	if(! (move.up || move.left || move.down || move.right )){
+		character.spriteOffset.x = 0;
+	}
 };
 
 var character = new Character();
@@ -464,7 +519,7 @@ function Settings(){
     var buttonWidth = 288;
     var buttonHeight = 50;
     return [
-        UITitle('Settings', WIDTH/2, 270),
+        UITitle('SETTINGS', WIDTH/2, 270),
     	UITextbox('name', WIDTH/2, HEIGHT/2, 200, 40)
     ];
 }
@@ -697,46 +752,8 @@ function drawGame(){
 		monster.useAI();
 		monster.draw(ctx);
 	});
-
 	character.draw(ctx);
 	world.drawtop();
-	
-	// Move collision detection into the Character object
-	//DO NOT CHANGE OFFSETS OR ELSE COLLISIONS WILL BE MESSED UP
-	if(move.up){
-	    character.spriteOffset.y = 0; // face sprite up
-	    if (!world.findCollision(10, -character.speed +32)){
-    		character.position.y -= character.speed;
-	    }
-	}else if(move.left){
-	    character.spriteOffset.y = 64; // face sprite left
-	    if (!world.findCollision(-character.speed +10, 44)){
-		    character.position.x -= character.speed;
-		}
-	}else if(move.down){
-	    character.spriteOffset.y = 128; // face sprite down
-	    if (!world.findCollision(10, character.speed +45)){
-		    character.position.y += character.speed;
-		}
-	}else if(move.right){
-		character.spriteOffset.y = 192;
-	    if(!world.findCollision(character.speed +20, 44)){
-    		character.position.x += character.speed;
-    	}
-	}
-	
-	// Move this animation state into the Character object
-	if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right)){
-		character.spriteOffset.x += 64;
-	}
-	
-	if (character.spriteOffset.x === 576){
-		character.spriteOffset.x = 64;
-	}
-	
-	if(! (move.up || move.left || move.down || move.right )){
-		character.spriteOffset.x = 0;
-	}
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
