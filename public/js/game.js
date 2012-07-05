@@ -497,8 +497,7 @@ function Menu(){
         UIButton('Multiplayer', WIDTH/2 - (buttonWidth/2), 450 - buttonHeight, buttonWidth, buttonHeight, showGame),
         UIButton('Settings', WIDTH/2 - (buttonWidth/2), 450, buttonWidth, buttonHeight, showSettings),
         UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), 450 + buttonHeight, buttonWidth, buttonHeight, chooseMap),
-        UIButton('Help', WIDTH/2 - (buttonWidth/2), 450 + (buttonHeight *2), buttonWidth, buttonHeight),
-    	UITextbox('name', 50, 50, 200, 40)
+        UIButton('Help', WIDTH/2 - (buttonWidth/2), 450 + (buttonHeight *2), buttonWidth, buttonHeight)
     ];
 }
 
