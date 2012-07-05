@@ -58,7 +58,8 @@ var keys = {
 	shift: false,
 	caps: false,
 	delete: false,
-	dash: false
+	dash: false,
+	space: false,
 }
 
 var DEBUG = false;
@@ -202,7 +203,11 @@ Character.prototype.draw = function(ctx){
 	        console.log('%s: %s, %s', this.name, this.position.x, this.position.y);
 	    }
     }
-    
+    if(keys.space){
+    	this.animation = 'attack';
+    }else{
+    	this.animation = 'walk';
+    }
     if(this.animation === 'walk'){
     	if(move.up){
 			character.spriteOffset.y = 0; // face sprite up
@@ -451,15 +456,7 @@ function showMenu(){
     	click = false;
     }
     document.onkeydown = function(evt){
-    	keydown = true;
-    	if(evt.keyCode > 48 && evt.keyCode < 57){
-    		keys.key1 = true;
-    	}else if(evt.keyCode > 65 && evt.keyCode < 90){
-    		keys[evt.keycode-54] = true;
-    	}else if(evt.keyCode === 16){
-    		keys[37] = true;
-    	}
-    	keycode = evt.keyCode;
+    	
     	console.log(String.fromCharCode(keycode))
     }
     document.onkeyup = function(evt){
@@ -765,6 +762,18 @@ function drawGame(){
 /////////////////////////////////////////
 
 var gameKeydown = function(event) {
+		keydown = true;
+    	if(event.keyCode > 48 && event.keyCode < 57){
+    		keys.key1 = true;
+    	}else if(event.keyCode > 65 && event.keyCode < 90){
+    		keys[event.keycode-54] = true;
+    	}else if(event.keyCode === 16){
+    		keys[37] = true;
+    	}else if(event.keyCode === 32){
+    		keys.space = true;
+    	}
+    	keycode = event.keyCode;
+    	
 		switch (event.keyCode) {
 			case 87: // 'w' key
 			case 38: // up arrow
