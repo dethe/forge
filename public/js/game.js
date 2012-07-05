@@ -17,7 +17,49 @@ var mouseX = 0;
 var mouseY = 0;
 var click = false;
 var keydown = false;
-var keycode = 0;
+
+var keys = {
+	0: false,
+	key1: false,
+	2: false,
+	3: false,
+	4: false,
+	5: false,
+	6: false,
+	7: false,
+	8: false,
+	9: false,
+	a: false,
+	b: false,
+	c: false,
+	d: false,
+	e: false,
+	f: false,
+	g: false,
+	h: false,
+	i: false,
+	j: false,
+	k: false,
+	l: false,
+	m: false,
+	n: false,
+	o: false,
+	p: false,
+	q: false,
+	r: false,
+	s: false,
+	t: false,
+	u: false,
+	v: false,
+	w: false,
+	x: false,
+	y: false,
+	z: false,
+	shift: false,
+	caps: false,
+	delete: false,
+	dash: false
+}
 
 var DEBUG = false;
 
@@ -308,7 +350,7 @@ var monsters = [
 //
 /////////////////////////////////////////
 
-var gameLoop, menuLoop;
+var gameLoop, menuLoop, settingsLoop;
 
 //starts the game
 function initGame(){
@@ -318,14 +360,16 @@ function initGame(){
 // show the menu
 function initMenu(){
     window.menu = Menu();
+    window.settings = Settings();
     // also init game, but don't start it yet
     initGame();
     showMenu();
 }
-
 function showGame(){
     // turn off menu loop and event handlers
     document.onclick = null;
+    document.onkeydown = null;
+    document.onkeyup = null;
     if (menuLoop) cancelAnimationFrame(menuLoop);
     // turn on game loop and event handlers
     document.onkeydown = gameKeydown;
@@ -340,7 +384,9 @@ function showMenu(){
     document.onkeydown = null;
     document.onkeyup = null;
     if (gameLoop) cancelAnimationFrame(gameLoop);
+    if (settingsLoop) cancelAnimationFrame(settingsLoop);
     // turn on menu loop and event handlers
+    menuLoop = requestAnimationFrame(drawMenu);
     document.onclick = menuClick;
     document.onmousedown = function(){
     	click = true;
@@ -350,14 +396,31 @@ function showMenu(){
     }
     document.onkeydown = function(evt){
     	keydown = true;
+    	if(evt.keyCode > 48 && evt.keyCode < 57){
+    		keys.key1 = true;
+    	}else if(evt.keyCode > 65 && evt.keyCode < 90){
+    		keys[evt.keycode-54] = true;
+    	}else if(evt.keyCode === 16){
+    		keys[37] = true;
+    	}
     	keycode = evt.keyCode;
     	console.log(String.fromCharCode(keycode))
     }
     document.onkeyup = function(evt){
     	keydown = false;
     	keycode = 0;
+    	lastkeycode = 0;
     }
-    menuLoop = requestAnimationFrame(drawMenu);
+}
+
+function showSettings(){
+	clear();
+    // turn off game loop and event handlers
+    if (gameLoop) cancelAnimationFrame(gameLoop);
+    if (menuLoop) cancelAnimationFrame(menuLoop);
+    // turn on menu loop and event handlers
+    document.onclick = settingsClick;
+    settingsLoop = requestAnimationFrame(drawSettings);
 }
 
 function chooseMap(){
@@ -390,6 +453,34 @@ function applyMap(evt){
     }
 }
 
+/////////////////////////////////////////
+//
+//           SETTINGS
+//
+/////////////////////////////////////////
+
+function Settings(){
+    var buttonWidth = 288;
+    var buttonHeight = 50;
+    return [
+        UITitle('Settings', WIDTH/2, 270),
+    	UITextbox('name', WIDTH/2, HEIGHT/2, 200, 40)
+    ];
+}
+
+function drawSettings(time){
+    resize();
+    frame += 1;
+    var grd = ctx.createRadialGradient(WIDTH/2,105,300,WIDTH/2,420,800);
+    grd.addColorStop(0, "#500");
+    grd.addColorStop(1, "#100");
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    for (var i = 0; i < settings.length; i++){
+        settings[i].draw(ctx);
+    }
+    settingsLoop = requestAnimationFrame(drawSettings);
+}
 
 /////////////////////////////////////////
 //
@@ -401,15 +492,36 @@ function Menu(){
     var buttonWidth = 288;
     var buttonHeight = 50;
     return [
-        UITitle('FORGE'),
-        UIButton('Single Player', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
-        UIButton('Multiplayer', WIDTH/2 - (buttonWidth/2), HEIGHT/2 - buttonHeight, buttonWidth, buttonHeight, showGame),
-        UIButton('Settings', WIDTH/2 - (buttonWidth/2), HEIGHT/2, buttonWidth, buttonHeight),
-        UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + buttonHeight, buttonWidth, buttonHeight, chooseMap),
-        UIButton('Help', WIDTH/2 - (buttonWidth/2), HEIGHT/2 + (buttonHeight *2), buttonWidth, buttonHeight),
+        UITitle('FORGE', WIDTH/2, 270),
+        UIButton('Single Player', WIDTH/2 - (buttonWidth/2), 450 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
+        UIButton('Multiplayer', WIDTH/2 - (buttonWidth/2), 450 - buttonHeight, buttonWidth, buttonHeight, showGame),
+        UIButton('Settings', WIDTH/2 - (buttonWidth/2), 450, buttonWidth, buttonHeight, showSettings),
+        UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), 450 + buttonHeight, buttonWidth, buttonHeight, chooseMap),
+        UIButton('Help', WIDTH/2 - (buttonWidth/2), 450 + (buttonHeight *2), buttonWidth, buttonHeight),
     	UITextbox('name', 50, 50, 200, 40)
     ];
 }
+
+
+function drawMenu(time){
+    resize();
+    frame += 1;
+    var grd = ctx.createRadialGradient(WIDTH/2,105,300,WIDTH/2,420,800);
+    grd.addColorStop(0, "#500");
+    grd.addColorStop(1, "#100");
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    for (var i = 0; i < menu.length; i++){
+        menu[i].draw(ctx);
+    }
+    menuLoop = requestAnimationFrame(drawMenu);
+}
+
+/////////////////////////////////////////
+//
+//           UI ELEMENTS (BUTTONS, SCROLLBARS, SLIDERS, TEXTBOXES ETC.)
+//
+/////////////////////////////////////////
 
 function UIElement(text, x, y, w, h, draw, trigger){
     this.text = text;
@@ -435,8 +547,9 @@ function UITextbox(text, x, y, w, h){
 	this.cursoron = false;
 	this.t = text;
 	this.lastframe = 0;
-	this.shift = false;
 	function draw(ctx){
+		var key = 48;
+		var lastkey = 16;
 		var t2 = '';
 		var pt = this.containsPoint(mouseX, mouseY);
 		var sy = 0;
@@ -466,16 +579,13 @@ function UITextbox(text, x, y, w, h){
 		}else{
 			cursoron = false;
 		}
-		if(key === 16 && keydown){
+		if(key === 16 && keydown || lastkey === 16 && keydown){
 			shift = true;
 		}
-		if(keydown === false){
-			shift = false;
-		}
+		
 		if(keydown && clicked){
 			if((frame - lastframe) > 30){
 				lastframe = frame;
-				var key = keycode;
 				t = t.split('');
 				console.log(keydown)
 				
@@ -489,6 +599,9 @@ function UITextbox(text, x, y, w, h){
 				}
 			}
 		}
+		if(keydown === false && key === 0){
+			shift = false;
+		}
 		if(!keydown && clicked){
 			lastframe -= 30;
 		}
@@ -501,10 +614,11 @@ function UITextbox(text, x, y, w, h){
 		ctx.drawImage(UI.input, 98, sy, 32, 20, x+(w-64+32), y, 32, h);
 		
 		ctx.fillStyle = 'black';
-        ctx.font = '13pt "Press Start 2P"';
-        ctx.fillText(t2, x +50, y + 30, w - 20);
+        ctx.font = '12pt "Press Start 2P"';
+        ctx.textAlign='left';
+        ctx.fillText(t2, x +10, y + 30, 99999999999);
         if(cursoron){
-        	ctx.fillText('|', x + ((t2.length-cursor)*8 + +10), y + 30, w-20);
+        	ctx.fillText('|', x + ((t2.length-cursor)*16), y + 30, w-20);
         }
 	}
 	return new UIElement(text, x, y, w, h, draw);
@@ -523,29 +637,16 @@ function UIButton(text, x, y, w, h, trigger){
     return new UIElement(text, x, y, w, h, draw, trigger);
 }
 
-function UITitle(text){
+function UITitle(text, x, y){
     function draw(ctx){
         ctx.fillStyle = '#900';
         ctx.font = '100pt "Press Start 2P"';
         ctx.textAlign = 'center'
-        ctx.fillText(text, WIDTH/2, 270);
+        ctx.fillText(text, x, y);
     }
     return new UIElement(text, 0, 0, WIDTH, 80, draw);
 }
 
-function drawMenu(time){
-    resize();
-    frame += 1;
-    var grd = ctx.createRadialGradient(WIDTH/2,105,300,WIDTH/2,420,800);
-    grd.addColorStop(0, "#500");
-    grd.addColorStop(1, "#100");
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    for (var i = 0; i < menu.length; i++){
-        menu[i].draw(ctx);
-    }
-    menuLoop = requestAnimationFrame(drawMenu);
-}
 
 function menuClick(evt){
     for (var i = 0; i < menu.length; i++){
@@ -555,22 +656,14 @@ function menuClick(evt){
     }
 }
 
-/**
- * Draws a rounded rectangle using the current state of the canvas. 
- * If you omit the last three params, it will draw a rectangle 
- * outline with a 5 pixel border radius 
- * @param {CanvasRenderingContext2D} ctx
- * @param {Number} x The top left x coordinate
- * @param {Number} y The top left y coordinate 
- * @param {Number} width The width of the rectangle 
- * @param {Number} height The height of the rectangle
- * @param {Number} radius The corner radius. Defaults to 5;
- * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
- * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to true.
- 
- SOURCE: http://stackoverflow.com/questions/1255512/how-to-draw-a-rounded-rectangle-on-html-canvas
- 
- */
+function settingsClick(evt){
+    for (var i = 0; i < menu.length; i++){
+        if (settings[i].containsPoint(evt.clientX, evt.clientY)){
+            settings[i].trigger();
+        }
+    }
+}
+
 function drawbutton(ctx, x, y, width, height, pt) {
 	var sy = 0;
 	if(pt && click){
