@@ -14,7 +14,7 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 ### Art:
 
 - Black Shirt
-- Black Pants (they were dark green before so I changed their color)
+- Black Pants (they were dark green before so I changed their colour)
 
 ## What we need to do
 
