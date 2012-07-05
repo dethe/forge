@@ -152,14 +152,13 @@ function Character(){
     this.spriteOffset = {x: 0, y: 128};
     
     // Load sprites
-    this.walkcycle = loadImage('male_walkcycle');
-    //this.black_pants = loadImage('male_pants');
-    this.brown_pants = loadImage('brown_pants')
-    this.shirt = loadImage('male_shirt');
-    this.bandana = loadImage('red_bandana');
-    this.sword = loadImage('sword');
-    this.eyepatch = loadImage('eyepatch');
-    
+    this.walkcycle = loadImage('character/walkcycle/BODY_male');
+    this.brown_pants = loadImage('character/walkcycle/LEGS_robe_skirt');
+    this.shirt = loadImage('character/walkcycle/TORSO_leather_armor_shirt_white');
+    this.hair = loadImage('character/walkcycle/HEAD_hair_blonde');
+    this.belt = loadImage('character/walkcycle/BELT_leather');
+    this.armour = loadImage('character/walkcycle/TORSO_leather_armor_torso');
+    this.shoes = loadImage('character/walkcycle/FEET_shoes_brown');
 }
 
 Character.prototype.centre = function(){
@@ -169,9 +168,11 @@ Character.prototype.centre = function(){
 Character.prototype.draw = function(ctx){
 	ctx.drawImage(this.walkcycle, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
 	ctx.drawImage(this.brown_pants, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.eyepatch, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, character.size.h);
-	ctx.drawImage(this.bandana, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	ctx.drawImage(this.sword, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.shirt, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.hair, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.belt, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.armour, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	ctx.drawImage(this.shoes, this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
 	if (DEBUG){
 	    var radius = 24;
 	    ctx.beginPath();
