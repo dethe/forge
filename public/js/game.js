@@ -142,12 +142,35 @@ function loadImages(){
 var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
 var UI = loadImages('button_default', 'input')
 
+setInterval(function(){
+	if(character.attacked === true){
+		character.animation = character.attack;
+		character.spriteOffset.x = 0;
+	}
+	if(character.animation === character.attack){
+		character.attacked = false;
+		if(move.up){
+			character.spriteOffset.y = 0; // face sprite up
+		}else if(move.left){
+	    	character.spriteOffset.y = 64; // face sprite left
+		}else if(move.down){
+	    	character.spriteOffset.y = 128; // face sprite down
+		}else if(move.right){
+			character.spriteOffset.y = 192;
+		};
+	}
+}, 800);
+
 function Character(){
     // Attributes
     this.name = 'ForgeDev';
     this.speed = 3;
-    this.clothes = ['robe_skirt', 'blonde_hair', 'leather_belt', 'leather_armour', 'brown_shoes', 'shoulder_armor'];
+    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armour', 'brown_shoes'];
+    this.weapon = 'darkness_staff';
+    this.attack = 'spellcast';
     this.animation = 'walk';
+    this.maxsx = 576;
+    this.attacked = false;
     
     // Mapping info and state
     this.position = {x: 320, y: 320};
@@ -155,11 +178,13 @@ function Character(){
     this.spriteOffset = {x: 0, y: 128};
     
     // Load sprites
+    
+    // Load walk animation for sprites
     this.walk_quiver = loadImage('character/walkcycle/BEHIND_quiver');
     this.walk_leather_belt = loadImage('character/walkcycle/BELT_leather');
     this.walk_rope_belt = loadImage('character/walkcycle/BELT_rope');
-    this.walk_walkcycle = loadImage('character/walkcycle/BODY_male');
-    this.walk_skeletonwalkcycle = loadImage('character/walkcycle/BODY_skeleton');
+    this.walk_character = loadImage('character/walkcycle/BODY_male');
+    this.walk_skeletoncharacter = loadImage('character/walkcycle/BODY_skeleton');
     this.walk_plate_shoes = loadImage('character/walkcycle/FEET_plate_armor_shoes');
     this.walk_brown_shoes = loadImage('character/walkcycle/FEET_shoes_brown');
     this.walk_plate_gloves = loadImage('character/walkcycle/HANDS_plate_armor_gloves');
@@ -182,6 +207,75 @@ function Character(){
     this.walk_plate_armor = loadImage('character/walkcycle/TORSO_plate_armor_torso');
     this.walk_robe_shirt = loadImage('character/walkcycle/TORSO_robe_shirt_brown');
     this.walk_shield = loadImage('character/walkcycle/WEAPON_shield_cutout_body');
+    
+    // Load slash animation for sprites
+    this.slash_quiver = loadImage('character/slash/BEHIND_quiver');
+    this.slash_leather_belt = loadImage('character/slash/BELT_leather');
+    this.slash_rope_belt = loadImage('character/slash/BELT_rope');
+    this.slash_character = loadImage('character/slash/BODY_male');
+    this.slash_skeletoncharacter = loadImage('character/slash/BODY_skeleton');
+    this.slash_plate_shoes = loadImage('character/slash/FEET_plate_armor_shoes');
+    this.slash_brown_shoes = loadImage('character/slash/FEET_shoes_brown');
+    this.slash_plate_gloves = loadImage('character/slash/HANDS_plate_armor_gloves');
+    this.slash_helmet = loadImage('character/slash/HEAD_chain_armor_helmet');
+    this.slash_chain_hood = loadImage('character/slash/HEAD_chain_armor_hood');
+    this.slash_blonde_hair = loadImage('character/slash/HEAD_hair_blonde');
+    this.slash_leather_hat = loadImage('character/slash/HEAD_leather_armor_hat');
+    this.slash_plate_helmet = loadImage('character/slash/HEAD_plate_armor_helmet');
+    this.slash_robe_hood = loadImage('character/slash/HEAD_robe_hood');
+    this.slash_green_pants = loadImage('character/slash/LEGS_pants_greenish');
+    this.slash_plate_pants = loadImage('character/slash/LEGS_plate_armor_pants');
+    this.slash_robe_skirt = loadImage('character/slash/LEGS_robe_skirt');
+    this.slash_chain_jacket_purple = loadImage('character/slash/TORSO_chain_armor_jacket_purple');
+    this.slash_chain_armor = loadImage('character/slash/TORSO_chain_armor_torso');
+    this.slash_bracers = loadImage('character/slash/TORSO_leather_armor_bracers');
+    this.slash_white_shirt = loadImage('character/slash/TORSO_leather_armor_shirt_white');
+    this.slash_shoulder_armor = loadImage('character/slash/TORSO_leather_armor_shoulders');
+    this.slash_leather_armour = loadImage('character/slash/TORSO_leather_armor_torso');
+    this.slash_plate_shoulder_armor = loadImage('character/slash/TORSO_plate_armor_arms_shoulders');
+    this.slash_plate_armor = loadImage('character/slash/TORSO_plate_armor_torso');
+    this.slash_robe_shirt = loadImage('character/slash/TORSO_robe_shirt_brown');
+    this.slash_dagger = loadImage('character/slash/WEAPON_dagger');
+    this.slash_shield = loadImage('character/slash/WEAPON_shield_cutout_body');
+    
+    // Load spellcast animation for sprites
+    this.spellcast_quiver = loadImage('character/spellcast/BEHIND_quiver');
+    this.spellcast_leather_belt = loadImage('character/spellcast/BELT_leather');
+    this.spellcast_rope_belt = loadImage('character/spellcast/BELT_rope');
+    this.spellcast_character = loadImage('character/spellcast/BODY_male');
+    this.spellcast_skeletoncharacter = loadImage('character/spellcast/BODY_skeleton');
+    this.spellcast_plate_shoes = loadImage('character/spellcast/FEET_plate_armor_shoes');
+    this.spellcast_brown_shoes = loadImage('character/spellcast/FEET_shoes_brown');
+    this.spellcast_plate_gloves = loadImage('character/spellcast/HANDS_plate_armor_gloves');
+    this.spellcast_helmet = loadImage('character/spellcast/HEAD_chain_armor_helmet');
+    this.spellcast_chain_hood = loadImage('character/spellcast/HEAD_chain_armor_hood');
+    this.spellcast_blonde_hair = loadImage('character/spellcast/HEAD_hair_blonde');
+    this.spellcast_leather_hat = loadImage('character/spellcast/HEAD_leather_armor_hat');
+    this.spellcast_plate_helmet = loadImage('character/spellcast/HEAD_plate_armor_helmet');
+    this.spellcast_robe_hood = loadImage('character/spellcast/HEAD_robe_hood');
+    this.spellcast_green_pants = loadImage('character/spellcast/LEGS_pants_greenish');
+    this.spellcast_plate_pants = loadImage('character/spellcast/LEGS_plate_armor_pants');
+    this.spellcast_robe_skirt = loadImage('character/spellcast/LEGS_robe_skirt');
+    this.spellcast_chain_jacket_purple = loadImage('character/spellcast/TORSO_chain_armor_jacket_purple');
+    this.spellcast_chain_armor = loadImage('character/spellcast/TORSO_chain_armor_torso');
+    this.spellcast_bracers = loadImage('character/spellcast/TORSO_leather_armor_bracers');
+    this.spellcast_white_shirt = loadImage('character/spellcast/TORSO_leather_armor_shirt_white');
+    this.spellcast_shoulder_armor = loadImage('character/spellcast/TORSO_leather_armor_shoulders');
+    this.spellcast_leather_armour = loadImage('character/spellcast/TORSO_leather_armor_torso');
+    this.spellcast_plate_shoulder_armor = loadImage('character/spellcast/TORSO_plate_armor_arms_shoulders');
+    this.spellcast_plate_armor = loadImage('character/spellcast/TORSO_plate_armor_torso');
+    this.spellcast_robe_shirt = loadImage('character/spellcast/TORSO_robe_shirt_brown');
+    this.spellcast_water_staff = loadImage('character/spellcast/WEAPON_blue_staff');
+    this.spellcast_darkness_staff = loadImage('character/spellcast/WEAPON_dark_staff');
+    this.spellcast_nature_staff = loadImage('character/spellcast/WEAPON_green_staff');
+    this.spellcast_fire_staff = loadImage('character/spellcast/WEAPON_red_staff');
+    this.spellcast_staff = loadImage('character/spellcast/WEAPON_regular_staff');
+    this.spellcast_ice_staff = loadImage('character/spellcast/WEAPON_teal_staff');
+    this.spellcast_air_staff = loadImage('character/spellcast/WEAPON_white_staff');
+    this.spellcast_lightning_staff = loadImage('character/spellcast/WEAPON_white_staff');
+    
+    // Load spellcast animation for sprites
+     
 }
 
 Character.prototype.centre = function(){
@@ -189,9 +283,14 @@ Character.prototype.centre = function(){
 }
 
 Character.prototype.draw = function(ctx){
-	ctx.drawImage(this[this.animation + '_' + 'skeletonwalkcycle'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
-	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+	
+
+	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
+	{
+		ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+		for(i=0; i < this.clothes.length; i++){
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+		}
 	}
 	if (DEBUG){
 	    var radius = 24;
@@ -204,44 +303,65 @@ Character.prototype.draw = function(ctx){
 	    }
     }
     if(keys.space){
-    	this.animation = 'attack';
+    	this.animation = this.attack;
+    	this.maxsx = 384;
+    	if(this.attacked === false){
+    		if(this.animation === 'spellcast'){
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2 + 2, HEIGHT/2 + 7, this.size.w, this.size.h);
+    		}else{
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+    		}
+    		if((frame % 5 === 0)){
+				this.spriteOffset.x += 64;
+			}
+    	}else{
+    		this.animation = 'walk';
+    	}
     }else{
+    	this.attacked = false;
     	this.animation = 'walk';
+    	this.maxsx = 576;
+    }
+    if(this.animation === 'spellcast' && this.spriteOffset.y === 0){
+    	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+		for(i=0; i < this.clothes.length; i++){
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+		}
     }
     if(this.animation === 'walk'){
     	if(move.up){
-			character.spriteOffset.y = 0; // face sprite up
-    		if (!world.findCollision(10, -character.speed +32)){
-    			character.position.y -= character.speed;
+			this.spriteOffset.y = 0; // face sprite up
+    		if (!world.findCollision(10, -this.speed +32)){
+    			this.position.y -= this.speed;
 	    	}
 		}else if(move.left){
-	    	character.spriteOffset.y = 64; // face sprite left
-	    	if (!world.findCollision(-character.speed +10, 44)){
-		   		character.position.x -= character.speed;
+	    	this.spriteOffset.y = 64; // face sprite left
+	    	if (!world.findCollision(-this.speed +10, 44)){
+		   		this.position.x -= this.speed;
 			}
 		}else if(move.down){
-	    character.spriteOffset.y = 128; // face sprite down
-	    	if (!world.findCollision(10, character.speed +45)){
-		    	character.position.y += character.speed;
+	    	this.spriteOffset.y = 128; // face sprite down
+	    	if (!world.findCollision(10, this.speed +45)){
+		    	this.position.y += this.speed;
 			}
 		}else if(move.right){
-			character.spriteOffset.y = 192;
-	    	if(!world.findCollision(character.speed +20, 44)){
-    			character.position.x += character.speed;
+			this.spriteOffset.y = 192;
+	    	if(!world.findCollision(this.speed +20, 44)){
+    			this.position.x += this.speed;
     		}
 		}
+		if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right) && this.animation === 'walk'){
+			this.spriteOffset.x += 64;
+		}
+		if(!(move.up || move.left || move.down || move.right)){
+			character.spriteOffset.x = 0;
+		}
 	}
-	// Move this animation state into the Character object
-	if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right)){
-		character.spriteOffset.x += 64;
-	}
-	
-	if (character.spriteOffset.x === 576){
+	if (character.spriteOffset.x >= this.maxsx){
 		character.spriteOffset.x = 64;
-	}
-	
-	if(! (move.up || move.left || move.down || move.right )){
-		character.spriteOffset.x = 0;
+		if(this.animation === this.attack){
+			this.attacked = true;
+		}
 	}
 };
 
@@ -808,6 +928,9 @@ var gameKeydown = function(event) {
 };
 
 var gameKeyup = function(event) {
+		if(event.keyCode === 32){
+    		keys.space = false;
+    	}
 		switch (event.keyCode) {
 			case 87: // 'w' key
 			case 38: // up arrow
