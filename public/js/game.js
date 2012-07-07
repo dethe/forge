@@ -17,6 +17,10 @@ var mouseX = 0;
 var mouseY = 0;
 var click = false;
 var keydown = false;
+var dialogY = 240;
+var dialogdirectionY = 'stay';
+var dialogtext = '';
+var futuredialogtext = 'Hello and welcome to the game FORGE, blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah';
 
 var keys = {
 	0: false,
@@ -140,7 +144,7 @@ function loadImages(){
 //loads images
 
 var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
-var UI = loadImages('button_default', 'input')
+var UI = loadImages('button_default', 'input', 'confirm_bg')
 
 setInterval(function(){
 	if(character.attacked === true){
@@ -166,8 +170,8 @@ function Character(){
     this.name = 'ForgeDev';
     this.speed = 3;
     this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armour', 'brown_shoes'];
-    this.weapon = 'darkness_staff';
-    this.attack = 'spellcast';
+    this.weapon = 'bow';
+    this.attack = 'shoot';
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
@@ -274,8 +278,33 @@ function Character(){
     this.spellcast_air_staff = loadImage('character/spellcast/WEAPON_white_staff');
     this.spellcast_lightning_staff = loadImage('character/spellcast/WEAPON_white_staff');
     
-    // Load spellcast animation for sprites
-     
+    // Load bow animation for sprites
+    this.shoot_leather_belt = loadImage('character/bow/BELT_leather');
+    this.shoot_rope_belt = loadImage('character/bow/BELT_rope');
+    this.shoot_character = loadImage('character/bow/BODY_male');
+    this.shoot_plate_shoes = loadImage('character/bow/FEET_plate_armor_shoes');
+    this.shoot_brown_shoes = loadImage('character/bow/FEET_shoes_brown');
+    this.shoot_plate_gloves = loadImage('character/bow/HANDS_plate_armor_gloves');
+    this.shoot_helmet = loadImage('character/bow/HEAD_chain_armor_helmet');
+    this.shoot_chain_hood = loadImage('character/bow/HEAD_chain_armor_hood');
+    this.shoot_blonde_hair = loadImage('character/bow/HEAD_hair_blonde');
+    this.shoot_leather_hat = loadImage('character/bow/HEAD_leather_armor_hat');
+    this.shoot_plate_helmet = loadImage('character/bow/HEAD_plate_armor_helmet');
+    this.shoot_robe_hood = loadImage('character/bow/HEAD_robe_hood');
+    this.shoot_green_pants = loadImage('character/bow/LEGS_pants_greenish');
+    this.shoot_plate_pants = loadImage('character/bow/LEGS_plate_armor_pants');
+    this.shoot_robe_skirt = loadImage('character/bow/LEGS_robe_skirt');
+    this.shoot_chain_jacket_purple = loadImage('character/bow/TORSO_chain_armor_jacket_purple');
+    this.shoot_chain_armor = loadImage('character/bow/TORSO_chain_armor_torso');
+    this.shoot_bracers = loadImage('character/bow/TORSO_leather_armor_bracers');
+    this.shoot_white_shirt = loadImage('character/bow/TORSO_leather_armor_shirt_white');
+    this.shoot_shoulder_armor = loadImage('character/bow/TORSO_leather_armor_shoulders');
+    this.shoot_leather_armour = loadImage('character/bow/TORSO_leather_armor_torso');
+    this.shoot_plate_shoulder_armor = loadImage('character/bow/TORSO_plate_armor_arms_shoulders');
+    this.shoot_plate_armor = loadImage('character/bow/TORSO_plate_armor_torso');
+    this.shoot_robe_shirt = loadImage('character/bow/TORSO_robe_shirt_brown');
+    this.shoot_arrow = loadImage('character/bow/WEAPON_arrow');
+    this.shoot_bow = loadImage('character/bow/WEAPON_bow');
 }
 
 Character.prototype.centre = function(){
@@ -304,7 +333,13 @@ Character.prototype.draw = function(ctx){
     }
     if(keys.space){
     	this.animation = this.attack;
-    	this.maxsx = 384;
+    	if(this.animation === 'spellcast'){
+    		this.maxsx = 448;
+    	}else if(this.animation === 'slash'){
+    		this.maxsx = 384;
+    	}else if(this.animation === 'shoot'){
+    		this.maxsx = 832;
+    	}
     	if(this.attacked === false){
     		if(this.animation === 'spellcast'){
     			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2 + 2, HEIGHT/2 + 7, this.size.w, this.size.h);
@@ -804,9 +839,38 @@ function UIButton(text, x, y, w, h, trigger){
         ctx.fillStyle = 'black';
         ctx.font = '14pt "Press Start 2P"';
         ctx.textAlign = 'center';
-        ctx.fillText(text, x + w/2, y + 35, w - 20);
+        ctx.fillText(text, x + w/2+10, y + 35, w - 20);
     }
     return new UIElement(text, x, y, w, h, draw, trigger);
+}
+
+function UIBox(text, x, y, w, h){
+	function draw(ctx){
+		ctx.drawImage(UI.confirm_bg, 0, 0, 32, 32, x, y, 32, 32);
+		ctx.drawImage(UI.confirm_bg, 160, 0, 32, 32, x+w-32, y, 32, 32);
+		ctx.drawImage(UI.confirm_bg, 32, 0, 32, 32, x+32, y, w-64, 32);
+		ctx.drawImage(UI.confirm_bg, 0, 32, 32, 32, x, y+h-32, 32, 32);
+		ctx.drawImage(UI.confirm_bg, 160, 32, 32, 32, x+w-32, y+h-32, 32, 32);
+		ctx.drawImage(UI.confirm_bg, 32, 32, 32, 32, x+32, y+h-32, w-64, 32);
+		ctx.drawImage(UI.confirm_bg, 0, 16, 32, 32, x, y+32, 32, h-64);
+		ctx.drawImage(UI.confirm_bg, 160, 16, 32, 32, x+w-32, y+32, 32, h-64);
+		ctx.drawImage(UI.confirm_bg, 32, 16, 32, 32, x+32, y+32, w-64, h-64);
+		ctx.fillStyle = '#fff';
+        ctx.font = '10pt "Press Start 2P"';
+        ctx.textAlign = 'left'
+        var s;
+        for(var i = 0; i < text.length; i++){
+        	s = i;
+        	var r = 0;
+        	if(i>=132){
+        		var q = i/132 + '';
+        		r = (q[0] * 25);
+        		s = i - (q[0] * 132);
+        	}
+        	ctx.fillText(text[i], x+20+(s*13), y+35+r);
+        }
+	}
+	return new UIElement(text, x, y, w, h, draw);
 }
 
 function UITitle(text, x, y){
@@ -871,8 +935,24 @@ function drawGame(){
 	});
 	character.draw(ctx);
 	world.drawtop();
+	if(dialogdirectionY === 'up'){
+		if(dialogY < 240){
+			dialogY += 5;
+		}
+	}else if(dialogdirectionY === 'down'){
+		if(dialogY > -240){
+			dialogY -= 5;
+		}
+	}
+	if(dialogtext.length != futuredialogtext.length){
+		var t = futuredialogtext.split('');
+		dialogtext += t[(dialogtext.length)];
+	}
+	var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
+	var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
+
 
 
 /////////////////////////////////////////
