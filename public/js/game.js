@@ -305,8 +305,10 @@ function Character(){
     this.spriteOffset = {x: 0, y: 128};
     
     // Load sprites
-    loadClothes();
+    this.loadClothes();
 }
+
+Character.prototype.loadClothes = loadClothes;
 
 Character.prototype.centre = function(){
     return ({x: this.position.x + this.size.w / 2, y: this.position.y + this.size.h / 2});
@@ -578,8 +580,10 @@ function NPC(name, x, y, direction, AI, clothing, talk, talkObj){
 	this.clothing = clothing;
 	this.talk = talk;
 	this.talkObj = talkObj;
-	loadClothes();
+	this.loadClothes();
 };
+
+NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
 	//console.log(this.walk_character)
