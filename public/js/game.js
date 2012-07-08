@@ -134,57 +134,8 @@ function loadImages(){
 	return ret;
 }
 
-
-/////////////////////////////////////////
-//
-//           PLAYER CHARACTER
-//
-/////////////////////////////////////////
-
-//loads images
-
-var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
-var UI = loadImages('button_default', 'input', 'confirm_bg')
-
-setInterval(function(){
-	if(character.attacked === true){
-		character.animation = character.attack;
-		character.spriteOffset.x = 0;
-	}
-	if(character.animation === character.attack){
-		character.attacked = false;
-		if(move.up){
-			character.spriteOffset.y = 0; // face sprite up
-		}else if(move.left){
-	    	character.spriteOffset.y = 64; // face sprite left
-		}else if(move.down){
-	    	character.spriteOffset.y = 128; // face sprite down
-		}else if(move.right){
-			character.spriteOffset.y = 192;
-		};
-	}
-}, 800);
-
-function Character(){
-    // Attributes
-    this.name = 'ForgeDev';
-    this.speed = 3;
-    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armour', 'brown_shoes'];
-    this.weapon = 'bow';
-    this.attack = 'shoot';
-    this.animation = 'walk';
-    this.maxsx = 576;
-    this.attacked = false;
-    
-    // Mapping info and state
-    this.position = {x: 320, y: 320};
-    this.size = {w: 64, h: 64};
-    this.spriteOffset = {x: 0, y: 128};
-    
-    // Load sprites
-    
-    // Load walk animation for sprites
-    this.walk_quiver = loadImage('character/walkcycle/BEHIND_quiver');
+function loadClothes(){
+	this.walk_quiver = loadImage('character/walkcycle/BEHIND_quiver');
     this.walk_leather_belt = loadImage('character/walkcycle/BELT_leather');
     this.walk_rope_belt = loadImage('character/walkcycle/BELT_rope');
     this.walk_character = loadImage('character/walkcycle/BODY_male');
@@ -305,6 +256,56 @@ function Character(){
     this.shoot_robe_shirt = loadImage('character/bow/TORSO_robe_shirt_brown');
     this.shoot_arrow = loadImage('character/bow/WEAPON_arrow');
     this.shoot_bow = loadImage('character/bow/WEAPON_bow');
+}
+
+/////////////////////////////////////////
+//
+//           PLAYER CHARACTER
+//
+/////////////////////////////////////////
+
+//loads images
+
+var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
+var UI = loadImages('button_default', 'input', 'confirm_bg')
+
+setInterval(function(){
+	if(character.attacked === true){
+		character.animation = character.attack;
+		character.spriteOffset.x = 0;
+	}
+	if(character.animation === character.attack){
+		character.attacked = false;
+		if(move.up){
+			character.spriteOffset.y = 0; // face sprite up
+		}else if(move.left){
+	    	character.spriteOffset.y = 64; // face sprite left
+		}else if(move.down){
+	    	character.spriteOffset.y = 128; // face sprite down
+		}else if(move.right){
+			character.spriteOffset.y = 192;
+		};
+	}
+}, 800);
+
+function Character(){
+    // Attributes
+    this.name = 'ForgeDev';
+    this.speed = 3;
+    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armour', 'brown_shoes'];
+    this.weapon = 'bow';
+    this.attack = 'shoot';
+    this.animation = 'walk';
+    this.maxsx = 576;
+    this.attacked = false;
+    
+    // Mapping info and state
+    this.position = {x: 320, y: 320};
+    this.size = {w: 64, h: 64};
+    this.spriteOffset = {x: 0, y: 128};
+    
+    // Load sprites
+    loadClothes();
 }
 
 Character.prototype.centre = function(){
@@ -558,7 +559,63 @@ var monsters = [
 	new Monster('slime', 800,300,1)
 ];
 
+/////////////////////////////////////////
+//
+//           NPC's
+//
+/////////////////////////////////////////
 
+function NPC(name, x, y, direction, AI, clothing, talk, talkObj){
+	this.d = 1;
+	this.x = x + character.position.x;
+	this.y = y + character.position.y;
+	this.w = 32;
+	this.h = 32;
+	this.animate_idx = 0;
+	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
+	this.name = name;
+	this.AI = AI;
+	this.clothing = clothing;
+	this.talk = talk;
+	this.talkObj = talkObj;
+	loadClothes();
+};
+
+NPC.prototype.draw = function(ctx){
+	//console.log(this.walk_character)
+	//ctx.drawImage(this.walk_character, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x - character.position.x, this.y - character.position.y, this.w, this.h);
+};
+
+var NPCs = [
+	new NPC('bob', 800, 800, 2, 'none', ['white_shirt', 'greenish_pants'], true, {
+		'text': 'Hello strange person who are you?',
+		'question1': {
+			'text': 'Where am I?',
+			'answer': {
+				'text': 'You are in the game FORGE',
+				'question1': {
+					'text': 'So if I am in the game FORGE, why am I here?',
+					'answer': {
+						'text': 'To play FORGE of course',
+						'question1': {
+							'text': 'Can I start the tutorial now then?',
+							'answer': {
+								'text': 'Yes...',
+								//SOMETHING HAPPENS!!!
+							}
+						}
+					}
+				}
+			}
+		},
+		'question1': {
+			'text': 'Who am I?',
+			'answer': {
+				'text': "I don't know. Thats what I asked you!"
+			}
+		},
+	})
+]
 
 /////////////////////////////////////////
 //
@@ -932,6 +989,10 @@ function drawGame(){
 	monsters.forEach(function(monster){
 		monster.useAI();
 		monster.draw(ctx);
+	});
+	NPCs.forEach(function(NPC){
+		//NPC.useAI();
+		NPC.draw(ctx);
 	});
 	character.draw(ctx);
 	world.drawtop();
