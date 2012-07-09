@@ -675,7 +675,7 @@ NPC.prototype.move = function(dx, dy){
 };
 
 var NPCs = [
-	new NPC('Soldier', 100, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_armor', 'robe_skirt', 'plate_shoes'], true, {
+	new NPC('Soldier', 100, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {
 		'text': 'Hello strange person who are you?',
 		'question1': {
 			'text': 'Where am I?',
@@ -703,7 +703,9 @@ var NPCs = [
 			}
 		},
 	}),
-	new NPC('Soldier', 200, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
+	new NPC('Soldier', 175, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
+	new NPC('Soldier', 250, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
+	new NPC('Captain', 325, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['helmet', 'plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
 ]
 
 /////////////////////////////////////////
