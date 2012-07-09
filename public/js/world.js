@@ -438,14 +438,11 @@ function World(){
 	window.parseWorld = parseWorld;
 	
 	function findCollision(xOffset, yOffset){
-		var tilesX = Math.round((character.position.x + xOffset) / 32);
-	    var tilesY = Math.round((character.position.y + yOffset) / 32);
+		var tilesX = Math.round(xOffset / 32);
+	    var tilesY = Math.round(yOffset / 32);
 	    try{
 		    var location = world[tilesY][tilesX];
 		    if (location.collision) location[0].debug();
-            // if(frame%30 === 0){
-            //              console.log(location);
-            // }
 		    return location.collision;
 		}catch(e){
 		    return true;
@@ -456,7 +453,7 @@ function World(){
     // We were only using it to find collisions, which we can
     // do more simply with findCollision()
     //WE NEED THIS FOR FINDING THE TILE A CHARACTER OR MONSTER IS ON AND FOR CHECKING MONSTERS COLLIDING WITH STUFF
-        function findCharTile(xOffset, yOffset, findCollision, xANDy){
+    function findCharTile(xOffset, yOffset, findCollision, xANDy){
     	var tile;
     	var cx = character.position.x;
     	var cy = character.position.y;
@@ -464,8 +461,8 @@ function World(){
     	if(!!xANDy){
     		cx = xANDy.x;
     		cy = xANDy.y;
-    		tilesY = Math.round((cy - yOffset - character.position.y) / 32);
-    		tilesX = Math.round((cx - xOffset - character.position.x) / 32);
+    		tilesY = Math.round((cy - yOffset) / 32);
+    		tilesX = Math.round((cx - xOffset) / 32);
     		tile = world[tilesY][tilesX];
     	}else{
     		tilesY = Math.round((cy - yOffset) / 32);
@@ -502,7 +499,7 @@ function World(){
         }
     };
     
-    function drawworld(){
+    function drawworld(ctx){
     	top = [];
         for(var i = 0; i < world.length; i++){
             for(var e = 0; e < world[i].length; e++){
@@ -518,7 +515,7 @@ function World(){
         }
     }
     
-    function drawworldtop(){
+    function drawworldtop(ctx){
     	for(var z = 0; z < top.length; z++){
     		var tile = world[top[z][0]][top[z][1]][top[z][2]];
     		ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - character.position.x, tile.y + HEIGHT/2 - character.position.y, 32, 32);
