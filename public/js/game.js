@@ -18,7 +18,7 @@ var mouseY = 0;
 var click = false;
 var keydown = false;
 var dialogY = 240;
-var dialogdirectionY = 'stay';
+var dialogdirectionY = 'up';
 var dialogtext = '';
 var futuredialogtext = 'Hello and welcome to the game FORGE, blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah';
 
@@ -157,7 +157,7 @@ function loadClothes(){
     this.walk_bracers = loadImage('character/walkcycle/TORSO_leather_armor_bracers');
     this.walk_white_shirt = loadImage('character/walkcycle/TORSO_leather_armor_shirt_white');
     this.walk_shoulder_armor = loadImage('character/walkcycle/TORSO_leather_armor_shoulders');
-    this.walk_leather_armour = loadImage('character/walkcycle/TORSO_leather_armor_torso');
+    this.walk_leather_armor = loadImage('character/walkcycle/TORSO_leather_armor_torso');
     this.walk_plate_shoulder_armor = loadImage('character/walkcycle/TORSO_plate_armor_arms_shoulders');
     this.walk_plate_armor = loadImage('character/walkcycle/TORSO_plate_armor_torso');
     this.walk_robe_shirt = loadImage('character/walkcycle/TORSO_robe_shirt_brown');
@@ -186,7 +186,7 @@ function loadClothes(){
     this.slash_bracers = loadImage('character/slash/TORSO_leather_armor_bracers');
     this.slash_white_shirt = loadImage('character/slash/TORSO_leather_armor_shirt_white');
     this.slash_shoulder_armor = loadImage('character/slash/TORSO_leather_armor_shoulders');
-    this.slash_leather_armour = loadImage('character/slash/TORSO_leather_armor_torso');
+    this.slash_leather_armor = loadImage('character/slash/TORSO_leather_armor_torso');
     this.slash_plate_shoulder_armor = loadImage('character/slash/TORSO_plate_armor_arms_shoulders');
     this.slash_plate_armor = loadImage('character/slash/TORSO_plate_armor_torso');
     this.slash_robe_shirt = loadImage('character/slash/TORSO_robe_shirt_brown');
@@ -216,7 +216,7 @@ function loadClothes(){
     this.spellcast_bracers = loadImage('character/spellcast/TORSO_leather_armor_bracers');
     this.spellcast_white_shirt = loadImage('character/spellcast/TORSO_leather_armor_shirt_white');
     this.spellcast_shoulder_armor = loadImage('character/spellcast/TORSO_leather_armor_shoulders');
-    this.spellcast_leather_armour = loadImage('character/spellcast/TORSO_leather_armor_torso');
+    this.spellcast_leather_armor = loadImage('character/spellcast/TORSO_leather_armor_torso');
     this.spellcast_plate_shoulder_armor = loadImage('character/spellcast/TORSO_plate_armor_arms_shoulders');
     this.spellcast_plate_armor = loadImage('character/spellcast/TORSO_plate_armor_torso');
     this.spellcast_robe_shirt = loadImage('character/spellcast/TORSO_robe_shirt_brown');
@@ -250,7 +250,7 @@ function loadClothes(){
     this.shoot_bracers = loadImage('character/bow/TORSO_leather_armor_bracers');
     this.shoot_white_shirt = loadImage('character/bow/TORSO_leather_armor_shirt_white');
     this.shoot_shoulder_armor = loadImage('character/bow/TORSO_leather_armor_shoulders');
-    this.shoot_leather_armour = loadImage('character/bow/TORSO_leather_armor_torso');
+    this.shoot_leather_armor = loadImage('character/bow/TORSO_leather_armor_torso');
     this.shoot_plate_shoulder_armor = loadImage('character/bow/TORSO_plate_armor_arms_shoulders');
     this.shoot_plate_armor = loadImage('character/bow/TORSO_plate_armor_torso');
     this.shoot_robe_shirt = loadImage('character/bow/TORSO_robe_shirt_brown');
@@ -290,9 +290,9 @@ setInterval(function(){
 
 function Character(){
     // Attributes
-    this.name = 'ForgeDev';
+    this.name = 'Player_Name';
     this.speed = 3;
-    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armour', 'brown_shoes'];
+    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
     this.weapon = 'bow';
     this.attack = 'shoot';
     this.animation = 'walk';
@@ -392,10 +392,10 @@ Character.prototype.draw = function(ctx){
 			this.spriteOffset.x += 64;
 		}
 		if(!(move.up || move.left || move.down || move.right)){
-			character.spriteOffset.x = 0;
+			this.spriteOffset.x = 0;
 		}
 	}
-	if (character.spriteOffset.x >= this.maxsx){
+	if(this.spriteOffset.x >= this.maxsx){
 		character.spriteOffset.x = 64;
 		if(this.animation === this.attack){
 			this.attacked = true;
@@ -497,8 +497,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = WIDTH/2 - (this.x - character.position.x);
-		var distanceY = HEIGHT/2 - (this.y - character.position.y);
+		var distanceX = WIDTH/2 - (this.x - character.position.x - 16);
+		var distanceY = HEIGHT/2 - (this.y - character.position.y - 16);
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -567,31 +567,115 @@ var monsters = [
 //
 /////////////////////////////////////////
 
-function NPC(name, x, y, direction, AI, clothing, talk, talkObj){
-	this.d = 1;
-	this.x = x + character.position.x;
-	this.y = y + character.position.y;
-	this.w = 32;
-	this.h = 32;
-	this.animate_idx = 0;
+function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
+	this.animation = 'walk';
+	this.position = {x: x, y: y};
+    this.size = {w: 64, h: 64};
+    this.spriteOffset = {x: 0, y: 128};
 	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
 	this.name = name;
-	this.AI = AI;
-	this.clothing = clothing;
+	this.path = path;
+	this.path_progress = 0;
+	this.clothes = clothing;
 	this.talk = talk;
 	this.talkObj = talkObj;
 	this.loadClothes();
+	this.maxsx = 576;
+	this.animating = true;
+	this.AIxy = 'x';
+	this.speed = speed;
 };
 
 NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
 	//console.log(this.walk_character)
-	//ctx.drawImage(this.walk_character, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x - character.position.x, this.y - character.position.y, this.w, this.h);
+	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + (WIDTH/2) - character.position.x, this.position.y + (HEIGHT/2) - character.position.y, this.size.w, this.size.h);
+	for(i=0; i < this.clothes.length; i++){
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + (WIDTH/2) - character.position.x, this.position.y + (HEIGHT/2) - character.position.y, this.size.w, this.size.h);
+	}
+	ctx.fillStyle = '#000';
+	ctx.font = '6pt "press start 2p"';
+	ctx.textAlign = 'center'
+	ctx.fillText(this.name, this.position.x + (WIDTH/2) - character.position.x + 32, this.position.y + (HEIGHT/2) - character.position.y + 10);
+};
+
+NPC.prototype.faceEast = function(){
+	this.direction = 3;
+};
+NPC.prototype.faceWest = function(){
+	this.direction = 1;
+};
+NPC.prototype.faceNorth = function(){
+	this.direction = 0;
+};
+NPC.prototype.faceSouth = function(){
+	this.direction = 2;
+};
+
+NPC.prototype.useAI = function(){
+	var distanceX = this.path[this.path_progress][0] - this.position.x;
+	var distanceY = this.path[this.path_progress][1] - this.position.y;
+	if(distanceX < 10 && distanceX > -10 && distanceY < 10 && distanceY > -10){
+		this.path_progress += 1;
+		if(this.path_progress > (this.path.length - 1)){
+			this.path_progress = 0;
+		}
+	}else if(distanceX < 10 && distanceX > -10){
+		this.AIxy = 'y';
+	}else if(distanceY < 10 && distanceY > -10){
+		this.AIxy = 'x';
+	};
+	if(this.AIxy === 'x'){
+		if(distanceX > 0){
+			this.faceEast();
+		}else{
+			this.faceWest();
+		};
+	}else{
+		if(distanceY < 0){
+			this.faceNorth();
+		}else{
+			this.faceSouth();
+		};
+	};	
+	this.walk();
+};
+
+NPC.prototype.walk = function(){
+	var dx, dy;
+	if (this.direction % 2){
+		dx = (this.direction - 2); // move one pixel left or right
+		dy = 0;
+	}else{
+		dx = 0;
+		dy = (this.direction - 1); // move one pixel up or down
+	}
+	this.move(dx, dy);
+};
+
+NPC.prototype.move = function(dx, dy){
+	
+	if(this.animating){
+		if(frame%5 === 0){
+			this.spriteOffset.x += 64;
+		}
+		this.spriteOffset.y = this.direction*64;
+		if((this.path[this.path_progress][0] - this.position.x) < 10 && (this.path[this.path_progress][0] - this.position.x) > -10 && (this.path[this.path_progress][1] - this.position.y) < 10 && (this.path[this.path_progress][1] - this.position.y) > -10){
+			
+		}
+		this.position.x += dx*this.speed;
+		this.position.y += dy*this.speed;
+	}else{
+		this.spriteOffset.x = 0;
+	}
+	if(this.spriteOffset.x >= this.maxsx){
+		this.spriteOffset.x = 64;
+	}
 };
 
 var NPCs = [
-	new NPC('bob', 800, 800, 2, 'none', ['white_shirt', 'greenish_pants'], true, {
+	new NPC('Soldier', 100, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_armor', 'robe_skirt', 'plate_shoes'], true, {
 		'text': 'Hello strange person who are you?',
 		'question1': {
 			'text': 'Where am I?',
@@ -618,7 +702,8 @@ var NPCs = [
 				'text': "I don't know. Thats what I asked you!"
 			}
 		},
-	})
+	}),
+	new NPC('Soldier', 200, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
 ]
 
 /////////////////////////////////////////
@@ -919,17 +1004,7 @@ function UIBox(text, x, y, w, h){
 		ctx.fillStyle = '#fff';
         ctx.font = '10pt "Press Start 2P"';
         ctx.textAlign = 'left'
-        var s;
-        for(var i = 0; i < text.length; i++){
-        	s = i;
-        	var r = 0;
-        	if(i>=132){
-        		var q = i/132 + '';
-        		r = (q[0] * 25);
-        		s = i - (q[0] * 132);
-        	}
-        	ctx.fillText(text[i], x+20+(s*13), y+35+r);
-        }
+        ctx.fillText(text, x+20, y+35, WIDTH-20);
 	}
 	return new UIElement(text, x, y, w, h, draw);
 }
@@ -995,7 +1070,7 @@ function drawGame(){
 		monster.draw(ctx);
 	});
 	NPCs.forEach(function(NPC){
-		//NPC.useAI();
+		NPC.useAI();
 		NPC.draw(ctx);
 	});
 	character.draw(ctx);
@@ -1013,6 +1088,12 @@ function drawGame(){
 		var t = futuredialogtext.split('');
 		dialogtext += t[(dialogtext.length)];
 	}
+	var box = UIBox('     ' + character.name, 180, 40, 350, 120).draw(ctx);
+	ctx.beginPath();
+	ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
+	ctx.closePath();
+	ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+	ctx.fill();
 	var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
 	var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
