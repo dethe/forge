@@ -1066,7 +1066,7 @@ function drawGame(){
 	frame += 1;
     resize();
 	clear();
-	ctx.push();
+	ctx.save();
 	ctx.translate(-character.position.x, -character.position.y);
 	world.draw(ctx);
 	monsters.forEach(function(monster){
@@ -1100,6 +1100,7 @@ function drawGame(){
 	ctx.fill();
 	var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
 	var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
+	ctx.restore();
 	gameLoop = requestAnimationFrame(drawGame);
 }
 

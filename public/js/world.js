@@ -1,11 +1,31 @@
 function World(){
-	
-	var worldspec = [[["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass BC",""],["Water BD","Grass CC",""],["Water BD","Water BD",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AC","Grass BD",""],["Grass BC","Grass BD",""],["Grass BC","Grass BD",""],["Grass BC","Grass BD",""],["Grass BC","Grass BD",""],["Grass BC","Grass BD",""],["Grass BC","Grass BD",""],["Grass BC","Grass BD",""],["Grass CC","Grass BD",""],["","Grass BD","Farming_Fishing GA"],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD","Farming_Fishing AA"],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD","Farming_Fishing AB"],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD","Barrels CA"],["","Grass BD","Barrels DA"],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD","Barrels CB"],["","Grass BD","Barrels DB"],["","Grass BD",""],["","Grass BD","Farming_Fishing AA"],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD","Farming_Fishing AB"],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["Grass AD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD","Barrels AA"],["Grass AE","Grass BD",""],["Grass BE","Grass BD",""],["Grass BE","Grass BD",""],["Grass BE","Grass BD",""],["Grass BE","Grass BD",""],["Grass BE","Grass BD",""],["Grass BE","Grass BD",""],["Grass BE","Grass BD",""],["Grass CE","Grass BD",""],["Grass BE","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD","Barrels AB"],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD","Tileset01 SQ"],["","Grass BD","Tileset01 TQ"],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD","Tileset01 SR"],["","Grass BD","Tileset01 TR"],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AD",""],["Water BD","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["","Grass BD",""],["Water BD","Grass CD",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","Grass AE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass BE",""],["Water BD","Grass CE",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""]],[["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""],["Water BD","",""]]];
+
+    function WorldChunk(name, x, y){
+        this.name = name;
+        this.x = x;
+        this.y = y;
+        this.init();
+    }
+
+    WorldChunk.prototype.init = function(){
+        var req = new XMLHttpRequest();
+        req.addEventListener('load', function(evt){
+            parseWorldChunk(JSON.parse(req.responseText), this);
+        });
+        req.addEventListener('error', function(evt){
+            console.log('Error loading map');
+        });
+        req.addEventListener('abort', function(evt){
+            console.log('Loading map cancelled');
+        });
+        req.open('GET', 'maps/' + this.name + '.json', true);
+        req.send()
+    };
+    
+    var chunk = new WorldChunk('small_island', 20, 20);
 
 	var world = [];
 
-	var worldorigin = [0, 0];
-	
 	var top = [];
 
 	var offsets = {
@@ -411,31 +431,31 @@ function World(){
     	TT: { x: 608, y: 608 }
 	};
 
-	function parseWorld(worldspec){
+	function parseWorldChunk(chunkspec, chunk){
 	    world = [];
-		for(var i = 0; i < worldspec.length; i++){
+		for(var i = 0; i < chunkspec.length; i++){
 			var row = [];
 			world.push(row);
-			for(var e = 0; e < worldspec[i].length; e++){
+			for(var e = 0; e < chunkspec[i].length; e++){
 				var location = [];
 				row.push(location);
-				var spec = worldspec[i][e];
+				var spec = chunkspec[i][e];
 				if (!spec || spec === '') continue;
 				if (isArray(spec)){
 					spec.forEach(function(subspec){
 					    if (subspec === 'collision'){
 					        location.collision = true;
 					    }else if (subspec !== ''){
-							location.push(new Tile(subspec,e,i));
+							location.push(new Tile(subspec,e,i, chunk));
 					    }
 					});
 				}else{
-					location.push(new Tile(spec,e,i));
+					location.push(new Tile(spec,e,i, chunk));
 				}
 			}
 		}
 	};
-	window.parseWorld = parseWorld;
+	window.parseWorldChunk = parseWorldChunk;
 	
 	function findCollision(xOffset, yOffset){
 		var tilesX = Math.round(xOffset / 32);
@@ -473,7 +493,7 @@ function World(){
     	return tile;
     }
 
-    function Tile(spec, tx, ty){
+    function Tile(spec, tx, ty, chunk){
      var tile_offset = spec.split(' '),
          tile = terrain[tile_offset[0].toLowerCase()],
          offset = offsets[tile_offset[1]];
@@ -483,8 +503,8 @@ function World(){
          this.sy = offset.y;
          this.w = 32;
          this.h = 32;
-         this.x =  (tx - worldorigin[0]) * 32;
-         this.y = (ty - worldorigin[1]) * 32;
+         this.x =  (tx - chunk.x) * 32;
+         this.y = (ty - chunk.y) * 32;
     }
     
     Tile.prototype.draw = function(ctx){
@@ -521,8 +541,6 @@ function World(){
     		ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x + WIDTH/2 - character.position.x, tile.y + HEIGHT/2 - character.position.y, 32, 32);
     	}
     }
-    
-    parseWorld(worldspec);
     return {
         world: world, 
         draw: drawworld,
