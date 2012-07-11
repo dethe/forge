@@ -4,7 +4,7 @@
 //
 /////////////////////////////////////////
 
-
+var DEBUG = false   ;   
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var frame = 0;
@@ -431,21 +431,22 @@ var WEST = 1;
 /////////////////////////////////////////
 
 
-function Monster(sprite, x, y, direction){
+function Monster(opts){
+    this.name = opts.name;
 	this.d = 1;
-	this.x = x;
-	this.y = y;
+	this.x = opts.x;
+	this.y = opts.y;
 	this.w = 32;
 	this.h = 32;
 	this.sprite = new Image();
-	this.sprite.src = 'public/graphics/' + sprite + '.png';
+	this.sprite.src = 'public/graphics/' + opts.name + '.png';
 	this.animate_idx = 0;
-	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
-	this.name = sprite;
-	this.HP = monsterInfo[sprite].HP;
-	this.damage = monsterInfo[sprite].damage;
-	this.sensing = monsterInfo[sprite].sensing;
-	this.AI = monsterInfo[sprite].AI;
+	this.direction = opts.direction;
+	this.speed = opts.speed;
+	this.HP = opts.HP;
+	this.damage = opts.damage;
+	this.sensing = opts.sensing;
+	this.AI = opts.AI;
 	this.AIxy = 'x';
 };
 Monster.prototype.move = function(dx, dy){
@@ -460,8 +461,8 @@ Monster.prototype.move = function(dx, dy){
 	var mc = this.centre();
 	var cc = character.centre();
 	var distanceToCharacter = Math.sqrt(Math.pow((cc.x -mc.x), 2) + Math.pow((cc.y - mc.y), 2)) - 40;
-	this.x += dx * Math.min(distanceToCharacter, monsterInfo[this.name].speed);
-	this.y += dy * Math.min(distanceToCharacter, monsterInfo[this.name].speed);
+	this.x += dx * Math.min(distanceToCharacter, this.speed);
+	this.y += dy * Math.min(distanceToCharacter, this.speed);
     if(DEBUG && frame%30 === 0){
                  console.log(distanceToCharacter);
                  console.log('%s: %s, %s', this.name, this.x, this.y);
@@ -497,8 +498,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = this.x - 16;
-		var distanceY = this.y - 16;
+		var distanceX = character.position.x - this.x - 16;
+		var distanceY = character.position.y - this.y - 16;
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -539,26 +540,29 @@ Monster.prototype.draw = function(ctx){
     }
 };
 
-var monsterInfo = {
-	bat: {
-		speed:2.2,
-		HP:7,
-		sensing:20,
-		damage:3,
-		AI:'normal'
-	},
-	slime: {
-		speed:1.2,
-		HP:12,
-		sensing:10,
-		damage:5,
-		AI:'normal'
-	}
-};
-
 var monsters = [
-	new Monster('bat', 800,500, 0),
-	new Monster('slime', 800,300,1)
+	new Monster({
+	    name: 'bat', 
+	    x: 400,
+	    y: 50,
+	    direction: NORTH,
+	    speed: 2.2,
+	    HP: 7,
+	    sensing: 20,
+	    damage: 3,
+	    AI: 'normal'
+	}),
+	new Monster({
+	    name: 'slime', 
+	    x: 50,
+	    y: 300,
+	    direction: WEST,
+	    speed: 1.2,
+	    HP: 12,
+	    sensing: 10,
+	    damage: 5,
+	    AI: 'normal'
+	})
 ];
 
 /////////////////////////////////////////
@@ -601,16 +605,16 @@ NPC.prototype.draw = function(ctx){
 };
 
 NPC.prototype.faceEast = function(){
-	this.direction = 3;
+	this.direction = EAST;
 };
 NPC.prototype.faceWest = function(){
-	this.direction = 1;
+	this.direction = WEST;
 };
 NPC.prototype.faceNorth = function(){
-	this.direction = 0;
+	this.direction = NORTH;
 };
 NPC.prototype.faceSouth = function(){
-	this.direction = 2;
+	this.direction = SOUTH;
 };
 
 NPC.prototype.useAI = function(){
@@ -1082,27 +1086,27 @@ function drawGame(){
 	character.draw(ctx);
 	world.drawtop(ctx);
     ctx.restore();
-    // if(dialogdirectionY === 'up'){
-    //  if(dialogY < 240){
-    //      dialogY += 5;
-    //  }
-    // }else if(dialogdirectionY === 'down'){
-    //  if(dialogY > -240){
-    //      dialogY -= 5;
-    //  }
-    // }
-    //     if(dialogtext.length != futuredialogtext.length){
-    //      var t = futuredialogtext.split('');
-    //      dialogtext += t[(dialogtext.length)];
-    //     }
-    //     var box = UIBox('     ' + character.name, 180, 40, 350, 120).draw(ctx);
-    // ctx.beginPath();
-    // ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
-    // ctx.closePath();
-    // ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-    // ctx.fill();
-    //     var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
-    //     var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
+    if(dialogdirectionY === 'up'){
+     if(dialogY < 240){
+         dialogY += 5;
+     }
+    }else if(dialogdirectionY === 'down'){
+     if(dialogY > -240){
+         dialogY -= 5;
+     }
+    }
+        if(dialogtext.length != futuredialogtext.length){
+         var t = futuredialogtext.split('');
+         dialogtext += t[(dialogtext.length)];
+        }
+        var box = UIBox('     ' + character.name, 180, 40, 350, 120).draw(ctx);
+    ctx.beginPath();
+    ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+    ctx.fill();
+        var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
+        var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 

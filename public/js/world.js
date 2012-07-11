@@ -29,6 +29,11 @@ function World(){
 
 	var top = [];
 
+    var NORTH = 0,
+        WEST = 1,
+        SOUTH = 2,
+        EAST = 3;
+
 	var offsets = {
 		AA: { x: 0, y: 0 },
 		AB: { x: 0, y: 32 },
