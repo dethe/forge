@@ -20,7 +20,7 @@ var keydown = false;
 var dialogY = 240;
 var dialogdirectionY = 'up';
 var dialogtext = '';
-var futuredialogtext = 'Hello and welcome to the game FORGE, blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah';
+var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
 
 var keys = {
 	0: false,
@@ -267,7 +267,7 @@ function loadClothes(){
 //loads images
 
 var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
-var UI = loadImages('button_default', 'input', 'confirm_bg')
+var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_xp');
 
 setInterval(function(){
 	if(character.attacked === true){
@@ -298,6 +298,8 @@ function Character(){
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
+    this.hp = [75, 2000];
+    this.mp = [30, 2000];
     
     // Mapping info and state
     this.position = {x: 320, y: 320};
@@ -620,14 +622,14 @@ NPC.prototype.faceSouth = function(){
 NPC.prototype.useAI = function(){
 	var distanceX = this.path[this.path_progress][0] - this.position.x;
 	var distanceY = this.path[this.path_progress][1] - this.position.y;
-	if(distanceX < 10 && distanceX > -10 && distanceY < 10 && distanceY > -10){
+	if(distanceX < 2 && distanceX > -2 && distanceY < 2 && distanceY > -2){
 		this.path_progress += 1;
 		if(this.path_progress > (this.path.length - 1)){
 			this.path_progress = 0;
 		}
-	}else if(distanceX < 10 && distanceX > -10){
+	}else if(distanceX < 2 && distanceX > -2){
 		this.AIxy = 'y';
-	}else if(distanceY < 10 && distanceY > -10){
+	}else if(distanceY < 2 && distanceY > -2){
 		this.AIxy = 'x';
 	};
 	if(this.AIxy === 'x'){
@@ -707,9 +709,9 @@ var NPCs = [
 			}
 		},
 	}),
-	new NPC('Soldier', 175, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
+	new NPC('Soldier', 174, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
 	new NPC('Soldier', 250, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
-	new NPC('Captain', 325, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['helmet', 'plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
+	new NPC('Captain', 324, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['helmet', 'plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
 ]
 
 /////////////////////////////////////////
@@ -1086,27 +1088,48 @@ function drawGame(){
 	character.draw(ctx);
 	world.drawtop(ctx);
     ctx.restore();
-    if(dialogdirectionY === 'up'){
-     if(dialogY < 240){
-         dialogY += 5;
-     }
-    }else if(dialogdirectionY === 'down'){
-     if(dialogY > -240){
-         dialogY -= 5;
-     }
-    }
-        if(dialogtext.length != futuredialogtext.length){
-         var t = futuredialogtext.split('');
-         dialogtext += t[(dialogtext.length)];
-        }
-        var box = UIBox('     ' + character.name, 180, 40, 350, 120).draw(ctx);
-    ctx.beginPath();
-    ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-    ctx.fill();
-        var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
-        var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
+    // BEGIN UI STUFF
+	if(dialogdirectionY === 'up'){
+		if(dialogY < 240){
+			dialogY += 5;
+		}
+	}else if(dialogdirectionY === 'down'){
+		if(dialogY > -240){
+			dialogY -= 5;
+		}
+	}
+	if(dialogtext.length != futuredialogtext.length){
+		var t = futuredialogtext.split('');
+		dialogtext += t[(dialogtext.length)];
+	}
+	
+	var ui = [
+		UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240),
+		UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50, function(){dialogtext = ''}),
+		UIBox('     ' + character.name, 200, 40, 300, 120)
+	]
+	for(var i = 0; i < ui.length; i++){
+		ui[i].draw(ctx);
+		if(ui[i].containsPoint(mouseX, mouseY) && click){
+			ui[i].trigger();
+		};
+	};
+	ctx.beginPath();
+	ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
+	ctx.closePath();
+	ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+	ctx.fill();
+	if(frame%5 === 0){
+		if(character.hp[0] < character.hp[1]){
+			character.hp[0] += 1;
+		}
+		if(character.mp[0] < character.mp[1]){
+			character.mp[0] += 1;
+		}
+	}
+	ctx.drawImage(UI.bar_hp_mp, 0, 0, 106, 32, 280, 80, 209, 60);
+	ctx.drawImage(UI.bar_hp_mp, 3, 34, 100 - (((character.hp[1] - character.hp[0])/character.hp[1])*100), 16, 284, 81, 200 - (((character.hp[1] - character.hp[0])/character.hp[1])*200), 32);
+	ctx.drawImage(UI.bar_hp_mp, 3, 48, 100 - (((character.mp[1] - character.mp[0])/character.mp[1])*100), 16, 284, 107, 200 - (((character.mp[1] - character.mp[0])/character.mp[1])*200), 32);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
