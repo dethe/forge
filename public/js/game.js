@@ -435,8 +435,8 @@ var WEST = 1;
 
 function Monster(sprite, x, y, direction){
 	this.d = 1;
-	this.x = x + character.position.x;
-	this.y = y + character.position.y;
+	this.x = x;
+	this.y = y;
 	this.w = 32;
 	this.h = 32;
 	this.sprite = new Image();
@@ -499,8 +499,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = WIDTH/2 - (this.x - character.position.x - 16);
-		var distanceY = HEIGHT/2 - (this.y - character.position.y - 16);
+		var distanceX = WIDTH/2 - (this.x - 16);
+		var distanceY = HEIGHT/2 - (this.y - 16);
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -524,19 +524,19 @@ Monster.prototype.useAI = function(){
 };
 
 Monster.prototype.centre = function(){
-    return {x: (this.x - character.position.x) + this.w / 2, y: (this.y - character.position.y) + this.h/2 };
+    return {x: this.x + this.w / 2, y: this.y + this.h/2 };
 };
 
 Monster.prototype.draw = function(ctx){
 	// drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
-	ctx.drawImage(this.sprite, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x - character.position.x, this.y - character.position.y, this.w, this.h);
+	ctx.drawImage(this.sprite, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x, this.y, this.w, this.h);
 	if (DEBUG){
 	    var radius = 24;
 	    var mc = this.centre();
 	    var cc = {x: WIDTH / 2, y: HEIGHT / 2}
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x - character.position.x + this.w / 2, this.y - character.position.y + this.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2,true)
 	    ctx.stroke();
     }
 };
@@ -592,14 +592,14 @@ NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
 	//console.log(this.walk_character)
-	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + (WIDTH/2) - character.position.x, this.position.y + (HEIGHT/2) - character.position.y, this.size.w, this.size.h);
+	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + (WIDTH/2), this.position.y + (HEIGHT/2), this.size.w, this.size.h);
 	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + (WIDTH/2) - character.position.x, this.position.y + (HEIGHT/2) - character.position.y, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + WIDTH/2, this.position.y + HEIGHT/2, this.size.w, this.size.h);
 	}
 	ctx.fillStyle = '#000';
 	ctx.font = '6pt "press start 2p"';
 	ctx.textAlign = 'center'
-	ctx.fillText(this.name, this.position.x + (WIDTH/2) - character.position.x + 32, this.position.y + (HEIGHT/2) - character.position.y + 10);
+	ctx.fillText(this.name, this.position.x + WIDTH/2 + 32, this.position.y + HEIGHT/2 + 10);
 };
 
 NPC.prototype.faceEast = function(){
@@ -1068,7 +1068,9 @@ function drawGame(){
 	frame += 1;
     resize();
 	clear();
-	world.draw();
+	ctx.push();
+	ctx.translate(-character.position.x, -character.position.y);
+	world.draw(ctx);
 	monsters.forEach(function(monster){
 		monster.useAI();
 		monster.draw(ctx);
@@ -1078,7 +1080,7 @@ function drawGame(){
 		NPC.draw(ctx);
 	});
 	character.draw(ctx);
-	world.drawtop();
+	world.drawtop(ctx);
 	if(dialogdirectionY === 'up'){
 		if(dialogY < 240){
 			dialogY += 5;
