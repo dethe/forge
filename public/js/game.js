@@ -61,17 +61,17 @@ var keys = {
 	z: false,
 	shift: false,
 	caps: false,
-	delete: false,
+	'delete': false,
 	dash: false,
-	space: false,
-}
+	space: false
+};
 
 var DEBUG = false;
 
 document.onmousemove = function(evt){
 	mouseX = evt.clientX;
-	mouseY = evt.clientY
-}
+	mouseY = evt.clientY;
+};
 
 function resize(){
     // put this in loops because Chrome doesn't reliably support resize events
@@ -319,16 +319,16 @@ Character.prototype.draw = function(ctx){
 
 	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
 	{
-		ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
 		}
 	}
 	if (DEBUG){
 	    var radius = 24;
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
-	    ctx.arc(WIDTH/2 + this.size.w / 2, HEIGHT/2 + this.size.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.arc(this.position.x + this.size.w / 2, this.position.y + this.size.h / 2, radius, 0, Math.PI*2,true)
 	    ctx.stroke();
         if(frame%30 === 0){
 	        console.log('%s: %s, %s', this.name, this.position.x, this.position.y);
@@ -345,9 +345,9 @@ Character.prototype.draw = function(ctx){
     	}
     	if(this.attacked === false){
     		if(this.animation === 'spellcast'){
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2 + 2, HEIGHT/2 + 7, this.size.w, this.size.h);
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + 2, this.position.y + 7, this.size.w, this.size.h);
     		}else{
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
     		}
     		if((frame % 5 === 0)){
 				this.spriteOffset.x += 64;
@@ -361,9 +361,9 @@ Character.prototype.draw = function(ctx){
     	this.maxsx = 576;
     }
     if(this.animation === 'spellcast' && this.spriteOffset.y === 0){
-    	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+    	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, WIDTH/2, HEIGHT/2, this.size.w, this.size.h);
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
 		}
     }
     if(this.animation === 'walk'){
@@ -497,8 +497,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = WIDTH/2 - (this.x - 16);
-		var distanceY = HEIGHT/2 - (this.y - 16);
+		var distanceX = this.x - 16;
+		var distanceY = this.y - 16;
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -531,7 +531,7 @@ Monster.prototype.draw = function(ctx){
 	if (DEBUG){
 	    var radius = 24;
 	    var mc = this.centre();
-	    var cc = {x: WIDTH / 2, y: HEIGHT / 2}
+	    var cc = {x: 0, y: 0};
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
 	    ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2,true)
@@ -590,14 +590,14 @@ NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
 	//console.log(this.walk_character)
-	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + (WIDTH/2), this.position.y + (HEIGHT/2), this.size.w, this.size.h);
+	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
 	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + WIDTH/2, this.position.y + HEIGHT/2, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
 	}
 	ctx.fillStyle = '#000';
 	ctx.font = '6pt "press start 2p"';
 	ctx.textAlign = 'center'
-	ctx.fillText(this.name, this.position.x + WIDTH/2 + 32, this.position.y + HEIGHT/2 + 10);
+	ctx.fillText(this.name, this.position.x + 32, this.position.y + 10);
 };
 
 NPC.prototype.faceEast = function(){
@@ -1064,10 +1064,12 @@ function clear(){
 //draws on the canvas every 60th of a second
 function drawGame(){
 	frame += 1;
+	ctx.save();
     resize();
 	clear();
-	ctx.save();
-	ctx.translate(-character.position.x, -character.position.y);
+	var offsetX = WIDTH/2 - character.size.w/2;
+	var offsetY = HEIGHT/2 - character.size.h/2;
+	ctx.translate(-character.position.x + offsetX, -character.position.y + offsetY);
 	world.draw(ctx);
 	monsters.forEach(function(monster){
 		monster.useAI();
@@ -1079,28 +1081,28 @@ function drawGame(){
 	});
 	character.draw(ctx);
 	world.drawtop(ctx);
-	if(dialogdirectionY === 'up'){
-		if(dialogY < 240){
-			dialogY += 5;
-		}
-	}else if(dialogdirectionY === 'down'){
-		if(dialogY > -240){
-			dialogY -= 5;
-		}
-	}
-	if(dialogtext.length != futuredialogtext.length){
-		var t = futuredialogtext.split('');
-		dialogtext += t[(dialogtext.length)];
-	}
-	var box = UIBox('     ' + character.name, 180, 40, 350, 120).draw(ctx);
-	ctx.beginPath();
-	ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
-	ctx.closePath();
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
-	ctx.fill();
-	var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
-	var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
-	ctx.restore();
+    ctx.restore();
+    // if(dialogdirectionY === 'up'){
+    //  if(dialogY < 240){
+    //      dialogY += 5;
+    //  }
+    // }else if(dialogdirectionY === 'down'){
+    //  if(dialogY > -240){
+    //      dialogY -= 5;
+    //  }
+    // }
+    //     if(dialogtext.length != futuredialogtext.length){
+    //      var t = futuredialogtext.split('');
+    //      dialogtext += t[(dialogtext.length)];
+    //     }
+    //     var box = UIBox('     ' + character.name, 180, 40, 350, 120).draw(ctx);
+    // ctx.beginPath();
+    // ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
+    // ctx.closePath();
+    // ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+    // ctx.fill();
+    //     var dialog_box = UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240).draw(ctx);
+    //     var next_button = UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50).draw(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
@@ -1165,7 +1167,7 @@ var gameKeyup = function(event) {
 		switch (event.keyCode) {
 			case 87: // 'w' key
 			case 38: // up arrow
-				move.up= move.up_m = false;
+				move.up = move.up_m = false;
 				move.down = move.down_m;
 				move.right = move.right_m;
 				move.left = move.left_m;
@@ -1176,13 +1178,13 @@ var gameKeyup = function(event) {
 				move.left = move.left_m = false;
 				move.right = move.right_m;
 				move.down = move.down_m;
-				move.up= move.up_m;
+				move.up = move.up_m;
 			break;
 
 			case 83: // 's' key
 			case 40: // down arrow
 				move.down = move.down_m = false;
-				move.up= move.up_m;
+				move.up = move.up_m;
 				move.left = move.left_m;
 				move.right = move.right_m;
 			break;
@@ -1192,7 +1194,7 @@ var gameKeyup = function(event) {
 				move.right = move.right_m = false;
 				move.left = move.left_m;
 				move.down = move.down_m;
-				move.up= move.up_m;
+				move.up = move.up_m;
 			break;
 		}
 };
