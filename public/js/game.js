@@ -298,8 +298,8 @@ function Character(){
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
-    this.hp = [75, 2000];
-    this.mp = [30, 2000];
+    this.hp = [50, 200];
+    this.mp = [10, 100];
     
     // Mapping info and state
     this.position = {x: 320, y: 320};
@@ -468,9 +468,6 @@ Monster.prototype.move = function(dx, dy){
     if(DEBUG && frame%30 === 0){
                  console.log(distanceToCharacter);
                  console.log('%s: %s, %s', this.name, this.x, this.y);
-    }
-	if (distanceToCharacter < this.speed){
-	    console.log('Collision with %s', this.name);
     }
 };
 Monster.prototype.faceEast = function(){
@@ -1070,12 +1067,12 @@ function clear(){
 //draws on the canvas every 60th of a second
 function drawGame(){
 	frame += 1;
-	ctx.save();
-    resize();
+	resize();
 	clear();
+	ctx.save();
 	var offsetX = WIDTH/2 - character.size.w/2;
 	var offsetY = HEIGHT/2 - character.size.h/2;
-	ctx.translate(-character.position.x + offsetX, -character.position.y + offsetY);
+	ctx.translate(Math.round(-character.position.x + offsetX), Math.round(-character.position.y + offsetY));
 	world.draw(ctx);
 	monsters.forEach(function(monster){
 		monster.useAI();
@@ -1088,7 +1085,9 @@ function drawGame(){
 	character.draw(ctx);
 	world.drawtop(ctx);
     ctx.restore();
+    
     // BEGIN UI STUFF
+    
 	if(dialogdirectionY === 'up'){
 		if(dialogY < 240){
 			dialogY += 5;
@@ -1119,7 +1118,7 @@ function drawGame(){
 	ctx.closePath();
 	ctx.fillStyle = 'rgba(0, 0, 0, 1)';
 	ctx.fill();
-	if(frame%5 === 0){
+	if(frame%60 === 0){
 		if(character.hp[0] < character.hp[1]){
 			character.hp[0] += 1;
 		}
@@ -1130,6 +1129,11 @@ function drawGame(){
 	ctx.drawImage(UI.bar_hp_mp, 0, 0, 106, 32, 280, 80, 209, 60);
 	ctx.drawImage(UI.bar_hp_mp, 3, 34, 100 - (((character.hp[1] - character.hp[0])/character.hp[1])*100), 16, 284, 81, 200 - (((character.hp[1] - character.hp[0])/character.hp[1])*200), 32);
 	ctx.drawImage(UI.bar_hp_mp, 3, 48, 100 - (((character.mp[1] - character.mp[0])/character.mp[1])*100), 16, 284, 107, 200 - (((character.mp[1] - character.mp[0])/character.mp[1])*200), 32);
+	ctx.fillStyle = '#fff';
+    ctx.font = '7pt "Press Start 2P"';
+    ctx.textAlign = 'center'
+	ctx.fillText('HP:'+ character.hp[0] +'/'+ character.hp[1], 384, 103);
+	ctx.fillText('MP:'+ character.mp[0] +'/'+ character.mp[1], 384, 130);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
@@ -1183,7 +1187,6 @@ var gameKeydown = function(event) {
 			    showMenu();
 			    break;
 			
-			//default: console.log(event.keyCode);
 		}
 };
 
