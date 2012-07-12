@@ -471,16 +471,16 @@ Monster.prototype.move = function(dx, dy){
     }
 };
 Monster.prototype.faceEast = function(){
-	this.direction = 3;
+	this.direction = EAST;
 };
 Monster.prototype.faceWest = function(){
-	this.direction = 1;
+	this.direction = WEST;
 };
 Monster.prototype.faceNorth = function(){
-	this.direction = 0;
+	this.direction = NORTH;
 };
 Monster.prototype.faceSouth = function(){
-	this.direction = 2;
+	this.direction = SOUTH;
 };
 Monster.prototype.walk = function(){
 	var dx, dy;
@@ -523,14 +523,18 @@ Monster.prototype.useAI = function(){
 
 Monster.prototype.draw = function(ctx){
 	// drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
-	ctx.drawImage(this.sprite, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x, this.y, this.w, this.h);
+	var x = this.x - this.w/2,
+	    y = this.y - this.h/2,
+	    w = this.w,
+	    h = this.h,
+	    sx = this.animate_idx * this.w,
+	    sy = this.direction * this.h;
+	ctx.drawImage(this.sprite, sx, sy, w, h, x, y, w, h);
 	if (DEBUG){
 	    var radius = 24;
-	    var mc = this.centre();
-	    var cc = {x: 0, y: 0};
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
 	    ctx.stroke();
     }
 };
@@ -568,10 +572,12 @@ var monsters = [
 
 function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
 	this.animation = 'walk';
-	this.position = {x: x, y: y};
-    this.size = {w: 64, h: 64};
+	this.x = x;
+	this.y = y;
+    this.w = 64;
+    this.h = 64;
     this.spriteOffset = {x: 0, y: 128};
-	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
+	this.direction = direction;
 	this.name = name;
 	this.path = path;
 	this.path_progress = 0;
@@ -588,15 +594,20 @@ function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
 NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
-	//console.log(this.walk_character)
-	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
+    var sx = this.spriteOffset.x,
+        sy = this.spriteOffset.y,
+        x = this.x - this.w/2,
+        y = this.y - this.h/2,
+        w = this.w,
+        h = this.h;
+	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 	}
 	ctx.fillStyle = '#000';
 	ctx.font = '6pt "press start 2p"';
 	ctx.textAlign = 'center'
-	ctx.fillText(this.name, this.x + 32, this.y + 10);
+	ctx.fillText(this.name, x + 32, y + 10);
 };
 
 NPC.prototype.faceEast = function(){
@@ -904,7 +915,7 @@ function drawGame(){
 	character.draw(ctx);
 	world.drawtop(ctx);
     ctx.restore();
-    drawUI(ctx);
+    //drawUI(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
