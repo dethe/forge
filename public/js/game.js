@@ -17,10 +17,6 @@ var mouseX = 0;
 var mouseY = 0;
 var click = false;
 var keydown = false;
-var dialogY = 240;
-var dialogdirectionY = 'down';
-var dialogtext = '';
-var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
 
 var keys = {
 	0: false,
@@ -302,8 +298,10 @@ function Character(){
     this.mp = [10, 100];
     
     // Mapping info and state
-    this.position = {x: 320, y: 320};
-    this.size = {w: 64, h: 64};
+    this.x = 320;
+    this.y = 320;
+    this.w = 64;
+    this.h = 64;
     this.spriteOffset = {x: 0, y: 128};
     
     // Load sprites
@@ -313,27 +311,31 @@ function Character(){
 Character.prototype.loadClothes = loadClothes;
 
 Character.prototype.centre = function(){
-    return ({x: this.position.x + this.size.w / 2, y: this.position.y + this.size.h / 2});
+    return ({x: this.x + this.w / 2, y: this.y + this.h / 2});
 }
 
 Character.prototype.draw = function(ctx){
-	
-
+    var x = this.x - this.w/2, // x and y are the centre point
+        y = this.y - this.h/2,
+        w = this.w,
+        h = this.h,
+        sx = this.spriteOffset.x,
+        sy = this.spriteOffset.y;
 	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
 	{
-		ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}
 	}
 	if (DEBUG){
 	    var radius = 24;
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.position.x + this.size.w / 2, this.position.y + this.size.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
 	    ctx.stroke();
         if(frame%30 === 0){
-	        console.log('%s: %s, %s', this.name, this.position.x, this.position.y);
+	        console.log('%s: %s, %s', this.name, this.x, this.y);
 	    }
     }
     if(keys.space){
@@ -347,12 +349,12 @@ Character.prototype.draw = function(ctx){
     	}
     	if(this.attacked === false){
     		if(this.animation === 'spellcast'){
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + 2, this.position.y + 7, this.size.w, this.size.h);
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x+2, y+7, w, h);
     		}else{
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
     		}
     		if((frame % 5 === 0)){
-				this.spriteOffset.x += 64;
+				sx = this.spriteOffset.x += 64;
 			}
     	}else{
     		this.animation = 'walk';
@@ -362,32 +364,32 @@ Character.prototype.draw = function(ctx){
     	this.animation = 'walk';
     	this.maxsx = 576;
     }
-    if(this.animation === 'spellcast' && this.spriteOffset.y === 0){
-    	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+    if(this.animation === 'spellcast' && sy === 0){
+    	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}
     }
     if(this.animation === 'walk'){
     	if(move.up){
 			this.spriteOffset.y = 0; // face sprite up
     		if (!world.findCollision(10, -this.speed +32)){
-    			this.position.y -= this.speed;
+    			this.y -= this.speed;
 	    	}
 		}else if(move.left){
 	    	this.spriteOffset.y = 64; // face sprite left
 	    	if (!world.findCollision(-this.speed +10, 44)){
-		   		this.position.x -= this.speed;
+		   		this.x -= this.speed;
 			}
 		}else if(move.down){
 	    	this.spriteOffset.y = 128; // face sprite down
 	    	if (!world.findCollision(10, this.speed +45)){
-		    	this.position.y += this.speed;
+		    	this.y += this.speed;
 			}
 		}else if(move.right){
 			this.spriteOffset.y = 192;
 	    	if(!world.findCollision(this.speed +20, 44)){
-    			this.position.x += this.speed;
+    			this.x += this.speed;
     		}
 		}
 		if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right) && this.animation === 'walk'){
@@ -398,7 +400,7 @@ Character.prototype.draw = function(ctx){
 		}
 	}
 	if(this.spriteOffset.x >= this.maxsx){
-		character.spriteOffset.x = 64;
+		this.spriteOffset.x = 64;
 		if(this.animation === this.attack){
 			this.attacked = true;
 		}
@@ -460,9 +462,7 @@ Monster.prototype.move = function(dx, dy){
 	if(frame % 5 === 0){
 		this.animate_idx = (this.animate_idx + this.d);
 	}
-	var mc = this.centre();
-	var cc = character.centre();
-	var distanceToCharacter = Math.sqrt(Math.pow((cc.x -mc.x), 2) + Math.pow((cc.y - mc.y), 2)) - 40;
+	var distanceToCharacter = Math.sqrt(Math.pow((character.x - this.x), 2) + Math.pow((character.y - this.y), 2)) - 40;
 	this.x += dx * Math.min(distanceToCharacter, this.speed);
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
     if(DEBUG && frame%30 === 0){
@@ -471,16 +471,16 @@ Monster.prototype.move = function(dx, dy){
     }
 };
 Monster.prototype.faceEast = function(){
-	this.direction = 3;
+	this.direction = EAST;
 };
 Monster.prototype.faceWest = function(){
-	this.direction = 1;
+	this.direction = WEST;
 };
 Monster.prototype.faceNorth = function(){
-	this.direction = 0;
+	this.direction = NORTH;
 };
 Monster.prototype.faceSouth = function(){
-	this.direction = 2;
+	this.direction = SOUTH;
 };
 Monster.prototype.walk = function(){
 	var dx, dy;
@@ -497,8 +497,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = character.position.x - this.x - 16;
-		var distanceY = character.position.y - this.y - 16;
+		var distanceX = character.x - this.x - 16;
+		var distanceY = character.y - this.y - 16;
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -521,20 +521,20 @@ Monster.prototype.useAI = function(){
 	};
 };
 
-Monster.prototype.centre = function(){
-    return {x: this.x + this.w / 2, y: this.y + this.h/2 };
-};
-
 Monster.prototype.draw = function(ctx){
 	// drawImage(image, sourceX, sourceY, sourceW, sourceH, destX, destY, destW, destH);
-	ctx.drawImage(this.sprite, this.animate_idx * this.w, this.direction * this.h, this.w, this.h, this.x, this.y, this.w, this.h);
+	var x = this.x - this.w/2,
+	    y = this.y - this.h/2,
+	    w = this.w,
+	    h = this.h,
+	    sx = this.animate_idx * this.w,
+	    sy = this.direction * this.h;
+	ctx.drawImage(this.sprite, sx, sy, w, h, x, y, w, h);
 	if (DEBUG){
 	    var radius = 24;
-	    var mc = this.centre();
-	    var cc = {x: 0, y: 0};
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
 	    ctx.stroke();
     }
 };
@@ -572,10 +572,12 @@ var monsters = [
 
 function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
 	this.animation = 'walk';
-	this.position = {x: x, y: y};
-    this.size = {w: 64, h: 64};
+	this.x = x;
+	this.y = y;
+    this.w = 64;
+    this.h = 64;
     this.spriteOffset = {x: 0, y: 128};
-	this.direction = direction; // 0 = up, 1 = left, 2 = down, 3 = right
+	this.direction = direction;
 	this.name = name;
 	this.path = path;
 	this.path_progress = 0;
@@ -592,15 +594,20 @@ function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
 NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
-	//console.log(this.walk_character)
-	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+    var sx = this.spriteOffset.x,
+        sy = this.spriteOffset.y,
+        x = this.x - this.w/2,
+        y = this.y - this.h/2,
+        w = this.w,
+        h = this.h;
+	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 	}
 	ctx.fillStyle = '#000';
 	ctx.font = '6pt "press start 2p"';
 	ctx.textAlign = 'center'
-	ctx.fillText(this.name, this.position.x + 32, this.position.y + 10);
+	ctx.fillText(this.name, x + 32, y + 10);
 };
 
 NPC.prototype.faceEast = function(){
@@ -617,8 +624,8 @@ NPC.prototype.faceSouth = function(){
 };
 
 NPC.prototype.useAI = function(){
-	var distanceX = this.path[this.path_progress][0] - this.position.x;
-	var distanceY = this.path[this.path_progress][1] - this.position.y;
+	var distanceX = this.path[this.path_progress][0] - this.x;
+	var distanceY = this.path[this.path_progress][1] - this.y;
 	if(distanceX < 2 && distanceX > -2 && distanceY < 2 && distanceY > -2){
 		this.path_progress += 1;
 		if(this.path_progress > (this.path.length - 1)){
@@ -664,11 +671,11 @@ NPC.prototype.move = function(dx, dy){
 			this.spriteOffset.x += 64;
 		}
 		this.spriteOffset.y = this.direction*64;
-		if((this.path[this.path_progress][0] - this.position.x) < 10 && (this.path[this.path_progress][0] - this.position.x) > -10 && (this.path[this.path_progress][1] - this.position.y) < 10 && (this.path[this.path_progress][1] - this.position.y) > -10){
+		if((this.path[this.path_progress][0] - this.x) < 10 && (this.path[this.path_progress][0] - this.x) > -10 && (this.path[this.path_progress][1] - this.y) < 10 && (this.path[this.path_progress][1] - this.y) > -10){
 			
 		}
-		this.position.x += dx*this.speed;
-		this.position.y += dy*this.speed;
+		this.x += dx*this.speed;
+		this.y += dy*this.speed;
 	}else{
 		this.spriteOffset.x = 0;
 	}
@@ -875,183 +882,6 @@ function drawMenu(time){
     menuLoop = requestAnimationFrame(drawMenu);
 }
 
-/////////////////////////////////////////
-//
-//           UI ELEMENTS (BUTTONS, SCROLLBARS, SLIDERS, TEXTBOXES ETC.)
-//
-/////////////////////////////////////////
-
-function UIElement(text, x, y, w, h, draw, trigger){
-    this.text = text;
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.draw = draw || function(){};
-    this.trigger = trigger || function(){};
-}
-
-UIElement.prototype.containsPoint = function(x,y){
-    if (x < this.x) return false;
-    if (y < this.y) return false;
-    if (x > this.x + this.w) return false;
-    if (y > this.y + this.h) return false;
-    return true;
-}
-
-function UITextbox(text, x, y, w, h){
-	this.clicked = false;
-	this.cursor = 0;
-	this.cursoron = false;
-	this.t = text;
-	this.lastframe = 0;
-	function draw(ctx){
-		var key = 48;
-		var lastkey = 16;
-		var t2 = '';
-		var pt = this.containsPoint(mouseX, mouseY);
-		var sy = 0;
-		if(pt){
-			document.body.style.cursor = 'text';
-		}else{
-			document.body.style.cursor = 'auto';
-		}
-		if(pt && click){
-			clicked = true;
-			console.log(':)');
-		}else if(!pt && click){
-			clicked = false;
-			console.log(':(');
-		}
-		if(clicked === true){
-			sy = 20;
-		}
-		if(clicked){
-			if(frame%30 === 0){
-				if(cursoron){
-					cursoron = false;
-				}else{
-					cursoron = true;
-				}
-			}
-		}else{
-			cursoron = false;
-		}
-		if(key === 16 && keydown || lastkey === 16 && keydown){
-			shift = true;
-		}
-		
-		if(keydown && clicked){
-			if((frame - lastframe) > 30){
-				lastframe = frame;
-				t = t.split('');
-				console.log(keydown)
-				
-				if(key >= 48 && key <= 90){
-					key = String.fromCharCode(keycode);
-					if(shift === false){
-						key = key.toLowerCase();
-					}
-					t.splice(t.length-cursor, 0, key);
-					
-				}
-			}
-		}
-		if(keydown === false && key === 0){
-			shift = false;
-		}
-		if(!keydown && clicked){
-			lastframe -= 30;
-		}
-		for(i = 0; i < t.length; i++){
-			t2 = t2 + t[i]
-		}
-		t=t2;
-		ctx.drawImage(UI.input, 32, sy, 32, 20, x+32, y, w-64, h);
-		ctx.drawImage(UI.input, 0, sy, 32, 20, x, y, 32, h);
-		ctx.drawImage(UI.input, 98, sy, 32, 20, x+(w-64+32), y, 32, h);
-		
-		ctx.fillStyle = 'black';
-        ctx.font = '12pt "Press Start 2P"';
-        ctx.textAlign='left';
-        ctx.fillText(t2, x +10, y + 30, 99999999999);
-        if(cursoron){
-        	ctx.fillText('|', x + ((t2.length-cursor)*16), y + 30, w-20);
-        }
-	}
-	return new UIElement(text, x, y, w, h, draw);
-}
-
-function UIButton(text, x, y, w, h, trigger){
-    function draw(ctx){
-    	var pt = this.containsPoint(mouseX, mouseY);
-        drawbutton(ctx, x, y, w, h, pt);
-        //we should put the text in the drawbutton function
-        ctx.fillStyle = 'black';
-        ctx.font = '14pt "Press Start 2P"';
-        ctx.textAlign = 'center';
-        ctx.fillText(text, x + w/2+10, y + 35, w - 20);
-    }
-    return new UIElement(text, x, y, w, h, draw, trigger);
-}
-
-function UIBox(text, x, y, w, h){
-	function draw(ctx){
-		ctx.drawImage(UI.confirm_bg, 0, 0, 32, 32, x, y, 32, 32);
-		ctx.drawImage(UI.confirm_bg, 160, 0, 32, 32, x+w-32, y, 32, 32);
-		ctx.drawImage(UI.confirm_bg, 32, 0, 32, 32, x+32, y, w-64, 32);
-		ctx.drawImage(UI.confirm_bg, 0, 32, 32, 32, x, y+h-32, 32, 32);
-		ctx.drawImage(UI.confirm_bg, 160, 32, 32, 32, x+w-32, y+h-32, 32, 32);
-		ctx.drawImage(UI.confirm_bg, 32, 32, 32, 32, x+32, y+h-32, w-64, 32);
-		ctx.drawImage(UI.confirm_bg, 0, 16, 32, 32, x, y+32, 32, h-64);
-		ctx.drawImage(UI.confirm_bg, 160, 16, 32, 32, x+w-32, y+32, 32, h-64);
-		ctx.drawImage(UI.confirm_bg, 32, 16, 32, 32, x+32, y+32, w-64, h-64);
-		ctx.fillStyle = '#fff';
-        ctx.font = '10pt "Press Start 2P"';
-        ctx.textAlign = 'left'
-        ctx.fillText(text, x+20, y+35, WIDTH-20);
-	}
-	return new UIElement(text, x, y, w, h, draw);
-}
-
-function UITitle(text, x, y){
-    function draw(ctx){
-        ctx.fillStyle = '#900';
-        ctx.font = '100pt "Press Start 2P"';
-        ctx.textAlign = 'center'
-        ctx.fillText(text, x, y);
-    }
-    return new UIElement(text, 0, 0, WIDTH, 80, draw);
-}
-
-
-function menuClick(evt){
-    for (var i = 0; i < menu.length; i++){
-        if (menu[i].containsPoint(evt.clientX, evt.clientY)){
-            menu[i].trigger();
-        }
-    }
-}
-
-function settingsClick(evt){
-    for (var i = 0; i < menu.length; i++){
-        if (settings[i].containsPoint(evt.clientX, evt.clientY)){
-            settings[i].trigger();
-        }
-    }
-}
-
-function drawbutton(ctx, x, y, width, height, pt) {
-	var sy = 0;
-	if(pt && click){
-		sy = 28;
-	}else if(pt){
-		sy = 56;
-	}
-	ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+32, y, width -64, height);
-	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
-	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-32), y, height, height);
-}
 
 /////////////////////////////////////////
 //
@@ -1070,9 +900,9 @@ function drawGame(){
 	resize();
 	clear();
 	ctx.save();
-	var offsetX = WIDTH/2 - character.size.w/2;
-	var offsetY = HEIGHT/2 - character.size.h/2;
-	ctx.translate(Math.round(-character.position.x + offsetX), Math.round(-character.position.y + offsetY));
+	var offsetX = WIDTH/2 - character.w/2;
+	var offsetY = HEIGHT/2 - character.h/2;
+	ctx.translate(Math.round(-character.x + offsetX), Math.round(-character.y + offsetY));
 	world.draw(ctx);
 	monsters.forEach(function(monster){
 		monster.useAI();
@@ -1085,59 +915,9 @@ function drawGame(){
 	character.draw(ctx);
 	world.drawtop(ctx);
     ctx.restore();
-    
-    // BEGIN UI STUFF
-    
-	if(dialogdirectionY === 'up'){
-		if(dialogY < 240){
-			dialogY += 5;
-		}
-	}else if(dialogdirectionY === 'down'){
-		if(dialogY > -240){
-			dialogY -= 5;
-		}
-	}
-	if(dialogtext.length != futuredialogtext.length){
-		var t = futuredialogtext.split('');
-		dialogtext += t[(dialogtext.length)];
-	}
-	
-	var ui = [
-		UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240),
-		UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50, function(){dialogtext = ''}),
-		UIBox('     ' + character.name, 200, 40, 300, 120)
-	]
-	for(var i = 0; i < ui.length; i++){
-		ui[i].draw(ctx);
-		if(ui[i].containsPoint(mouseX, mouseY) && click){
-			ui[i].trigger();
-		};
-	};
-	ctx.beginPath();
-	ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
-	ctx.closePath();
-	ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-	ctx.fill();
-	if(frame%60 === 0){
-		if(character.hp[0] < character.hp[1]){
-			character.hp[0] += 1;
-		}
-		if(character.mp[0] < character.mp[1]){
-			character.mp[0] += 1;
-		}
-	}
-	ctx.drawImage(UI.bar_hp_mp, 0, 0, 106, 32, 280, 80, 209, 60);
-	ctx.drawImage(UI.bar_hp_mp, 3, 34, 100 - (((character.hp[1] - character.hp[0])/character.hp[1])*100), 16, 284, 81, 200 - (((character.hp[1] - character.hp[0])/character.hp[1])*200), 32);
-	ctx.drawImage(UI.bar_hp_mp, 3, 48, 100 - (((character.mp[1] - character.mp[0])/character.mp[1])*100), 16, 284, 107, 200 - (((character.mp[1] - character.mp[0])/character.mp[1])*200), 32);
-	ctx.fillStyle = '#fff';
-    ctx.font = '7pt "Press Start 2P"';
-    ctx.textAlign = 'center'
-	ctx.fillText('HP:'+ character.hp[0] +'/'+ character.hp[1], 384, 103);
-	ctx.fillText('MP:'+ character.mp[0] +'/'+ character.mp[1], 384, 130);
+    //drawUI(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
-
-
 
 /////////////////////////////////////////
 //

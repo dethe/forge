@@ -1,9 +1,13 @@
+var CHUNK_SIZE = 640; // 32 * 20
+
 function World(){
 
 	function WorldChunk(name, x, y){
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		this.w = CHUNK_SIZE;
+		this.h = CHUNK_SIZE;
 		this.init();
 	}
 
@@ -23,16 +27,24 @@ function World(){
 		req.send();
 	};
 	
-	var chunk = new WorldChunk('small_island', 0, 0);
+	new WorldChunk('small_island', 0, 0);
+	new WorldChunk('small_island', 640, 0);
+	new WorldChunk('small_island', -640,0);
+	new WorldChunk('small_island', 640, 640);
+	new WorldChunk('small_island', 0, 640);
+	new WorldChunk('small_island', -640, 640);
+	new WorldChunk('small_island', 640, -640);
+	new WorldChunk('small_island', 0, -640);
+	new WorldChunk('small_island', -640, -640);
 
 	var world = [];
 
 	var top = [];
 
-    var NORTH = 0,
-        WEST = 1,
-        SOUTH = 2,
-        EAST = 3;
+	var NORTH = 0,
+		WEST = 1,
+		SOUTH = 2,
+		EAST = 3;
 
 	var offsets = {
 		AA: { x: 0, y: 0 },
@@ -480,8 +492,8 @@ function World(){
 	//WE NEED THIS FOR FINDING THE TILE A CHARACTER OR MONSTER IS ON AND FOR CHECKING MONSTERS COLLIDING WITH STUFF
 	function findCharTile(xOffset, yOffset, findCollision, xANDy){
 		var tile;
-		var cx = character.position.x;
-		var cy = character.position.y;
+		var cx = character.x;
+		var cy = character.y;
 		var tilesX, tilesY;
 		if(!!xANDy){
 			cx = xANDy.x;
@@ -508,19 +520,19 @@ function World(){
 		 this.sy = offset.y;
 		 this.w = 32;
 		 this.h = 32;
-		 this.x =  (tx - chunk.x) * 32;
-		 this.y = (ty - chunk.y) * 32;
+		 this.x = tx * this.w - chunk.x;
+		 this.y = ty * this.h - chunk.y;
 	}
 	
 	Tile.prototype.draw = function(ctx){
-		ctx.drawImage(this.g, this.sx, this.sy, this.w, this.h, this.x, this.y, this.w, this.h);
+		ctx.drawImage(this.g, this.sx, this.sy, this.w, this.h, this.x-this.w/2, this.y-this.h/2, this.w, this.h);
 		
 	};
 	
 	Tile.prototype.debug = function(){
 		if (DEBUG){
 			ctx.strokeStyle = 'red';
-			ctx.strokeRect(this.x, this.y, this.w, this.h);
+			ctx.strokeRect(this.x-this.w/2, this.y-this.h/2, this.w, this.h);
 		}
 	};
 	
@@ -530,7 +542,7 @@ function World(){
 			for(var e = 0; e < world[i].length; e++){
 				for (var t = 0; t < world[i][e].length; t++){
 					var tile = world[i][e][t];
-					if(tile.spec === 'Farming_Fishing AA' && tile.y > (character.position.y + 16)){
+					if(tile.spec === 'Farming_Fishing AA' && tile.y > (character.y + 16)){
 						top.push([i, e, t])
 					}else{
 						tile.draw(ctx);
@@ -543,7 +555,7 @@ function World(){
 	function drawworldtop(ctx){
 		for(var z = 0; z < top.length; z++){
 			var tile = world[top[z][0]][top[z][1]][top[z][2]];
-			ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x, tile.y, 32, 32);
+			ctx.drawImage(tile.g, tile.sx, tile.sy, tile.w, tile.h, tile.x-tile.w/2, tile.y-tile.h/2, tile.w, tile.h);
 		}
 	}
 	return {
