@@ -4,6 +4,12 @@
 //
 /////////////////////////////////////////
 
+var dialogY = 240;
+var dialogdirectionY = 'down';
+var dialogtext = '';
+var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
+
+
 function drawUI(ctx){
 	if(dialogdirectionY === 'up'){
 		if(dialogY < 240){
@@ -23,7 +29,7 @@ function drawUI(ctx){
 		UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240),
 		UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50, function(){dialogtext = '';}),
 		UIBox('     ' + character.name, 200, 40, 300, 120)
-	]
+	];
 	for(var i = 0; i < ui.length; i++){
 		ui[i].draw(ctx);
 		if(ui[i].containsPoint(mouseX, mouseY) && click){

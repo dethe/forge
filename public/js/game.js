@@ -17,10 +17,6 @@ var mouseX = 0;
 var mouseY = 0;
 var click = false;
 var keydown = false;
-var dialogY = 240;
-var dialogdirectionY = 'down';
-var dialogtext = '';
-var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
 
 var keys = {
 	0: false,
