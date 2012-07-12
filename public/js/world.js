@@ -27,7 +27,15 @@ function World(){
 		req.send();
 	};
 	
-	var chunk = new WorldChunk('small_island', 0, 0);
+	new WorldChunk('small_island', 0, 0);
+	new WorldChunk('small_island', 640, 0);
+	new WorldChunk('small_island', -640,0);
+	new WorldChunk('small_island', 640, 640);
+	new WorldChunk('small_island', 0, 640);
+	new WorldChunk('small_island', -640, 640);
+	new WorldChunk('small_island', 640, -640);
+	new WorldChunk('small_island', 0, -640);
+	new WorldChunk('small_island', -640, -640);
 
 	var world = [];
 
