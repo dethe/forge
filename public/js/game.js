@@ -302,8 +302,10 @@ function Character(){
     this.mp = [30, 2000];
     
     // Mapping info and state
-    this.position = {x: 320, y: 320};
-    this.size = {w: 64, h: 64};
+    this.x = 320;
+    this.y = 320;
+    this.w = 64;
+    this.h = 64;
     this.spriteOffset = {x: 0, y: 128};
     
     // Load sprites
@@ -313,7 +315,7 @@ function Character(){
 Character.prototype.loadClothes = loadClothes;
 
 Character.prototype.centre = function(){
-    return ({x: this.position.x + this.size.w / 2, y: this.position.y + this.size.h / 2});
+    return ({x: this.x + this.w / 2, y: this.y + this.h / 2});
 }
 
 Character.prototype.draw = function(ctx){
@@ -321,19 +323,19 @@ Character.prototype.draw = function(ctx){
 
 	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
 	{
-		ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
 		}
 	}
 	if (DEBUG){
 	    var radius = 24;
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.position.x + this.size.w / 2, this.position.y + this.size.h / 2, radius, 0, Math.PI*2,true)
+	    ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2,true)
 	    ctx.stroke();
         if(frame%30 === 0){
-	        console.log('%s: %s, %s', this.name, this.position.x, this.position.y);
+	        console.log('%s: %s, %s', this.name, this.x, this.y);
 	    }
     }
     if(keys.space){
@@ -347,9 +349,9 @@ Character.prototype.draw = function(ctx){
     	}
     	if(this.attacked === false){
     		if(this.animation === 'spellcast'){
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x + 2, this.position.y + 7, this.size.w, this.size.h);
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x + 2, this.y + 7, this.w, this.h);
     		}else{
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
     		}
     		if((frame % 5 === 0)){
 				this.spriteOffset.x += 64;
@@ -363,31 +365,31 @@ Character.prototype.draw = function(ctx){
     	this.maxsx = 576;
     }
     if(this.animation === 'spellcast' && this.spriteOffset.y === 0){
-    	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+    	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
 		}
     }
     if(this.animation === 'walk'){
     	if(move.up){
 			this.spriteOffset.y = 0; // face sprite up
     		if (!world.findCollision(10, -this.speed +32)){
-    			this.position.y -= this.speed;
+    			this.y -= this.speed;
 	    	}
 		}else if(move.left){
 	    	this.spriteOffset.y = 64; // face sprite left
 	    	if (!world.findCollision(-this.speed +10, 44)){
-		   		this.position.x -= this.speed;
+		   		this.x -= this.speed;
 			}
 		}else if(move.down){
 	    	this.spriteOffset.y = 128; // face sprite down
 	    	if (!world.findCollision(10, this.speed +45)){
-		    	this.position.y += this.speed;
+		    	this.y += this.speed;
 			}
 		}else if(move.right){
 			this.spriteOffset.y = 192;
 	    	if(!world.findCollision(this.speed +20, 44)){
-    			this.position.x += this.speed;
+    			this.x += this.speed;
     		}
 		}
 		if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right) && this.animation === 'walk'){
@@ -460,9 +462,7 @@ Monster.prototype.move = function(dx, dy){
 	if(frame % 5 === 0){
 		this.animate_idx = (this.animate_idx + this.d);
 	}
-	var mc = this.centre();
-	var cc = character.centre();
-	var distanceToCharacter = Math.sqrt(Math.pow((cc.x -mc.x), 2) + Math.pow((cc.y - mc.y), 2)) - 40;
+	var distanceToCharacter = Math.sqrt(Math.pow((character.x - this.x), 2) + Math.pow((character.y - this.y), 2)) - 40;
 	this.x += dx * Math.min(distanceToCharacter, this.speed);
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
     if(DEBUG && frame%30 === 0){
@@ -500,8 +500,8 @@ Monster.prototype.walk = function(){
 };
 Monster.prototype.useAI = function(){
 	if(this.AI === 'normal'){
-		var distanceX = character.position.x - this.x - 16;
-		var distanceY = character.position.y - this.y - 16;
+		var distanceX = character.x - this.x - 16;
+		var distanceY = character.y - this.y - 16;
 		if(distanceX < 10 && distanceX > -10){
 			this.AIxy = 'y';
 		}else if(distanceY < 10 && distanceY > -10){
@@ -522,10 +522,6 @@ Monster.prototype.useAI = function(){
 		};
 		this.walk();
 	};
-};
-
-Monster.prototype.centre = function(){
-    return {x: this.x + this.w / 2, y: this.y + this.h/2 };
 };
 
 Monster.prototype.draw = function(ctx){
@@ -596,14 +592,14 @@ NPC.prototype.loadClothes = loadClothes;
 
 NPC.prototype.draw = function(ctx){
 	//console.log(this.walk_character)
-	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+	ctx.drawImage(this[this.animation + '_' + 'character'], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
 	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.size.w, this.size.h, this.position.x, this.position.y, this.size.w, this.size.h);
+		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], this.spriteOffset.x, this.spriteOffset.y, this.w, this.h, this.x, this.y, this.w, this.h);
 	}
 	ctx.fillStyle = '#000';
 	ctx.font = '6pt "press start 2p"';
 	ctx.textAlign = 'center'
-	ctx.fillText(this.name, this.position.x + 32, this.position.y + 10);
+	ctx.fillText(this.name, this.x + 32, this.y + 10);
 };
 
 NPC.prototype.faceEast = function(){
@@ -620,8 +616,8 @@ NPC.prototype.faceSouth = function(){
 };
 
 NPC.prototype.useAI = function(){
-	var distanceX = this.path[this.path_progress][0] - this.position.x;
-	var distanceY = this.path[this.path_progress][1] - this.position.y;
+	var distanceX = this.path[this.path_progress][0] - this.x;
+	var distanceY = this.path[this.path_progress][1] - this.y;
 	if(distanceX < 2 && distanceX > -2 && distanceY < 2 && distanceY > -2){
 		this.path_progress += 1;
 		if(this.path_progress > (this.path.length - 1)){
@@ -667,11 +663,11 @@ NPC.prototype.move = function(dx, dy){
 			this.spriteOffset.x += 64;
 		}
 		this.spriteOffset.y = this.direction*64;
-		if((this.path[this.path_progress][0] - this.position.x) < 10 && (this.path[this.path_progress][0] - this.position.x) > -10 && (this.path[this.path_progress][1] - this.position.y) < 10 && (this.path[this.path_progress][1] - this.position.y) > -10){
+		if((this.path[this.path_progress][0] - this.x) < 10 && (this.path[this.path_progress][0] - this.x) > -10 && (this.path[this.path_progress][1] - this.y) < 10 && (this.path[this.path_progress][1] - this.y) > -10){
 			
 		}
-		this.position.x += dx*this.speed;
-		this.position.y += dy*this.speed;
+		this.x += dx*this.speed;
+		this.y += dy*this.speed;
 	}else{
 		this.spriteOffset.x = 0;
 	}
@@ -1073,9 +1069,9 @@ function drawGame(){
 	ctx.save();
     resize();
 	clear();
-	var offsetX = WIDTH/2 - character.size.w/2;
-	var offsetY = HEIGHT/2 - character.size.h/2;
-	ctx.translate(-character.position.x + offsetX, -character.position.y + offsetY);
+	var offsetX = WIDTH/2 - character.w/2;
+	var offsetY = HEIGHT/2 - character.h/2;
+	ctx.translate(-character.x + offsetX, -character.y + offsetY);
 	world.draw(ctx);
 	monsters.forEach(function(monster){
 		monster.useAI();

@@ -480,8 +480,8 @@ function World(){
 	//WE NEED THIS FOR FINDING THE TILE A CHARACTER OR MONSTER IS ON AND FOR CHECKING MONSTERS COLLIDING WITH STUFF
 	function findCharTile(xOffset, yOffset, findCollision, xANDy){
 		var tile;
-		var cx = character.position.x;
-		var cy = character.position.y;
+		var cx = character.x;
+		var cy = character.y;
 		var tilesX, tilesY;
 		if(!!xANDy){
 			cx = xANDy.x;
@@ -530,7 +530,7 @@ function World(){
 			for(var e = 0; e < world[i].length; e++){
 				for (var t = 0; t < world[i][e].length; t++){
 					var tile = world[i][e][t];
-					if(tile.spec === 'Farming_Fishing AA' && tile.y > (character.position.y + 16)){
+					if(tile.spec === 'Farming_Fishing AA' && tile.y > (character.y + 16)){
 						top.push([i, e, t])
 					}else{
 						tile.draw(ctx);
