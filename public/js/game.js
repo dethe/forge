@@ -266,7 +266,7 @@ function loadClothes(){
 
 //loads images
 
-var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01', 'fence');
+var terrain = loadImages('grass', 'reeds', 'sandandwater', 'sand', 'wheat', 'cement','cement_stairs', 'kitchen', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01', 'fence', 'castle_outside', 'castlewalls', 'castlefloors', 'castlefloors_outside', 'brickwalldark', 'dungeon', 'signs', 'house_tiles_exterior', 'house_tiles_interior', 'house_stairs_interior', 'cabinets', 'bridges', 'chests', 'buckets', 'wheelbarrow', 'misc', 'miscellaneous', 'fence_alt', 'rocks', 'wood_house_exterior', 'white_house_exterior', 'treetop', 'treetrunk', 'hole', 'furniture', 'furniture2', 'flowers', 'plowed_soil', 'signpost', 'plants', 'limestone_wall01');
 var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_xp');
 
 
