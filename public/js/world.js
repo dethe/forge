@@ -27,15 +27,15 @@ function World(){
 		req.send();
 	};
 	
-	new WorldChunk('small_island', 0, 0);
-	new WorldChunk('small_island', 640, 0);
-	new WorldChunk('small_island', -640,0);
-	new WorldChunk('small_island', 640, 640);
-	new WorldChunk('small_island', 0, 640);
-	new WorldChunk('small_island', -640, 640);
-	new WorldChunk('small_island', 640, -640);
-	new WorldChunk('small_island', 0, -640);
-	new WorldChunk('small_island', -640, -640);
+	new WorldChunk('path_vertical_with_fence', 0, 0);
+	new WorldChunk('grass', 640, 0);
+	new WorldChunk('grass', -640,0);
+	new WorldChunk('grass', 640, 640);
+	new WorldChunk('path_vertical_with_fence', 0, 640);
+	new WorldChunk('grass', -640, 640);
+	new WorldChunk('grass', 640, -640);
+	new WorldChunk('path_vertical_with_fence', 0, -640);
+	new WorldChunk('grass', -640, -640);
 
 	var world = [];
 
