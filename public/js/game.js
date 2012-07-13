@@ -4,7 +4,7 @@
 //
 /////////////////////////////////////////
 
-var DEBUG = false   ;   
+var DEBUG = false;   
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var frame = 0;

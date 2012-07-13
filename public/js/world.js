@@ -27,9 +27,9 @@ function World(){
 		req.send();
 	};
 	
-	new WorldChunk('path_vertical_with_fence', 0, 0);
-	new WorldChunk('grass', 640, 0);
-	new WorldChunk('grass', -640,0);
+	new WorldChunk('castle_entrance_with_towers_and_windows', 0, 0);
+	new WorldChunk('castlewall_with_windows', 640, 0);
+	new WorldChunk('castlewall_with_windows', -640,0);
 	new WorldChunk('grass', 640, 640);
 	new WorldChunk('path_vertical_with_fence', 0, 640);
 	new WorldChunk('grass', -640, 640);
@@ -464,6 +464,10 @@ function World(){
 							location.collision = true;
 						}else if (subspec !== ''){
 							location.push(new Tile(subspec,e,i, chunk));
+							if(subspec === 'Castle_outside LH'){
+								console.log('collide');
+								location.collision = true;
+							}
 						}
 					});
 				}else{
@@ -475,15 +479,22 @@ function World(){
 	window.parseWorldChunk = parseWorldChunk;
 	
 	function findCollision(xOffset, yOffset){
-		var tilesX = Math.round(xOffset / 32);
-		var tilesY = Math.round(yOffset / 32);
-		try{
-			var location = world[tilesY][tilesX];
-			if (location.collision) location[0].debug();
-			return location.collision;
-		}catch(e){
-			return true;
-		}
+		var tilesX = Math.round((character.x + xOffset)/32);
+		var tilesY = Math.round((character.y + yOffset - (HEIGHT/2))/32);
+		console.log(world[tilesX][tilesY])
+		//for(var i = 0; i < world[tilesX][tilesY].length; i++){
+		//	if(world[tilesX][tilesY][i].collision){
+		//		return true;
+		//	}
+		//}
+		//[[-----------------------------------------------]]
+		//try{
+		//	var location = world[tilesX][tilesY];
+		//	if (location.collision) location[0].debug();
+		//	return location.collision;
+		//}catch(e){
+		//	return true;
+		//}
 	}
 
 	// We don't actually use this function for anything
