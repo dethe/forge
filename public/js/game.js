@@ -791,8 +791,13 @@ function showMenu(){
     	click = false;
     }
     document.onkeydown = function(evt){
-    	
-    	console.log(String.fromCharCode(keycode))
+        // console.log(evt);
+        // console.log('character: %s', String.fromCharCode(evt.keyCode));
+        // console.log('keycode: %s', evt.keyCode);
+    	keydown = true;
+    	lastkeycode = keycode;
+    	keycode = evt.keyCode; // To trap DELETE, use keyCode == 8 and return false;
+    	return false;
     }
     document.onkeyup = function(evt){
     	keydown = false;
