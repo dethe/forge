@@ -17,6 +17,7 @@ var mouseX = 0;
 var mouseY = 0;
 var click = false;
 var keydown = false;
+var damagetext = [];
 
 var keys = {
 	0: false,
@@ -254,173 +255,12 @@ function loadClothes(){
     this.shoot_bow = loadImage('character/bow/WEAPON_bow');
 }
 
-/////////////////////////////////////////
-//
-//           PLAYER CHARACTER
-//
-/////////////////////////////////////////
-
 //loads images
 
-var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01');
+var terrain = loadImages('grass', 'reeds', 'sand', 'wheat', 'cement', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01', 'fence');
 var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_xp');
 
-setInterval(function(){
-	if(character.attacked === true){
-		character.animation = character.attack;
-		character.spriteOffset.x = 0;
-	}
-	if(character.animation === character.attack){
-		character.attacked = false;
-		if(move.up){
-			character.spriteOffset.y = 0; // face sprite up
-		}else if(move.left){
-	    	character.spriteOffset.y = 64; // face sprite left
-		}else if(move.down){
-	    	character.spriteOffset.y = 128; // face sprite down
-		}else if(move.right){
-			character.spriteOffset.y = 192;
-		};
-	}
-}, 800);
 
-function Character(){
-    // Attributes
-    this.name = 'Player_Name';
-    this.speed = 3;
-    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
-    this.weapon = 'bow';
-    this.attack = 'shoot';
-    this.animation = 'walk';
-    this.maxsx = 576;
-    this.attacked = false;
-    this.hp = [50, 200];
-    this.mp = [10, 100];
-    
-    // Mapping info and state
-    this.x = 320;
-    this.y = 320;
-    this.w = 64;
-    this.h = 64;
-    this.spriteOffset = {x: 0, y: 128};
-    
-    // Load sprites
-    this.loadClothes();
-}
-
-Character.prototype.loadClothes = loadClothes;
-
-Character.prototype.centre = function(){
-    return ({x: this.x + this.w / 2, y: this.y + this.h / 2});
-}
-
-Character.prototype.draw = function(ctx){
-    var x = this.x - this.w/2, // x and y are the centre point
-        y = this.y - this.h/2,
-        w = this.w,
-        h = this.h,
-        sx = this.spriteOffset.x,
-        sy = this.spriteOffset.y;
-	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
-	{
-		ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
-		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
-		}
-	}
-	if (DEBUG){
-	    var radius = 24;
-	    ctx.beginPath();
-	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
-	    ctx.stroke();
-        if(frame%30 === 0){
-	        console.log('%s: %s, %s', this.name, this.x, this.y);
-	    }
-    }
-    if(keys.space){
-    	this.animation = this.attack;
-    	if(this.animation === 'spellcast'){
-    		this.maxsx = 448;
-    	}else if(this.animation === 'slash'){
-    		this.maxsx = 384;
-    	}else if(this.animation === 'shoot'){
-    		this.maxsx = 832;
-    	}
-    	if(this.attacked === false){
-    		if(this.animation === 'spellcast'){
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x+2, y+7, w, h);
-    		}else{
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
-    		}
-    		if((frame % 5 === 0)){
-				sx = this.spriteOffset.x += 64;
-			}
-    	}else{
-    		this.animation = 'walk';
-    	}
-    }else{
-    	this.attacked = false;
-    	this.animation = 'walk';
-    	this.maxsx = 576;
-    }
-    if(this.animation === 'spellcast' && sy === 0){
-    	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
-		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
-		}
-    }
-    if(this.animation === 'walk'){
-    	if(move.up){
-			this.spriteOffset.y = 0; // face sprite up
-    		if (!world.findCollision(10, -this.speed +32)){
-    			this.y -= this.speed;
-	    	}
-		}else if(move.left){
-	    	this.spriteOffset.y = 64; // face sprite left
-	    	if (!world.findCollision(-this.speed +10, 44)){
-		   		this.x -= this.speed;
-			}
-		}else if(move.down){
-	    	this.spriteOffset.y = 128; // face sprite down
-	    	if (!world.findCollision(10, this.speed +45)){
-		    	this.y += this.speed;
-			}
-		}else if(move.right){
-			this.spriteOffset.y = 192;
-	    	if(!world.findCollision(this.speed +20, 44)){
-    			this.x += this.speed;
-    		}
-		}
-		if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right) && this.animation === 'walk'){
-			this.spriteOffset.x += 64;
-		}
-		if(!(move.up || move.left || move.down || move.right)){
-			this.spriteOffset.x = 0;
-		}
-	}
-	if(this.spriteOffset.x >= this.maxsx){
-		this.spriteOffset.x = 64;
-		if(this.animation === this.attack){
-			this.attacked = true;
-		}
-	}
-};
-
-var character = new Character();
-
-
-//lists what direction we're moving ( _m is to remember previous keys still pressed )
-var move = {
-	up: false,
-	up_m: false,
-	left: false,
-	left_m: false,
-	down: false,
-	down_m: false,
-	right: false,
-	right_m: false
-};
 
 var NORTH = 0;
 var EAST = 3;
@@ -462,9 +302,12 @@ Monster.prototype.move = function(dx, dy){
 	if(frame % 5 === 0){
 		this.animate_idx = (this.animate_idx + this.d);
 	}
-	var distanceToCharacter = Math.sqrt(Math.pow((character.x - this.x), 2) + Math.pow((character.y - this.y), 2)) - 40;
+	var distanceToCharacter = Math.sqrt(Math.pow((character.x - this.x), 2) + Math.pow((character.y + 16 - this.y), 2)) - 32;
 	this.x += dx * Math.min(distanceToCharacter, this.speed);
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
+	if(dx * Math.min(distanceToCharacter, this.speed) <= 1 && dx * Math.min(distanceToCharacter, this.speed) >= -1 && dy * Math.min(distanceToCharacter, this.speed) <= 1 && dy * Math.min(distanceToCharacter, this.speed) >= -1){
+		character.collidingmonsters.push(this);
+	}
     if(DEBUG && frame%30 === 0){
                  console.log(distanceToCharacter);
                  console.log('%s: %s, %s', this.name, this.x, this.y);
@@ -539,6 +382,14 @@ Monster.prototype.draw = function(ctx){
     }
 };
 
+Monster.prototype.hurt = function(damage){
+	this.HP -= damage;
+	damagetext.push([this.x, this.y, this.w, this.h, damage, frame, 1]);
+	if(this.HP <= 0){
+		monsters.splice(monsters.indexOf(this), 1)
+	}
+}
+
 var monsters = [
 	new Monster({
 	    name: 'bat', 
@@ -563,6 +414,177 @@ var monsters = [
 	    AI: 'normal'
 	})
 ];
+
+/////////////////////////////////////////
+//
+//           PLAYER CHARACTER
+//
+/////////////////////////////////////////
+
+setInterval(function(){
+	if(character.attacked === true){
+		character.animation = character.attack;
+		character.spriteOffset.x = 0;
+	}
+	if(character.animation === character.attack){
+		character.attacked = false;
+		if(move.up){
+			character.spriteOffset.y = 0; // face sprite up
+		}else if(move.left){
+	    	character.spriteOffset.y = 64; // face sprite left
+		}else if(move.down){
+	    	character.spriteOffset.y = 128; // face sprite down
+		}else if(move.right){
+			character.spriteOffset.y = 192;
+		};
+	}
+}, 800);
+
+function Character(){
+    // Attributes
+    this.name = 'Player_Name';
+    this.speed = 3;
+    this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
+    this.weapon = 'dagger';
+    this.attack = 'slash';
+    this.damage = [1, 3]
+    this.animation = 'walk';
+    this.maxsx = 576;
+    this.attacked = false;
+    this.hp = [50, 200];
+    this.mp = [10, 100];
+    this.collidingmonsters = [];
+    
+    // Mapping info and state
+    this.x = 320;
+    this.y = 320;
+    this.w = 64;
+    this.h = 64;
+    this.spriteOffset = {x: 0, y: 128};
+    
+    // Load sprites
+    this.loadClothes();
+}
+
+Character.prototype.loadClothes = loadClothes;
+
+Character.prototype.centre = function(){
+    return ({x: this.x + this.w / 2, y: this.y + this.h / 2});
+}
+
+Character.prototype.draw = function(ctx){
+    var x = this.x - this.w/2, // x and y are the centre point
+        y = this.y - this.h/2,
+        w = this.w,
+        h = this.h,
+        sx = this.spriteOffset.x,
+        sy = this.spriteOffset.y;
+	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
+	{
+		ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
+		for(i=0; i < this.clothes.length; i++){
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
+		}
+	}
+	if (DEBUG){
+	    var radius = 24;
+	    ctx.beginPath();
+	    ctx.strokeStyle = 'green';
+	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
+	    ctx.stroke();
+        if(frame%30 === 0){
+	        console.log('%s: %s, %s', this.name, this.x, this.y);
+	    }
+    }
+    if(keys.space){
+    	this.animation = this.attack;
+    	if(this.animation === 'spellcast'){
+    		this.maxsx = 448;
+    	}else if(this.animation === 'slash'){
+    		this.maxsx = 384;
+    		for(var i = 0;i < this.collidingmonsters.length; i++){
+    			if(sx === 320 && frame%5===0){
+    				this.collidingmonsters[i].hurt(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
+    			}
+    		}
+    	}else if(this.animation === 'shoot'){
+    		this.maxsx = 832;
+    	}
+    	if(this.attacked === false){
+    		if(this.animation === 'spellcast'){
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x+2, y+7, w, h);
+    		}else{
+    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
+    		}
+    		if((frame % 5 === 0)){
+				sx = this.spriteOffset.x += 64;
+			}
+    	}else{
+    		this.animation = 'walk';
+    	}
+    }else{
+    	this.attacked = false;
+    	this.animation = 'walk';
+    	this.maxsx = 576;
+    }
+    if(this.animation === 'spellcast' && sy === 0){
+    	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
+		for(i=0; i < this.clothes.length; i++){
+			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
+		}
+    }
+    if(this.animation === 'walk'){
+    	if(move.up){
+			this.spriteOffset.y = 0; // face sprite up
+    		if (!world.findCollision(10, -this.speed +32)){
+    			this.y -= this.speed;
+	    	}
+		}else if(move.left){
+	    	this.spriteOffset.y = 64; // face sprite left
+	    	if (!world.findCollision(-this.speed +10, 44)){
+		   		this.x -= this.speed;
+			}
+		}else if(move.down){
+	    	this.spriteOffset.y = 128; // face sprite down
+	    	if (!world.findCollision(10, this.speed +45)){
+		    	this.y += this.speed;
+			}
+		}else if(move.right){
+			this.spriteOffset.y = 192;
+	    	if(!world.findCollision(this.speed +20, 44)){
+    			this.x += this.speed;
+    		}
+		}
+		if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right) && this.animation === 'walk'){
+			this.spriteOffset.x += 64;
+		}
+		if(!(move.up || move.left || move.down || move.right)){
+			this.spriteOffset.x = 0;
+		}
+	}
+	if(this.spriteOffset.x >= this.maxsx){
+		this.spriteOffset.x = 64;
+		if(this.animation === this.attack){
+			this.attacked = true;
+		}
+	}
+	this.collidingmonsters = [];
+};
+
+var character = new Character();
+
+
+//lists what direction we're moving ( _m is to remember previous keys still pressed )
+var move = {
+	up: false,
+	up_m: false,
+	left: false,
+	left_m: false,
+	down: false,
+	down_m: false,
+	right: false,
+	right_m: false
+};
 
 /////////////////////////////////////////
 //
@@ -862,8 +884,7 @@ function Menu(){
         UIButton('Single Player', WIDTH/2 - (buttonWidth/2), 450 - (buttonHeight *2), buttonWidth, buttonHeight, showGame),
         UIButton('Multiplayer', WIDTH/2 - (buttonWidth/2), 450 - buttonHeight, buttonWidth, buttonHeight, showGame),
         UIButton('Settings', WIDTH/2 - (buttonWidth/2), 450, buttonWidth, buttonHeight, showSettings),
-        UIButton('Choose Map', WIDTH/2 - (buttonWidth/2), 450 + buttonHeight, buttonWidth, buttonHeight, chooseMap),
-        UIButton('Help', WIDTH/2 - (buttonWidth/2), 450 + (buttonHeight *2), buttonWidth, buttonHeight)
+        UIButton('Help', WIDTH/2 - (buttonWidth/2), 450 + buttonHeight, buttonWidth, buttonHeight)
     ];
 }
 
@@ -914,8 +935,17 @@ function drawGame(){
 	});
 	character.draw(ctx);
 	world.drawtop(ctx);
+	for(var i = 0; i < damagetext.length; i++){
+		damagetext[i][1] -= 1;
+		damagetext[i][6] -= 0.1;
+		ctx.fillStyle = 'rgba(0, 0, 0, ' + damagetext[i][6] + ')'
+    	ctx.fillText(damagetext[i][4], damagetext[i][0], damagetext[i][1] - (damagetext[i][3]/2));
+    	if(damagetext[i][6] <= 0){
+			damagetext.splice(i, 1);
+		}
+    }
     ctx.restore();
-    //drawUI(ctx);
+    drawUI(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
