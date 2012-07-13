@@ -17,7 +17,16 @@ var mouseX = 0;
 var mouseY = 0;
 var click = false;
 var keydown = false;
+var timeofday = 0.1;
+var daydirection = 0;
 var damagetext = [];
+var lf = 0;
+var FPS = 0;
+
+setInterval(function(){
+	FPS = frame - lf;
+	lf = frame;
+}, 1000);
 
 var keys = {
 	0: false,
@@ -447,7 +456,7 @@ function Character(){
     this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
     this.weapon = 'dagger';
     this.attack = 'slash';
-    this.damage = [1, 3]
+    this.damage = [150, 200]
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
@@ -940,10 +949,33 @@ function drawGame(){
 	});
 	character.draw(ctx);
 	world.drawtop(ctx);
-	for(var i = 0; i < damagetext.length; i++){
+    ctx.restore();
+    if(daydirection === 1){
+    	if(timeofday >= 0.5){
+    		dayfunction();
+    	}else{
+    		timeofday += 0.00005;
+    	}
+    }else if(daydirection === 0){
+    	if(timeofday <= 0.01){
+    		dayfunction();
+    	}else{
+    		timeofday -= 0.00005;
+    	}
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, ' + timeofday + ')';
+    ctx.fillRect(0, 0 , WIDTH, HEIGHT);
+    ctx.fillStyle = '#fff';
+    ctx.fillText('FPS: ' + FPS, WIDTH-50, 10);
+    ctx.save();
+    ctx.translate(Math.round(-character.x + offsetX), Math.round(-character.y + offsetY));
+    for(var i = 0; i < damagetext.length; i++){
 		damagetext[i][1] -= 1;
-		damagetext[i][6] -= 0.1;
-		ctx.fillStyle = 'rgba(0, 0, 0, ' + damagetext[i][6] + ')'
+		damagetext[i][6] -= 0.05;
+		ctx.fillStyle = 'rgba(255, 0, 0, ' + damagetext[i][6] + ')';
+		ctx.strokeStyle = 'rgba(0, 0, 0, ' + damagetext[i][6] + ')';
+		ctx.strokeWidth = 1;
+		ctx.strokeText(damagetext[i][4], damagetext[i][0], damagetext[i][1] - (damagetext[i][3]/2));
     	ctx.fillText(damagetext[i][4], damagetext[i][0], damagetext[i][1] - (damagetext[i][3]/2));
     	if(damagetext[i][6] <= 0){
 			damagetext.splice(i, 1);
@@ -952,6 +984,19 @@ function drawGame(){
     ctx.restore();
     drawUI(ctx);
 	gameLoop = requestAnimationFrame(drawGame);
+}
+
+function dayfunction(){
+	if(daydirection === 1){
+		setTimeout(function(){
+			daydirection = 1;
+		}, 60000*3.5)
+	}else if(daydirection === 0){
+		setTimeout(function(){
+			daydirection = 1;
+		}, 60000*5)
+	}
+	daydirection = 3;
 }
 
 /////////////////////////////////////////
