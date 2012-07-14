@@ -34,7 +34,7 @@ function World(){
 	new WorldChunk('path_vertical_with_fence', 0, 640);
 	new WorldChunk('grass', -640, 640);
 	new WorldChunk('grass', 640, -640);
-	new WorldChunk('path_vertical_with_fence', 0, -640);
+	new WorldChunk('tower_bottom', 0, -640);
 	new WorldChunk('grass', -640, -640);
 
 	var world = [];
@@ -481,7 +481,6 @@ function World(){
 	function findCollision(xOffset, yOffset){
 		var tilesX = Math.round((character.x + xOffset)/32);
 		var tilesY = Math.round((character.y + yOffset - (HEIGHT/2))/32);
-		console.log(world[tilesX][tilesY])
 		//for(var i = 0; i < world[tilesX][tilesY].length; i++){
 		//	if(world[tilesX][tilesY][i].collision){
 		//		return true;
