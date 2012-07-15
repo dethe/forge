@@ -132,15 +132,15 @@ function World(){
 	};
 
 	
+    new WorldChunk('grass', 640, 0);
+    new WorldChunk('path_vertical_with_fence', 0, 0);
+    new WorldChunk('grass', -640, 0);
     new WorldChunk('castle_entrance_with_towers_and_windows', 0, 0);
     new WorldChunk('castlewall_with_windows', 640, 0);
     new WorldChunk('castlewall_with_windows', -640,0);
     new WorldChunk('grass', 640, 640);
     new WorldChunk('path_vertical_with_fence', 0, 640);
     new WorldChunk('grass', -640, 640);
-    new WorldChunk('grass', 640, -640);
-    new WorldChunk('path_vertical_with_fence', 0, -640);
-    new WorldChunk('grass', -640, -640);
 
 
 	

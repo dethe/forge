@@ -23,6 +23,8 @@ var damagetext = [];
 var lf = 0;
 var FPS = 0;
 
+
+// DISABLED - we should not be using setInterval or setTimeout - just put hooks into the main event loop
 // setInterval(function(){
 //  FPS = frame - lf;
 //  lf = frame;
@@ -337,6 +339,7 @@ var monsters = [
 //
 /////////////////////////////////////////
 
+// DISABLED - we should not be using setInterval or setTimeout, just add hooks to main event loop
 // setInterval(function(){
 //  if(character.attacked === true){
 //      character.animation = character.attack;
