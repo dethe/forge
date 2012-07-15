@@ -32,3 +32,68 @@ function zip(){
     }
     return ret;
 }
+
+function initAsRect(x,y,w,h){
+    // x,y are the centre point
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.left = x - w/2;
+    this.right = this.left + w;
+    this.top = y - h/2;
+    this.bottom = this.top + h;
+}
+
+/////////////////////////////////////////
+//
+//           UTILITIES
+//
+/////////////////////////////////////////
+
+// Paul Irish's requestAnimationFrame polyfill
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = 
+          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
+// isArray function borrowed from the Underscore library
+var isArray = Array.isArray || function(obj) {
+    return Object.prototype.toString.call(obj) == '[object Array]';
+};
+
+function loadImage(name){
+	var img = new Image();
+	img.src = 'public/graphics/' + name + '.png';
+	return img;
+}
+
+function loadImages(){
+	var ret = {};
+	// Every function has a list of arguments which is almost, but not quite, an array. This is how we turn it into an array:
+	var args = Array.prototype.slice.call(arguments);
+	args.forEach(function(name){
+		ret[name] = loadImage(name);
+	});
+	return ret;
+}

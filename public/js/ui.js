@@ -9,6 +9,8 @@ var dialogdirectionY = 'down';
 var dialogtext = '';
 var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
 
+var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_xp');
+
 
 function drawUI(ctx){
 	if(dialogdirectionY === 'up'){
@@ -53,7 +55,7 @@ function drawUI(ctx){
 	ctx.drawImage(UI.bar_hp_mp, 3, 34, 100 - (((character.hp[1] - character.hp[0])/character.hp[1])*100), 16, 284, 81, 200 - (((character.hp[1] - character.hp[0])/character.hp[1])*200), 32);
 	ctx.drawImage(UI.bar_hp_mp, 3, 48, 100 - (((character.mp[1] - character.mp[0])/character.mp[1])*100), 16, 284, 107, 200 - (((character.mp[1] - character.mp[0])/character.mp[1])*200), 32);
 	ctx.fillStyle = '#fff';
-    ctx.font = '7pt "Press Start 2P"';
+    ctx.font = '7pt PressStart2PRegular';
     ctx.textAlign = 'center'
 	ctx.fillText('HP:'+ character.hp[0] +'/'+ character.hp[1], 384, 103);
 	ctx.fillText('MP:'+ character.mp[0] +'/'+ character.mp[1], 384, 130);
@@ -151,7 +153,7 @@ function UITextbox(text, x, y, w, h){
 		ctx.drawImage(UI.input, 98, sy, 32, 20, x+(w-64+32), y, 32, h);
 		
 		ctx.fillStyle = 'black';
-        ctx.font = '12pt "Press Start 2P"';
+        ctx.font = '12pt PressStart2PRegular';
         ctx.textAlign='left';
         ctx.fillText(t2, x +10, y + 30, 99999999999);
         if(cursoron){
@@ -167,7 +169,7 @@ function UIButton(text, x, y, w, h, trigger){
         drawbutton(ctx, x, y, w, h, pt);
         //we should put the text in the drawbutton function
         ctx.fillStyle = 'black';
-        ctx.font = '14pt "Press Start 2P"';
+        ctx.font = '14pt PressStart2PRegular';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w/2+10, y + 35, w - 20);
     }
@@ -186,7 +188,7 @@ function UIBox(text, x, y, w, h){
 		ctx.drawImage(UI.confirm_bg, 160, 16, 32, 32, x+w-32, y+32, 32, h-64);
 		ctx.drawImage(UI.confirm_bg, 32, 16, 32, 32, x+32, y+32, w-64, h-64);
 		ctx.fillStyle = '#fff';
-        ctx.font = '10pt "Press Start 2P"';
+        ctx.font = '10pt PressStart2PRegular';
         ctx.textAlign = 'left'
         ctx.fillText(text, x+20, y+35, WIDTH-20);
 	}
@@ -196,7 +198,7 @@ function UIBox(text, x, y, w, h){
 function UITitle(text, x, y){
     function draw(ctx){
         ctx.fillStyle = '#900';
-        ctx.font = '100pt "Press Start 2P"';
+        ctx.font = '100pt PressStart2PRegular';
         ctx.textAlign = 'center'
         ctx.fillText(text, x, y);
     }

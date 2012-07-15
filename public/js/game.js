@@ -23,54 +23,11 @@ var damagetext = [];
 var lf = 0;
 var FPS = 0;
 
-setInterval(function(){
-	FPS = frame - lf;
-	lf = frame;
-}, 1000);
+// setInterval(function(){
+//  FPS = frame - lf;
+//  lf = frame;
+// }, 1000);
 
-var keys = {
-	0: false,
-	key1: false,
-	2: false,
-	3: false,
-	4: false,
-	5: false,
-	6: false,
-	7: false,
-	8: false,
-	9: false,
-	a: false,
-	b: false,
-	c: false,
-	d: false,
-	e: false,
-	f: false,
-	g: false,
-	h: false,
-	i: false,
-	j: false,
-	k: false,
-	l: false,
-	m: false,
-	n: false,
-	o: false,
-	p: false,
-	q: false,
-	r: false,
-	s: false,
-	t: false,
-	u: false,
-	v: false,
-	w: false,
-	x: false,
-	y: false,
-	z: false,
-	shift: false,
-	caps: false,
-	'delete': false,
-	dash: false,
-	space: false
-};
 
 var DEBUG = false;
 
@@ -87,194 +44,144 @@ function resize(){
     canvas.height = HEIGHT;
 }
 
-/////////////////////////////////////////
-//
-//           UTILITIES
-//
-/////////////////////////////////////////
-
-// Paul Irish's requestAnimationFrame polyfill
-(function() {
-    var lastTime = 0;
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-        window.cancelAnimationFrame = 
-          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+function Clothes(){
+    function loadClothes(name){
+        return loadImage('character/walkcycle/' + name);
     }
- 
-    if (!window.requestAnimationFrame)
-        window.requestAnimationFrame = function(callback, element) {
-            var currTime = new Date().getTime();
-            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-              timeToCall);
-            lastTime = currTime + timeToCall;
-            return id;
-        };
- 
-    if (!window.cancelAnimationFrame)
-        window.cancelAnimationFrame = function(id) {
-            clearTimeout(id);
-        };
-}());
-
-// isArray function borrowed from the Underscore library
-var isArray = Array.isArray || function(obj) {
-    return Object.prototype.toString.call(obj) == '[object Array]';
-};
-
-function loadImage(name){
-	var img = new Image();
-	img.src = 'public/graphics/' + name + '.png';
-	return img;
-}
-
-function loadImages(){
-	var ret = {};
-	// Every function has a list of arguments which is almost, but not quite, an array. This is how we turn it into an array:
-	var args = Array.prototype.slice.call(arguments);
-	args.forEach(function(name){
-		ret[name] = loadImage(name);
-	});
-	return ret;
-}
-
-function loadClothes(){
-	this.walk_quiver = loadImage('character/walkcycle/BEHIND_quiver');
-    this.walk_leather_belt = loadImage('character/walkcycle/BELT_leather');
-    this.walk_rope_belt = loadImage('character/walkcycle/BELT_rope');
-    this.walk_character = loadImage('character/walkcycle/BODY_male');
-    this.walk_skeletoncharacter = loadImage('character/walkcycle/BODY_skeleton');
-    this.walk_plate_shoes = loadImage('character/walkcycle/FEET_plate_armor_shoes');
-    this.walk_brown_shoes = loadImage('character/walkcycle/FEET_shoes_brown');
-    this.walk_plate_gloves = loadImage('character/walkcycle/HANDS_plate_armor_gloves');
-    this.walk_helmet = loadImage('character/walkcycle/HEAD_chain_armor_helmet');
-    this.walk_chain_hood = loadImage('character/walkcycle/HEAD_chain_armor_hood');
-    this.walk_blonde_hair = loadImage('character/walkcycle/HEAD_hair_blonde');
-    this.walk_leather_hat = loadImage('character/walkcycle/HEAD_leather_armor_hat');
-    this.walk_plate_helmet = loadImage('character/walkcycle/HEAD_plate_armor_helmet');
-    this.walk_robe_hood = loadImage('character/walkcycle/HEAD_robe_hood');
-    this.walk_green_pants = loadImage('character/walkcycle/LEGS_pants_greenish');
-    this.walk_plate_pants = loadImage('character/walkcycle/LEGS_plate_armor_pants');
-    this.walk_robe_skirt = loadImage('character/walkcycle/LEGS_robe_skirt');
-    this.walk_chain_jacket_purple = loadImage('character/walkcycle/TORSO_chain_armor_jacket_purple');
-    this.walk_chain_armor = loadImage('character/walkcycle/TORSO_chain_armor_torso');
-    this.walk_bracers = loadImage('character/walkcycle/TORSO_leather_armor_bracers');
-    this.walk_white_shirt = loadImage('character/walkcycle/TORSO_leather_armor_shirt_white');
-    this.walk_shoulder_armor = loadImage('character/walkcycle/TORSO_leather_armor_shoulders');
-    this.walk_leather_armor = loadImage('character/walkcycle/TORSO_leather_armor_torso');
-    this.walk_plate_shoulder_armor = loadImage('character/walkcycle/TORSO_plate_armor_arms_shoulders');
-    this.walk_plate_armor = loadImage('character/walkcycle/TORSO_plate_armor_torso');
-    this.walk_robe_shirt = loadImage('character/walkcycle/TORSO_robe_shirt_brown');
-    this.walk_shield = loadImage('character/walkcycle/WEAPON_shield_cutout_body');
+	this.walk_quiver = loadClothes('BEHIND_quiver');
+    this.walk_leather_belt = loadClothes('BELT_leather');
+    this.walk_rope_belt = loadClothes('BELT_rope');
+    this.walk_character = loadClothes('BODY_male');
+    this.walk_skeletoncharacter = loadClothes('BODY_skeleton');
+    this.walk_plate_shoes = loadClothes('FEET_plate_armor_shoes');
+    this.walk_brown_shoes = loadClothes('FEET_shoes_brown');
+    this.walk_plate_gloves = loadClothes('HANDS_plate_armor_gloves');
+    this.walk_helmet = loadClothes('HEAD_chain_armor_helmet');
+    this.walk_chain_hood = loadClothes('HEAD_chain_armor_hood');
+    this.walk_blonde_hair = loadClothes('HEAD_hair_blonde');
+    this.walk_leather_hat = loadClothes('HEAD_leather_armor_hat');
+    this.walk_plate_helmet = loadClothes('HEAD_plate_armor_helmet');
+    this.walk_robe_hood = loadClothes('HEAD_robe_hood');
+    this.walk_green_pants = loadClothes('LEGS_pants_greenish');
+    this.walk_plate_pants = loadClothes('LEGS_plate_armor_pants');
+    this.walk_robe_skirt = loadClothes('LEGS_robe_skirt');
+    this.walk_chain_jacket_purple = loadClothes('TORSO_chain_armor_jacket_purple');
+    this.walk_chain_armor = loadClothes('TORSO_chain_armor_torso');
+    this.walk_bracers = loadClothes('TORSO_leather_armor_bracers');
+    this.walk_white_shirt = loadClothes('TORSO_leather_armor_shirt_white');
+    this.walk_shoulder_armor = loadClothes('TORSO_leather_armor_shoulders');
+    this.walk_leather_armor = loadClothes('TORSO_leather_armor_torso');
+    this.walk_plate_shoulder_armor = loadClothes('TORSO_plate_armor_arms_shoulders');
+    this.walk_plate_armor = loadClothes('TORSO_plate_armor_torso');
+    this.walk_robe_shirt = loadClothes('TORSO_robe_shirt_brown');
+    this.walk_shield = loadClothes('WEAPON_shield_cutout_body');
     
+    function loadSlash(name){
+        return loadImage('character/slash/' + name);
+    }
     // Load slash animation for sprites
-    this.slash_quiver = loadImage('character/slash/BEHIND_quiver');
-    this.slash_leather_belt = loadImage('character/slash/BELT_leather');
-    this.slash_rope_belt = loadImage('character/slash/BELT_rope');
-    this.slash_character = loadImage('character/slash/BODY_male');
-    this.slash_skeletoncharacter = loadImage('character/slash/BODY_skeleton');
-    this.slash_plate_shoes = loadImage('character/slash/FEET_plate_armor_shoes');
-    this.slash_brown_shoes = loadImage('character/slash/FEET_shoes_brown');
-    this.slash_plate_gloves = loadImage('character/slash/HANDS_plate_armor_gloves');
-    this.slash_helmet = loadImage('character/slash/HEAD_chain_armor_helmet');
-    this.slash_chain_hood = loadImage('character/slash/HEAD_chain_armor_hood');
-    this.slash_blonde_hair = loadImage('character/slash/HEAD_hair_blonde');
-    this.slash_leather_hat = loadImage('character/slash/HEAD_leather_armor_hat');
-    this.slash_plate_helmet = loadImage('character/slash/HEAD_plate_armor_helmet');
-    this.slash_robe_hood = loadImage('character/slash/HEAD_robe_hood');
-    this.slash_green_pants = loadImage('character/slash/LEGS_pants_greenish');
-    this.slash_plate_pants = loadImage('character/slash/LEGS_plate_armor_pants');
-    this.slash_robe_skirt = loadImage('character/slash/LEGS_robe_skirt');
-    this.slash_chain_jacket_purple = loadImage('character/slash/TORSO_chain_armor_jacket_purple');
-    this.slash_chain_armor = loadImage('character/slash/TORSO_chain_armor_torso');
-    this.slash_bracers = loadImage('character/slash/TORSO_leather_armor_bracers');
-    this.slash_white_shirt = loadImage('character/slash/TORSO_leather_armor_shirt_white');
-    this.slash_shoulder_armor = loadImage('character/slash/TORSO_leather_armor_shoulders');
-    this.slash_leather_armor = loadImage('character/slash/TORSO_leather_armor_torso');
-    this.slash_plate_shoulder_armor = loadImage('character/slash/TORSO_plate_armor_arms_shoulders');
-    this.slash_plate_armor = loadImage('character/slash/TORSO_plate_armor_torso');
-    this.slash_robe_shirt = loadImage('character/slash/TORSO_robe_shirt_brown');
-    this.slash_dagger = loadImage('character/slash/WEAPON_dagger');
-    this.slash_shield = loadImage('character/slash/WEAPON_shield_cutout_body');
+    this.slash_quiver = loadSlash('BEHIND_quiver');
+    this.slash_leather_belt = loadSlash('BELT_leather');
+    this.slash_rope_belt = loadSlash('BELT_rope');
+    this.slash_character = loadSlash('BODY_male');
+    this.slash_skeletoncharacter = loadSlash('BODY_skeleton');
+    this.slash_plate_shoes = loadSlash('FEET_plate_armor_shoes');
+    this.slash_brown_shoes = loadSlash('FEET_shoes_brown');
+    this.slash_plate_gloves = loadSlash('HANDS_plate_armor_gloves');
+    this.slash_helmet = loadSlash('HEAD_chain_armor_helmet');
+    this.slash_chain_hood = loadSlash('HEAD_chain_armor_hood');
+    this.slash_blonde_hair = loadSlash('HEAD_hair_blonde');
+    this.slash_leather_hat = loadSlash('HEAD_leather_armor_hat');
+    this.slash_plate_helmet = loadSlash('HEAD_plate_armor_helmet');
+    this.slash_robe_hood = loadSlash('HEAD_robe_hood');
+    this.slash_green_pants = loadSlash('LEGS_pants_greenish');
+    this.slash_plate_pants = loadSlash('LEGS_plate_armor_pants');
+    this.slash_robe_skirt = loadSlash('LEGS_robe_skirt');
+    this.slash_chain_jacket_purple = loadSlash('TORSO_chain_armor_jacket_purple');
+    this.slash_chain_armor = loadSlash('TORSO_chain_armor_torso');
+    this.slash_bracers = loadSlash('TORSO_leather_armor_bracers');
+    this.slash_white_shirt = loadSlash('TORSO_leather_armor_shirt_white');
+    this.slash_shoulder_armor = loadSlash('TORSO_leather_armor_shoulders');
+    this.slash_leather_armor = loadSlash('TORSO_leather_armor_torso');
+    this.slash_plate_shoulder_armor = loadSlash('TORSO_plate_armor_arms_shoulders');
+    this.slash_plate_armor = loadSlash('TORSO_plate_armor_torso');
+    this.slash_robe_shirt = loadSlash('TORSO_robe_shirt_brown');
+    this.slash_dagger = loadSlash('WEAPON_dagger');
+    this.slash_shield = loadSlash('WEAPON_shield_cutout_body');
+    
+    function loadSpellcast(name){
+        return loadImage('character/spellcast/' + name);
+    }
     
     // Load spellcast animation for sprites
-    this.spellcast_quiver = loadImage('character/spellcast/BEHIND_quiver');
-    this.spellcast_leather_belt = loadImage('character/spellcast/BELT_leather');
-    this.spellcast_rope_belt = loadImage('character/spellcast/BELT_rope');
-    this.spellcast_character = loadImage('character/spellcast/BODY_male');
-    this.spellcast_skeletoncharacter = loadImage('character/spellcast/BODY_skeleton');
-    this.spellcast_plate_shoes = loadImage('character/spellcast/FEET_plate_armor_shoes');
-    this.spellcast_brown_shoes = loadImage('character/spellcast/FEET_shoes_brown');
-    this.spellcast_plate_gloves = loadImage('character/spellcast/HANDS_plate_armor_gloves');
-    this.spellcast_helmet = loadImage('character/spellcast/HEAD_chain_armor_helmet');
-    this.spellcast_chain_hood = loadImage('character/spellcast/HEAD_chain_armor_hood');
-    this.spellcast_blonde_hair = loadImage('character/spellcast/HEAD_hair_blonde');
-    this.spellcast_leather_hat = loadImage('character/spellcast/HEAD_leather_armor_hat');
-    this.spellcast_plate_helmet = loadImage('character/spellcast/HEAD_plate_armor_helmet');
-    this.spellcast_robe_hood = loadImage('character/spellcast/HEAD_robe_hood');
-    this.spellcast_green_pants = loadImage('character/spellcast/LEGS_pants_greenish');
-    this.spellcast_plate_pants = loadImage('character/spellcast/LEGS_plate_armor_pants');
-    this.spellcast_robe_skirt = loadImage('character/spellcast/LEGS_robe_skirt');
-    this.spellcast_chain_jacket_purple = loadImage('character/spellcast/TORSO_chain_armor_jacket_purple');
-    this.spellcast_chain_armor = loadImage('character/spellcast/TORSO_chain_armor_torso');
-    this.spellcast_bracers = loadImage('character/spellcast/TORSO_leather_armor_bracers');
-    this.spellcast_white_shirt = loadImage('character/spellcast/TORSO_leather_armor_shirt_white');
-    this.spellcast_shoulder_armor = loadImage('character/spellcast/TORSO_leather_armor_shoulders');
-    this.spellcast_leather_armor = loadImage('character/spellcast/TORSO_leather_armor_torso');
-    this.spellcast_plate_shoulder_armor = loadImage('character/spellcast/TORSO_plate_armor_arms_shoulders');
-    this.spellcast_plate_armor = loadImage('character/spellcast/TORSO_plate_armor_torso');
-    this.spellcast_robe_shirt = loadImage('character/spellcast/TORSO_robe_shirt_brown');
-    this.spellcast_water_staff = loadImage('character/spellcast/WEAPON_blue_staff');
-    this.spellcast_darkness_staff = loadImage('character/spellcast/WEAPON_dark_staff');
-    this.spellcast_nature_staff = loadImage('character/spellcast/WEAPON_green_staff');
-    this.spellcast_fire_staff = loadImage('character/spellcast/WEAPON_red_staff');
-    this.spellcast_staff = loadImage('character/spellcast/WEAPON_regular_staff');
-    this.spellcast_ice_staff = loadImage('character/spellcast/WEAPON_teal_staff');
-    this.spellcast_air_staff = loadImage('character/spellcast/WEAPON_white_staff');
-    this.spellcast_lightning_staff = loadImage('character/spellcast/WEAPON_white_staff');
+    this.spellcast_quiver = loadSpellcast('BEHIND_quiver');
+    this.spellcast_leather_belt = loadSpellcast('BELT_leather');
+    this.spellcast_rope_belt = loadSpellcast('BELT_rope');
+    this.spellcast_character = loadSpellcast('BODY_male');
+    this.spellcast_skeletoncharacter = loadSpellcast('BODY_skeleton');
+    this.spellcast_plate_shoes = loadSpellcast('FEET_plate_armor_shoes');
+    this.spellcast_brown_shoes = loadSpellcast('FEET_shoes_brown');
+    this.spellcast_plate_gloves = loadSpellcast('HANDS_plate_armor_gloves');
+    this.spellcast_helmet = loadSpellcast('HEAD_chain_armor_helmet');
+    this.spellcast_chain_hood = loadSpellcast('HEAD_chain_armor_hood');
+    this.spellcast_blonde_hair = loadSpellcast('HEAD_hair_blonde');
+    this.spellcast_leather_hat = loadSpellcast('HEAD_leather_armor_hat');
+    this.spellcast_plate_helmet = loadSpellcast('HEAD_plate_armor_helmet');
+    this.spellcast_robe_hood = loadSpellcast('HEAD_robe_hood');
+    this.spellcast_green_pants = loadSpellcast('LEGS_pants_greenish');
+    this.spellcast_plate_pants = loadSpellcast('LEGS_plate_armor_pants');
+    this.spellcast_robe_skirt = loadSpellcast('LEGS_robe_skirt');
+    this.spellcast_chain_jacket_purple = loadSpellcast('TORSO_chain_armor_jacket_purple');
+    this.spellcast_chain_armor = loadSpellcast('TORSO_chain_armor_torso');
+    this.spellcast_bracers = loadSpellcast('TORSO_leather_armor_bracers');
+    this.spellcast_white_shirt = loadSpellcast('TORSO_leather_armor_shirt_white');
+    this.spellcast_shoulder_armor = loadSpellcast('TORSO_leather_armor_shoulders');
+    this.spellcast_leather_armor = loadSpellcast('TORSO_leather_armor_torso');
+    this.spellcast_plate_shoulder_armor = loadSpellcast('TORSO_plate_armor_arms_shoulders');
+    this.spellcast_plate_armor = loadSpellcast('TORSO_plate_armor_torso');
+    this.spellcast_robe_shirt = loadSpellcast('TORSO_robe_shirt_brown');
+    this.spellcast_water_staff = loadSpellcast('WEAPON_blue_staff');
+    this.spellcast_darkness_staff = loadSpellcast('WEAPON_dark_staff');
+    this.spellcast_nature_staff = loadSpellcast('WEAPON_green_staff');
+    this.spellcast_fire_staff = loadSpellcast('WEAPON_red_staff');
+    this.spellcast_staff = loadSpellcast('WEAPON_regular_staff');
+    this.spellcast_ice_staff = loadSpellcast('WEAPON_teal_staff');
+    this.spellcast_air_staff = loadSpellcast('WEAPON_white_staff');
+    this.spellcast_lightning_staff = loadSpellcast('WEAPON_white_staff');
+    
+    function loadBow(name){
+        return loadImage('character/bow/' + name);
+    }
     
     // Load bow animation for sprites
-    this.shoot_leather_belt = loadImage('character/bow/BELT_leather');
-    this.shoot_rope_belt = loadImage('character/bow/BELT_rope');
-    this.shoot_character = loadImage('character/bow/BODY_male');
-    this.shoot_plate_shoes = loadImage('character/bow/FEET_plate_armor_shoes');
-    this.shoot_brown_shoes = loadImage('character/bow/FEET_shoes_brown');
-    this.shoot_plate_gloves = loadImage('character/bow/HANDS_plate_armor_gloves');
-    this.shoot_helmet = loadImage('character/bow/HEAD_chain_armor_helmet');
-    this.shoot_chain_hood = loadImage('character/bow/HEAD_chain_armor_hood');
-    this.shoot_blonde_hair = loadImage('character/bow/HEAD_hair_blonde');
-    this.shoot_leather_hat = loadImage('character/bow/HEAD_leather_armor_hat');
-    this.shoot_plate_helmet = loadImage('character/bow/HEAD_plate_armor_helmet');
-    this.shoot_robe_hood = loadImage('character/bow/HEAD_robe_hood');
-    this.shoot_green_pants = loadImage('character/bow/LEGS_pants_greenish');
-    this.shoot_plate_pants = loadImage('character/bow/LEGS_plate_armor_pants');
-    this.shoot_robe_skirt = loadImage('character/bow/LEGS_robe_skirt');
-    this.shoot_chain_jacket_purple = loadImage('character/bow/TORSO_chain_armor_jacket_purple');
-    this.shoot_chain_armor = loadImage('character/bow/TORSO_chain_armor_torso');
-    this.shoot_bracers = loadImage('character/bow/TORSO_leather_armor_bracers');
-    this.shoot_white_shirt = loadImage('character/bow/TORSO_leather_armor_shirt_white');
-    this.shoot_shoulder_armor = loadImage('character/bow/TORSO_leather_armor_shoulders');
-    this.shoot_leather_armor = loadImage('character/bow/TORSO_leather_armor_torso');
-    this.shoot_plate_shoulder_armor = loadImage('character/bow/TORSO_plate_armor_arms_shoulders');
-    this.shoot_plate_armor = loadImage('character/bow/TORSO_plate_armor_torso');
-    this.shoot_robe_shirt = loadImage('character/bow/TORSO_robe_shirt_brown');
-    this.shoot_arrow = loadImage('character/bow/WEAPON_arrow');
-    this.shoot_bow = loadImage('character/bow/WEAPON_bow');
+    this.shoot_leather_belt = loadBow('BELT_leather');
+    this.shoot_rope_belt = loadBow('BELT_rope');
+    this.shoot_character = loadBow('BODY_male');
+    this.shoot_plate_shoes = loadBow('FEET_plate_armor_shoes');
+    this.shoot_brown_shoes = loadBow('FEET_shoes_brown');
+    this.shoot_plate_gloves = loadBow('HANDS_plate_armor_gloves');
+    this.shoot_helmet = loadBow('HEAD_chain_armor_helmet');
+    this.shoot_chain_hood = loadBow('HEAD_chain_armor_hood');
+    this.shoot_blonde_hair = loadBow('HEAD_hair_blonde');
+    this.shoot_leather_hat = loadBow('HEAD_leather_armor_hat');
+    this.shoot_plate_helmet = loadBow('HEAD_plate_armor_helmet');
+    this.shoot_robe_hood = loadBow('HEAD_robe_hood');
+    this.shoot_green_pants = loadBow('LEGS_pants_greenish');
+    this.shoot_plate_pants = loadBow('LEGS_plate_armor_pants');
+    this.shoot_robe_skirt = loadBow('LEGS_robe_skirt');
+    this.shoot_chain_jacket_purple = loadBow('TORSO_chain_armor_jacket_purple');
+    this.shoot_chain_armor = loadBow('TORSO_chain_armor_torso');
+    this.shoot_bracers = loadBow('TORSO_leather_armor_bracers');
+    this.shoot_white_shirt = loadBow('TORSO_leather_armor_shirt_white');
+    this.shoot_shoulder_armor = loadBow('TORSO_leather_armor_shoulders');
+    this.shoot_leather_armor = loadBow('TORSO_leather_armor_torso');
+    this.shoot_plate_shoulder_armor = loadBow('TORSO_plate_armor_arms_shoulders');
+    this.shoot_plate_armor = loadBow('TORSO_plate_armor_torso');
+    this.shoot_robe_shirt = loadBow('TORSO_robe_shirt_brown');
+    this.shoot_arrow = loadBow('WEAPON_arrow');
+    this.shoot_bow = loadBow('WEAPON_bow');
 }
-
-//loads images
-
-var terrain = loadImages('grass', 'reeds', 'sandandwater', 'sand', 'wheat', 'cement','cement_stairs', 'kitchen', 'dirt', 'dirt2', 'grassalt', 'hole', 'lava', 'lavarock', 'water', 'waterandgrass', 'farming_fishing', 'barrels', 'tileset01', 'fence', 'castle_outside', 'castlewalls', 'castlefloors', 'castlefloors_outside', 'brickwalldark', 'dungeon', 'signs', 'house_tiles_exterior', 'house_tiles_interior', 'house_stairs_interior', 'cabinets', 'bridges', 'chests', 'buckets', 'wheelbarrow', 'misc', 'miscellaneous', 'fence_alt', 'rocks', 'wood_house_exterior', 'white_house_exterior', 'treetop', 'treetrunk', 'hole', 'furniture', 'furniture2', 'flowers', 'plowed_soil', 'signpost', 'plants', 'limestone_wall01');
-var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_xp');
-
-
-
-var NORTH = 0;
-var EAST = 3;
-var SOUTH = 2;
-var WEST = 1;
+var Clothes = new Clothes(); // Make a single instance;
 
 
 /////////////////////////////////////////
@@ -287,10 +194,7 @@ var WEST = 1;
 function Monster(opts){
     this.name = opts.name;
 	this.d = 1;
-	this.x = opts.x;
-	this.y = opts.y;
-	this.w = 32;
-	this.h = 32;
+	this.initAsRect(opts.x, opts.y, 32, 32);
 	this.sprite = new Image();
 	this.sprite.src = 'public/graphics/' + opts.name + '.png';
 	this.animate_idx = 0;
@@ -322,6 +226,9 @@ Monster.prototype.move = function(dx, dy){
                  console.log('%s: %s, %s', this.name, this.x, this.y);
     }
 };
+
+Monster.prototype.initAsRect = initAsRect;
+
 Monster.prototype.faceEast = function(){
 	this.direction = EAST;
 };
@@ -430,24 +337,24 @@ var monsters = [
 //
 /////////////////////////////////////////
 
-setInterval(function(){
-	if(character.attacked === true){
-		character.animation = character.attack;
-		character.spriteOffset.x = 0;
-	}
-	if(character.animation === character.attack){
-		character.attacked = false;
-		if(move.up){
-			character.spriteOffset.y = 0; // face sprite up
-		}else if(move.left){
-	    	character.spriteOffset.y = 64; // face sprite left
-		}else if(move.down){
-	    	character.spriteOffset.y = 128; // face sprite down
-		}else if(move.right){
-			character.spriteOffset.y = 192;
-		};
-	}
-}, 800);
+// setInterval(function(){
+//  if(character.attacked === true){
+//      character.animation = character.attack;
+//      character.sx = 0;
+//  }
+//  if(character.animation === character.attack){
+//      character.attacked = false;
+//      if(move.up){
+//          character.sy = 0; // face sprite up
+//      }else if(move.left){
+//          character.sy = 64; // face sprite left
+//      }else if(move.down){
+//          character.sy = 128; // face sprite down
+//      }else if(move.right){
+//          character.sy = 192;
+//      };
+//  }
+// }, 800);
 
 function Character(){
     // Attributes
@@ -465,34 +372,27 @@ function Character(){
     this.collidingmonsters = [];
     
     // Mapping info and state
-    this.x = 320;
-    this.y = 320;
-    this.w = 64;
-    this.h = 64;
-    this.spriteOffset = {x: 0, y: 128};
-    
-    // Load sprites
-    this.loadClothes();
+    this.initAsRect(320, 320, 64, 64);
+    // sprite offset
+    this.sx = 0;
+    this.sy = 128;    
 }
 
-Character.prototype.loadClothes = loadClothes;
-
-Character.prototype.centre = function(){
-    return ({x: this.x + this.w / 2, y: this.y + this.h / 2});
-}
+Character.prototype.initAsRect = initAsRect;
 
 Character.prototype.draw = function(ctx){
     var x = this.x - this.w/2, // x and y are the centre point
         y = this.y - this.h/2,
         w = this.w,
         h = this.h,
-        sx = this.spriteOffset.x,
-        sy = this.spriteOffset.y;
-	if(this.animation === 'spellcast' && this.spriteOffset.y === 0){}else
-	{
-		ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
+        sx = this.sx,
+        sy = this.sy;
+	if(this.animation === 'spellcast' && this.sy === 0){
+	    
+	}else{
+		ctx.drawImage(Clothes[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
+			ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}
 	}
 	if (DEBUG){
@@ -526,7 +426,7 @@ Character.prototype.draw = function(ctx){
     			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
     		}
     		if((frame % 5 === 0)){
-				sx = this.spriteOffset.x += 64;
+				sx = this.sx += 64;
 			}
     	}else{
     		this.animation = 'walk';
@@ -539,40 +439,40 @@ Character.prototype.draw = function(ctx){
     if(this.animation === 'spellcast' && sy === 0){
     	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 		for(i=0; i < this.clothes.length; i++){
-			ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
+			ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}
     }
     if(this.animation === 'walk'){
     	if(move.up){
-			this.spriteOffset.y = 0; // face sprite up
+			this.sy = 0; // face sprite up
     		if (!world.findCollision(10, -this.speed +32)){
     			this.y -= this.speed;
 	    	}
 		}else if(move.left){
-	    	this.spriteOffset.y = 64; // face sprite left
+	    	this.sy = 64; // face sprite left
 	    	if (!world.findCollision(-this.speed +10, 44)){
 		   		this.x -= this.speed;
 			}
 		}else if(move.down){
-	    	this.spriteOffset.y = 128; // face sprite down
+	    	this.sy = 128; // face sprite down
 	    	if (!world.findCollision(10, this.speed +45)){
 		    	this.y += this.speed;
 			}
 		}else if(move.right){
-			this.spriteOffset.y = 192;
+			this.sy = 192;
 	    	if(!world.findCollision(this.speed +20, 44)){
     			this.x += this.speed;
     		}
 		}
 		if((frame % 5 === 0) && (move.up|| move.left || move.down || move.right) && this.animation === 'walk'){
-			this.spriteOffset.x += 64;
+			this.sx += 64;
 		}
 		if(!(move.up || move.left || move.down || move.right)){
-			this.spriteOffset.x = 0;
+			this.sx = 0;
 		}
 	}
-	if(this.spriteOffset.x >= this.maxsx){
-		this.spriteOffset.x = 64;
+	if(this.sx >= this.maxsx){
+		this.sx = 64;
 		if(this.animation === this.attack){
 			this.attacked = true;
 		}
@@ -603,11 +503,9 @@ var move = {
 
 function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
 	this.animation = 'walk';
-	this.x = x;
-	this.y = y;
-    this.w = 64;
-    this.h = 64;
-    this.spriteOffset = {x: 0, y: 128};
+	this.initAsRect(x,y,64,64);
+    this.sx= 0;
+    this.sy = 128;
 	this.direction = direction;
 	this.name = name;
 	this.path = path;
@@ -615,31 +513,30 @@ function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
 	this.clothes = clothing;
 	this.talk = talk;
 	this.talkObj = talkObj;
-	this.loadClothes();
 	this.maxsx = 576;
 	this.animating = true;
 	this.AIxy = 'x';
 	this.speed = speed;
 };
 
-NPC.prototype.loadClothes = loadClothes;
-
 NPC.prototype.draw = function(ctx){
-    var sx = this.spriteOffset.x,
-        sy = this.spriteOffset.y,
+    var sx = this.sx,
+        sy = this.sy,
         x = this.x - this.w/2,
         y = this.y - this.h/2,
         w = this.w,
         h = this.h;
-	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
+	ctx.drawImage(Clothes[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(this[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
+		ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 	}
 	ctx.fillStyle = '#000';
-	ctx.font = '6pt "press start 2p"';
+	ctx.font = '6pt PressStart2PRegular';
 	ctx.textAlign = 'center'
 	ctx.fillText(this.name, x + 32, y + 10);
 };
+
+NPC.prototype.initAsRect = initAsRect;
 
 NPC.prototype.faceEast = function(){
 	this.direction = EAST;
@@ -699,19 +596,19 @@ NPC.prototype.move = function(dx, dy){
 	
 	if(this.animating){
 		if(frame%5 === 0){
-			this.spriteOffset.x += 64;
+			this.sx += 64;
 		}
-		this.spriteOffset.y = this.direction*64;
+		this.sy = this.direction*64;
 		if((this.path[this.path_progress][0] - this.x) < 10 && (this.path[this.path_progress][0] - this.x) > -10 && (this.path[this.path_progress][1] - this.y) < 10 && (this.path[this.path_progress][1] - this.y) > -10){
 			
 		}
 		this.x += dx*this.speed;
 		this.y += dy*this.speed;
 	}else{
-		this.spriteOffset.x = 0;
+		this.sx = 0;
 	}
-	if(this.spriteOffset.x >= this.maxsx){
-		this.spriteOffset.x = 64;
+	if(this.sx >= this.maxsx){
+		this.sx = 64;
 	}
 };
 
@@ -935,9 +832,12 @@ function drawGame(){
 	resize();
 	clear();
 	ctx.save();
-	var offsetX = WIDTH/2 - character.w/2;
-	var offsetY = HEIGHT/2 - character.h/2;
-	ctx.translate(Math.round(-character.x + offsetX), Math.round(-character.y + offsetY));
+	var offsetX = Math.round(-character.x + WIDTH/2 - character.w/2);
+	var offsetY = Math.round(-character.y + HEIGHT/2 - character.h/2);
+	ctx.translate(offsetX, offsetY);
+	var viewportOffsetX = Math.round(character.x - WIDTH/2 + character.w/2);
+	var viewportOffsetY = Math.round(character.y - HEIGHT/2 + character.h/2);
+	world.viewport = {x: viewportOffsetX, y: viewportOffsetY, w: WIDTH, h: HEIGHT};
 	world.draw(ctx);
 	monsters.forEach(function(monster){
 		monster.useAI();
@@ -967,8 +867,6 @@ function drawGame(){
     ctx.fillRect(0, 0 , WIDTH, HEIGHT);
     ctx.fillStyle = '#fff';
     ctx.fillText('FPS: ' + FPS, WIDTH-50, 10);
-    ctx.save();
-    ctx.translate(Math.round(-character.x + offsetX), Math.round(-character.y + offsetY));
     for(var i = 0; i < damagetext.length; i++){
 		damagetext[i][1] -= 1;
 		damagetext[i][6] -= 0.05;
@@ -997,6 +895,15 @@ function dayfunction(){
 		}, 60000*5)
 	}
 	daydirection = 3;
+}
+
+function pauseGame(){
+    if (gameLoop){
+        cancelAnimationFrame(gameLoop);
+        gameLoop = null;
+	}else{
+	    gameLoop = requestAnimationFrame(drawGame);
+	}
 }
 
 /////////////////////////////////////////
@@ -1046,6 +953,11 @@ var gameKeydown = function(event) {
 			case 27: // 'esc' key
 			    showMenu();
 			    break;
+			    
+			case 80: // 'p' key
+			    pauseGame();
+			    break;
+			    
 			
 		}
 };
