@@ -367,7 +367,7 @@ function Character(){
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
-    this.hp = [50, 200];
+    this.hp = [0.5, 20];
     this.mp = [10, 100];
     this.collidingmonsters = [];
     

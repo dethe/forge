@@ -158,10 +158,6 @@ function World(){
 		return true;
 	}
 
-	// We don't actually use this function for anything
-	// We were only using it to find collisions, which we can
-	// do more simply with findCollision()
-	//WE NEED THIS FOR FINDING THE TILE A CHARACTER OR MONSTER IS ON AND FOR CHECKING MONSTERS COLLIDING WITH STUFF
 	function findLocationAt(x,y){
 		if (x === undefined){
 		    x = character.x;
