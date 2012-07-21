@@ -24,11 +24,11 @@ var lf = 0;
 var FPS = 0;
 
 
-// DISABLED - we should not be using setInterval or setTimeout - just put hooks into the main event loop
-// setInterval(function(){
-//  FPS = frame - lf;
-//  lf = frame;
-// }, 1000);
+// DISABLED - we should not be using setInterval or setTimeout - just put hooks into the main event loop HOW DO WE DO THAT? it has to trigger every second!
+//setInterval(function(){
+//	FPS = frame - lf;
+//	lf = frame;
+//}, 1000);
 
 
 var DEBUG = false;
@@ -339,25 +339,25 @@ var monsters = [
 //
 /////////////////////////////////////////
 
-// DISABLED - we should not be using setInterval or setTimeout, just add hooks to main event loop
-// setInterval(function(){
-//  if(character.attacked === true){
-//      character.animation = character.attack;
-//      character.sx = 0;
-//  }
-//  if(character.animation === character.attack){
-//      character.attacked = false;
-//      if(move.up){
-//          character.sy = 0; // face sprite up
-//      }else if(move.left){
-//          character.sy = 64; // face sprite left
-//      }else if(move.down){
-//          character.sy = 128; // face sprite down
-//      }else if(move.right){
-//          character.sy = 192;
-//      };
-//  }
-// }, 800);
+//THERE IS NOT REASON TO DISABLE THIS. IF THERE IS A WAY TO HOOK IT PROPERLY THEN TELL ME BUT IF YOU CAN'T DO THAT THEN STOP DISABLING THESE!!!
+setInterval(function(){
+	if(character.attacked === true){
+		character.animation = character.attack;
+		character.sx = 0;
+	}
+	if(character.animation === character.attack){
+		character.attacked = false;
+		if(move.up){
+			character.sy = 0; // face sprite up
+		}else if(move.left){
+			character.sy = 64; // face sprite left
+		}else if(move.down){
+			character.sy = 128; // face sprite down
+		}else if(move.right){
+			character.sy = 192;
+		};
+	}
+}, 800);
 
 function Character(){
     // Attributes
@@ -424,9 +424,9 @@ Character.prototype.draw = function(ctx){
     	}
     	if(this.attacked === false){
     		if(this.animation === 'spellcast'){
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x+2, y+7, w, h);
+    			ctx.drawImage(Clothes[this.animation + '_' + this.weapon], sx, sy, w, h, x+2, y+7, w, h);
     		}else{
-    			ctx.drawImage(this[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
+    			ctx.drawImage(Clothes[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
     		}
     		if((frame % 5 === 0)){
 				sx = this.sx += 64;
@@ -440,7 +440,7 @@ Character.prototype.draw = function(ctx){
     	this.maxsx = 576;
     }
     if(this.animation === 'spellcast' && sy === 0){
-    	ctx.drawImage(this[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
+    	ctx.drawImage(this[Clothes.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
 		for(i=0; i < this.clothes.length; i++){
 			ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}

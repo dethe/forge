@@ -133,14 +133,48 @@ function World(){
 
 	
     new WorldChunk('grass', 640, 0);
-    new WorldChunk('path_vertical_with_fence', 0, 0);
+    new WorldChunk('grass', 1280, 0);
+    new WorldChunk('grass', 1920, 0);
+    new WorldChunk('grass', 2560, 0);
+    new WorldChunk('grass', 3200, 0);
+    new WorldChunk('grass', 3840, 0);
+    new WorldChunk('vertical_path', 0, 0);
     new WorldChunk('grass', -640, 0);
+    new WorldChunk('grass', -1280, 0);
+    new WorldChunk('grass', -1920, 0);
+    new WorldChunk('grass', -2560, 0);
+    new WorldChunk('grass', -3200, 0);
+    new WorldChunk('grass', -3840, 0);
     new WorldChunk('castle_entrance_with_towers_and_windows', 0, 0);
     new WorldChunk('castlewall_with_windows', 640, 0);
+    new WorldChunk('castlewall_with_windows', 1280, 0);
+    new WorldChunk('castlewall_with_windows', 1920, 0);
+    new WorldChunk('castlewall_with_windows', 2560, 0);
+    new WorldChunk('castlewall_with_windows', 3200, 0);
+    new WorldChunk('castlewall_with_windows', 3840, 0);
     new WorldChunk('castlewall_with_windows', -640,0);
+    new WorldChunk('castlewall_with_windows', -1280, 0);
+    new WorldChunk('castlewall_with_windows', -1920, 0);
+    new WorldChunk('castlewall_with_windows', -2560, 0);
+    new WorldChunk('castlewall_with_windows', -3200, 0);
+    new WorldChunk('castlewall_with_windows', -3840, 0);
     new WorldChunk('grass', 640, 640);
-    new WorldChunk('path_vertical_with_fence', 0, 640);
+    new WorldChunk('grass', 1280, 640);
+    new WorldChunk('grass', 1920, 640);
+    new WorldChunk('grass', 2560, 640);
+    new WorldChunk('grass', 3200, 640);
+    new WorldChunk('grass', 3200, 640);
+    new WorldChunk('grass', 3840, 640);
+    new WorldChunk('castle_path_to_entrance(unfinished)', 0, 640);
     new WorldChunk('grass', -640, 640);
+    new WorldChunk('grass', -1280, 640);
+    new WorldChunk('grass', -1920, 640);
+    new WorldChunk('grass', -2560, 640);
+    new WorldChunk('grass', -3200, 640);
+    new WorldChunk('grass', -3200, 640);
+    new WorldChunk('grass', -3840, 640);
+    new WorldChunk('vertical_path', 0, 1280);
+    new WorldChunk('path_and_bridge', 0, 1920);
 
 
 	
