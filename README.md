@@ -10,6 +10,12 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 - The world is stored in an array
 - monsters
 - collisions
+- Normalize x,y coordinates, use context.translate to keep it centred
+- Make x,y represent the centre of each drawable object, rather than top left
+- Collisions: character -> terrain
+- Parse the world file once at initialization instead of on each frame
+- Map making palette
+- NPC's
 
 ### Art:
 
@@ -20,18 +26,12 @@ An awesome pixel RPG being made for the liberated pixel cup competition.
 
 ### Coding:
 
-- √ Normalize x,y coordinates, use context.translate to keep it centred
-- Make x,y represent the centre of each drawable object, rather than top left
 - Collisions: monster -> character, character -> monster
 - Pre-draw character with clothes into an off-screen buffer to reduce duplicate drawing
-- √ Collisions: character -> terrain
 - Collision: monster -> terrain
-- √ Parse the world file once at initialization instead of on each frame
 - Move AI into its own function, make character controls a special form of AI
 - better AI for monsters each type of monster should have tons of different attributes (can be stored in objects)
 - Databases (personal database and online database)
-- √ Map making palette
-- √ NPC's
 - Server for multiplayer
 - Create worlds and maps for singleplayer and multiplayer
 - Minimap
