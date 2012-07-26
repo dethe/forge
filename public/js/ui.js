@@ -187,7 +187,7 @@ function UIButton(text, x, y, w, h, trigger, alpha){
         ctx.fillStyle = 'rgba(0, 0, 0, ' + opacity + ')';
         ctx.font = '14pt PressStart2PRegular';
         ctx.textAlign = 'center';
-        ctx.fillText(text, x + w/2+10, y + 35, w - 20);
+        ctx.fillText(text, x + w/2, y + 35, w - 20);
     }
     return new UIElement(text, x, y, w, h, draw, trigger);
 }
@@ -252,8 +252,8 @@ function drawbutton(ctx, x, y, width, height, pt, opacity) {
 	}else if(pt){
 		sy = 56;
 	}
-	ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+32, y, width -64, height);
+	ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+height, y, width -(height*2), height);
 	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
-	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-32), y, height, height);
+	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-height), y, height, height);
 	ctx.globalAlpha = 1;
 }
