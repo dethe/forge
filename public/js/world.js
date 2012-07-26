@@ -34,6 +34,7 @@ function World(){
 	            return WorldChunk.allChunks[i];
 	        }
         }
+        return null;
     };
     
     WorldChunk.prototype.locationAt = function(x,y){
@@ -74,25 +75,32 @@ function World(){
         return true;
     };
     
-    WorldChunk.prototype.draw = function(ctx){
-        if (!this.isVisible()) return;
+    WorldChunk.prototype.drawCache = function(){
+        this.cache = document.createElement('canvas');
+        this.cache.setAttribute('width', this.w);
+        this.cache.setAttribute('height', this.h);
+        var ctx = this.cache.getContext('2d');
 		this.topTiles = [];
 		for(var i = 0; i < this.rows.length; i++){
 			for(var e = 0; e < this.rows[i].length; e++){
 				for (var t = 0; t < this.rows[i][e].length; t++){
 					var tile = this.rows[i][e][t];
-					if(tile.spec === 'Farming_Fishing AA' && tile.y > (character.y + 16)){
-						this.topTiles.push(tile)
+					if(tile.spec === 'Farming_Fishing AA'){
+						this.topTiles.push(tile);
 					}else{
 						tile.draw(ctx);
 					}
 				}
 			}
 		}
-		if (this.debug){
-		    ctx.strokeStyle = 'red';
-		    ctx.strokeRect(this.left, this.top, this.w, this.h);
-	    }
+    };
+    
+    WorldChunk.prototype.draw = function(ctx){
+        if (!this.isVisible()) return;
+        if (!this.cache){
+            this.drawCache();
+        }
+        ctx.drawImage(this.cache, this.left, this.top, this.w, this.h);
     };
     
     WorldChunk.prototype.drawTop = function(ctx){
@@ -119,7 +127,7 @@ function World(){
 						}else if (subspec !== ''){
 							location.push(new Tile(subspec,e,i, self));
 							if(subspec === 'Castle_outside LH'){
-								console.log('collide');
+                                // console.log('collide');
 								location.collision = true;
 							}
 						}
@@ -214,15 +222,15 @@ function World(){
 		 this.sy = offset.y;
 		 this.w = 32;
 		 this.h = 32;
-		 this.x = tx * this.w + chunk.left;
-		 this.y = ty * this.h + chunk.top;
+		 this.x = tx * this.w;
+		 this.y = ty * this.h;
 	}
 	
 	Tile.prototype.draw = function(ctx, debug){
 		ctx.drawImage(this.g, this.sx, this.sy, this.w, this.h, this.x, this.y, this.w, this.h);
 		if (debug){
 		    console.log('drawing tile at %s, %s, you are at %s, %s', this.x, this.y, character.x, character.y);
-		    ctx.strokeStyle = 'green';
+		    ctx.strokeStyle = 'blue';
 		    ctx.strokeRect(this.x, this.y, this.w, this.h);
 	    }
 	};
