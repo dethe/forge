@@ -4,8 +4,8 @@
 //
 /////////////////////////////////////////
 
-var dialogY = 240;
-var dialogdirectionY = 'down';
+var dialogOpacity = 1;
+var dialogfading = 'out';
 var dialogtext = '';
 var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
 
@@ -13,14 +13,19 @@ var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_
 
 
 function drawUI(ctx){
-	if(dialogdirectionY === 'up'){
-		if(dialogY < 240){
-			dialogY += 5;
+	if(dialogfading === 'in'){
+		if(dialogOpacity < 1){
+			dialogOpacity += 0.05;
 		}
-	}else if(dialogdirectionY === 'down'){
-		if(dialogY > -240){
-			dialogY -= 5;
+	}else if(dialogfading === 'out'){
+		if(dialogOpacity > 0){
+			dialogOpacity -= 0.05;
 		}
+	}
+	if(dialogOpacity <= 0){
+		dialogOpacity = 0;
+	}else if(dialogOpacity >= 1){
+		dialogOpacity = 1;
 	}
 	if(dialogtext.length != futuredialogtext.length){
 		var t = futuredialogtext.split('');
@@ -28,8 +33,8 @@ function drawUI(ctx){
 	}
 	
 	var ui = [
-		UIBox(dialogtext, 5, HEIGHT - dialogY, WIDTH-10, 240),
-		UIButton('next', WIDTH-300, HEIGHT - dialogY + 180, 180, 50, function(){dialogtext = '';}),
+		UIBox(dialogtext, 5, HEIGHT - 240, WIDTH-10, 240, dialogOpacity),
+		UIButton('next', WIDTH-300, HEIGHT - 240 + 180, 180, 50, function(){dialogtext = '';}, dialogOpacity),
 		UIBox('     ' + character.name, 200, 40, 300, 120)
 	];
 	for(var i = 0; i < ui.length; i++){
@@ -168,12 +173,18 @@ function UITextbox(text, x, y, w, h){
 	return new UIElement(text, x, y, w, h, draw);
 }
 
-function UIButton(text, x, y, w, h, trigger){
+function UIButton(text, x, y, w, h, trigger, alpha){
     function draw(ctx){
+    	var opacity = 0;
+    	if(alpha != undefined){
+    		opacity = alpha;
+    	}else{
+    		opacity = 1;
+    	}
     	var pt = this.containsPoint(mouseX, mouseY);
-        drawbutton(ctx, x, y, w, h, pt);
+        drawbutton(ctx, x, y, w, h, pt, opacity);
         //we should put the text in the drawbutton function
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'rgba(0, 0, 0, ' + opacity + ')';
         ctx.font = '14pt PressStart2PRegular';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w/2+10, y + 35, w - 20);
@@ -181,8 +192,11 @@ function UIButton(text, x, y, w, h, trigger){
     return new UIElement(text, x, y, w, h, draw, trigger);
 }
 
-function UIBox(text, x, y, w, h){
+function UIBox(text, x, y, w, h, opacity){
 	function draw(ctx){
+		if(opacity != undefined){
+			ctx.globalAlpha = opacity;
+		}
 		ctx.drawImage(UI.confirm_bg, 0, 0, 32, 32, x, y, 32, 32);
 		ctx.drawImage(UI.confirm_bg, 160, 0, 32, 32, x+w-32, y, 32, 32);
 		ctx.drawImage(UI.confirm_bg, 32, 0, 32, 32, x+32, y, w-64, 32);
@@ -196,6 +210,7 @@ function UIBox(text, x, y, w, h){
         ctx.font = '10pt PressStart2PRegular';
         ctx.textAlign = 'left'
         ctx.fillText(text, x+20, y+35, WIDTH-20);
+        ctx.globalAlpha = 1;
 	}
 	return new UIElement(text, x, y, w, h, draw);
 }
@@ -227,7 +242,10 @@ function settingsClick(evt){
     }
 }
 
-function drawbutton(ctx, x, y, width, height, pt) {
+function drawbutton(ctx, x, y, width, height, pt, opacity) {
+	if(opacity != undefined){
+		ctx.globalAlpha = opacity;
+	}
 	var sy = 0;
 	if(pt && click){
 		sy = 28;
@@ -237,4 +255,5 @@ function drawbutton(ctx, x, y, width, height, pt) {
 	ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+32, y, width -64, height);
 	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
 	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-32), y, height, height);
+	ctx.globalAlpha = 1;
 }
