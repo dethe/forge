@@ -370,8 +370,8 @@ function Character(){
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
-    this.hp = [0.5, 20];
-    this.mp = [10, 100];
+    this.hp = [100, 100];
+    this.mp = [100, 100];
     this.collidingmonsters = [];
     
     // Mapping info and state
@@ -834,6 +834,14 @@ function drawGame(){
 	frame += 1;
 	resize();
 	clear();
+	if(frame%100 === 0){
+		if(character.hp[0] < character.hp[1]){
+			character.hp[0] += 1;
+		}
+		if(character.mp[0] < character.mp[1]){
+			character.mp[0] += 1;
+		}
+	}
 	ctx.save();
 	var offsetX = Math.round(-character.x + WIDTH/2 - character.w/2);
 	var offsetY = Math.round(-character.y + HEIGHT/2 - character.h/2);
