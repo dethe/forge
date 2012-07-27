@@ -52,9 +52,9 @@ function drawUI(ctx){
 	ctx.drawImage(UI.bar_hp_mp, 0, 0, 24, 32, 280, 80, 24, 32);
 	ctx.drawImage(UI.bar_hp_mp, 24, 0, 24, 32, 304, 80, bar_w-48, 32);
 	ctx.drawImage(UI.bar_hp_mp, 82, 0, 24, 32, 256 + bar_w, 80, 24, 32);
-	ctx.drawImage(UI.bar_hp_mp, 3, 34, Math.min(bar_w - ((((character.hp[1] - character.hp[0])/character.hp[1]))*bar_w), 24), 16, 282, 81, Math.min(bar_w - ((((character.hp[1] - character.hp[0])/character.hp[1]))*bar_w), 24), 16);
-	ctx.drawImage(UI.bar_hp_mp, 27, 34, 24 - (((character.hp[1] - character.hp[0])/character.hp[1]))*24, 16, 306, 81, bar_w-48 - (((character.hp[1] - character.hp[0])/character.hp[1])*bar_w-48)-32, 16);
-	ctx.drawImage(UI.bar_hp_mp, 82, 34, 24, 16, 282 + bar_w - 24, 81, 24, 16);
+	ctx.drawImage(UI.bar_hp_mp, 3, 34, Math.min(bar_w - ((((character.hp[1] - character.hp[0])/character.hp[1]))*bar_w), 24), 16, 282, 81, Math.min(bar_w - 48 - ((((character.hp[1] - character.hp[0])/character.hp[1]))*bar_w - 48), 24), 16);
+	ctx.drawImage(UI.bar_hp_mp, 27, 34, 24 - (((character.hp[1] - character.hp[0])/character.hp[1]))*24, 16, 306, 81, Math.max(bar_w-48 - (((character.hp[1] - character.hp[0])/character.hp[1])*bar_w-48)-32, 0), 16);
+	ctx.drawImage(UI.bar_hp_mp, 82, 34, 24, 16, 280 + bar_w - 24, 81, 24, 16);
 	//ctx.drawImage(UI.bar_hp_mp, 3, 34, 100 - (((character.hp[1] - character.hp[0])/character.hp[1])*100), 16, 284, 81, 200 - (((character.hp[1] - character.hp[0])/character.hp[1])*200), 32);
 	//ctx.drawImage(UI.bar_hp_mp, 3, 48, 100 - (((character.mp[1] - character.mp[0])/character.mp[1])*100), 16, 284, 107, 200 - (((character.mp[1] - character.mp[0])/character.mp[1])*200), 32);
 	ctx.fillStyle = '#fff';
