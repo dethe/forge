@@ -6,13 +6,10 @@
 
 var dialogOpacity = 1;
 var dialogfading = 'out';
-var dialogtext = '';
-var futuredialogtext = "ALL THE RANDOM TEXT WILL GO HERE ONCE WE FIX THE TEXT WRAPPING";
-
 var UI = loadImages('button_default', 'input', 'confirm_bg', 'bar_hp_mp', 'menu_xp');
 
 
-function drawUI(ctx){
+function drawUI(ui, ctx){
 	if(dialogfading === 'in'){
 		if(dialogOpacity < 1){
 			dialogOpacity += 0.05;
@@ -27,22 +24,18 @@ function drawUI(ctx){
 	}else if(dialogOpacity >= 1){
 		dialogOpacity = 1;
 	}
-	if(dialogtext.length != futuredialogtext.length){
-		var t = futuredialogtext.split('');
-		dialogtext += t[(dialogtext.length)];
-	}
-	
-	var ui = [
-		UIBox(dialogtext, 5, HEIGHT - 240, WIDTH-10, 240, dialogOpacity),
-		UIButton('next', WIDTH-300, HEIGHT - 240 + 180, 180, 50, function(){dialogtext = '';}, dialogOpacity),
-		UIBox('     ' + character.name, 200, 40, 300, 120)
-	];
 	for(var i = 0; i < ui.length; i++){
 		ui[i].draw(ctx);
 		if(ui[i].containsPoint(mouseX, mouseY) && click){
 			ui[i].trigger();
 		};
 	};
+}
+
+function CharacterInfo(){
+}
+
+CharacterInfo.prototype.draw = function(ctx){
 	ctx.beginPath();
 	ctx.arc(140, 140, 125, 0, Math.PI*2, true); 
 	ctx.closePath();
@@ -66,6 +59,10 @@ function drawUI(ctx){
 	ctx.fillText('MP:'+ character.mp[0] +'/'+ character.mp[1], 384, 109);
 }
 
+CharacterInfo.prototype.containsPoint = function(x,y){
+    return false;
+}
+
 
 function UIElement(text, x, y, w, h, draw, trigger){
     this.text = text;
@@ -77,6 +74,33 @@ function UIElement(text, x, y, w, h, draw, trigger){
     this.trigger = trigger || function(){};
 }
 
+UIElement.prototype.wrapText = function(ctx, padding){
+    var w = this.w - padding*2;
+    var t = this.text.split(' ').reverse();
+    var orig_text = this.text;
+    var prev = '';
+    var line = '';
+    this.text = [];
+    ctx.save();
+    ctx.font = this.font;
+    while(t.length){
+        var curr = t.pop();
+        line = prev + ' ' + curr;
+        if (ctx.measureText(line).width > w){
+            this.text.push(prev);
+            line = prev = '';
+            t.push(curr);
+        }else{
+            prev = line;
+        }
+    }
+    if (line.length){
+        this.text.push(line);
+    }
+    ctx.restore();
+    this.textWrapped = true;
+}
+
 UIElement.prototype.containsPoint = function(x,y){
     if (x < this.x) return false;
     if (y < this.y) return false;
@@ -86,15 +110,12 @@ UIElement.prototype.containsPoint = function(x,y){
 }
 
 function UITextbox(text, x, y, w, h){
-	this.clicked = false;
-	this.cursor = 0;
-	this.cursoron = false;
-	this.t = text;
-	this.lastframe = 0;
 	function draw(ctx){
+		if (this.text.length && !this.textWrapped){
+		    this.wrapText(ctx, 20);
+	    }
 		var key = 48;
 		var lastkey = 16;
-		var t2 = '';
 		var pt = this.containsPoint(mouseX, mouseY);
 		var sy = 0;
 		if(pt){
@@ -103,16 +124,16 @@ function UITextbox(text, x, y, w, h){
 			document.body.style.cursor = 'auto';
 		}
 		if(pt && click){
-			clicked = true;
+			this.clicked = true;
 			console.log(':)');
-		}else if(!pt && click){
-			clicked = false;
+		}else{
+			this.clicked = false;
 			console.log(':(');
 		}
-		if(clicked === true){
+		if(this.clicked === true){
 			sy = 20;
 		}
-		if(clicked){
+		if(this.clicked){
 			if(frame%30 === 0){
 				if(cursoron){
 					cursoron = false;
@@ -127,71 +148,81 @@ function UITextbox(text, x, y, w, h){
 			shift = true;
 		}
 		
-		if(keydown && clicked){
-			if((frame - lastframe) > 30){
-				lastframe = frame;
-				t = t.split('');
-				console.log(keydown)
-				
-				if(key >= 48 && key <= 90){
-					key = String.fromCharCode(keycode);
-					if(shift === false){
-						key = key.toLowerCase();
-					}
-					t.splice(t.length-cursor, 0, key);
-					
-				}
-			}
-		}
+        // if(keydown && this.clicked){
+        //  if((frame - lastframe) > 30){
+        //      lastframe = frame;
+        //      t = t.split('');
+        //      console.log(keydown)
+        //      
+        //      if(key >= 48 && key <= 90){
+        //          key = String.fromCharCode(keycode);
+        //          if(shift === false){
+        //              key = key.toLowerCase();
+        //          }
+        //          t.splice(t.length-cursor, 0, key);
+        //          
+        //      }
+        //  }
+        // }
 		if(keydown === false && key === 0){
 			shift = false;
 		}
-		if(!keydown && clicked){
+		if(!keydown && this.clicked){
 			lastframe -= 30;
 		}
-		for(i = 0; i < t.length; i++){
-			t2 = t2 + t[i]
-		}
-		t=t2;
+        // for(i = 0; i < t.length; i++){
+        //  t2 = t2 + t[i]
+        // }
+        // t=t2;
 		ctx.drawImage(UI.input, 32, sy, 32, 20, x+32, y, w-64, h);
 		ctx.drawImage(UI.input, 0, sy, 32, 20, x, y, 32, h);
 		ctx.drawImage(UI.input, 98, sy, 32, 20, x+(w-64+32), y, 32, h);
 		
 		ctx.fillStyle = 'black';
-        ctx.font = '12pt PressStart2PRegular';
+        ctx.font = this.font;
         ctx.textAlign='left';
-        ctx.fillText(t2, x +10, y + 30, 99999999999);
-        if(cursoron){
-        	ctx.fillText('|', x + ((t2.length-cursor)*16), y + 30, w-20);
+        for (var i = 0; i < this.text.length; i++){
+            ctx.fillText(this.text[i], x +10, y + 30 + (16*i), 99999999999);
+            if(cursoron){
+            	ctx.fillText('|', x + ((t2.length-cursor)*16), y + 30 + (16+i), w-20);
+            }
         }
 	}
-	return new UIElement(text, x, y, w, h, draw);
+	var elem = new UIElement(text, x, y, w, h, draw);
+	elem.clicked = false;
+	elem.cursor = 0;
+	elem.cursoron = false;
+	elem.t = text;
+	elem.lastframe = 0;
+	elem.font = '12pt PressStart2PRegular';
+    return elem;
 }
 
-function UIButton(text, x, y, w, h, trigger, alpha){
+function UIButton(text, x, y, w, h, trigger){
     function draw(ctx){
-    	var opacity = 0;
-    	if(alpha != undefined){
-    		opacity = alpha;
-    	}else{
-    		opacity = 1;
-    	}
+	    if (this.fades){
+		    ctx.globalAlpha = dialogOpacity;
+		}
     	var pt = this.containsPoint(mouseX, mouseY);
-        drawbutton(ctx, x, y, w, h, pt, opacity);
+        drawbutton(ctx, x, y, w, h, pt);
         //we should put the text in the drawbutton function
-        ctx.fillStyle = 'rgba(0, 0, 0, ' + opacity + ')';
+        ctx.fillStyle = 'rgb(0, 0, 0)';
         ctx.font = '14pt PressStart2PRegular';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w/2, y + 35, w - 20);
+        ctx.globalAlpha = 1;
     }
     return new UIElement(text, x, y, w, h, draw, trigger);
 }
 
-function UIBox(text, x, y, w, h, opacity){
+function UIBox(text, x, y, w, h){
 	function draw(ctx){
-		if(opacity != undefined){
-			ctx.globalAlpha = opacity;
+	    if (this.fades){
+		    ctx.globalAlpha = dialogOpacity;
 		}
+		if (this.text.length && !this.textWrapped){
+		    this.wrapText(ctx, 20);
+	    }
 		ctx.drawImage(UI.confirm_bg, 0, 0, 32, 32, x, y, 32, 32);
 		ctx.drawImage(UI.confirm_bg, 160, 0, 32, 32, x+w-32, y, 32, 32);
 		ctx.drawImage(UI.confirm_bg, 32, 0, 32, 32, x+32, y, w-64, 32);
@@ -202,12 +233,17 @@ function UIBox(text, x, y, w, h, opacity){
 		ctx.drawImage(UI.confirm_bg, 160, 16, 32, 32, x+w-32, y+32, 32, h-64);
 		ctx.drawImage(UI.confirm_bg, 32, 16, 32, 32, x+32, y+32, w-64, h-64);
 		ctx.fillStyle = '#fff';
-        ctx.font = '10pt PressStart2PRegular';
+        ctx.font = this.font;
         ctx.textAlign = 'left'
-        ctx.fillText(text, x+20, y+35, WIDTH-20);
+        for (var i = 0; i < this.text.length; i++){
+            ctx.fillText(this.text[i], this.x+20, this.y+35 + (20*i), WIDTH-20);
+        }
         ctx.globalAlpha = 1;
 	}
-	return new UIElement(text, x, y, w, h, draw);
+	var elem = new UIElement(text, x, y, w, h, draw);
+	elem.font = '10pt PressStart2PRegular';
+	elem.fades = false;
+	return elem;
 }
 
 function UITitle(text, x, y){
@@ -237,10 +273,7 @@ function settingsClick(evt){
     }
 }
 
-function drawbutton(ctx, x, y, width, height, pt, opacity) {
-	if(opacity != undefined){
-		ctx.globalAlpha = opacity;
-	}
+function drawbutton(ctx, x, y, width, height, pt) {
 	var sy = 0;
 	if(pt && click){
 		sy = 28;
@@ -250,5 +283,4 @@ function drawbutton(ctx, x, y, width, height, pt, opacity) {
 	ctx.drawImage(UI.button_default, 40, sy, 32, 28, x+height, y, width -(height*2), height);
 	ctx.drawImage(UI.button_default, 7, sy, 32, 28, x, y, height, height);
 	ctx.drawImage(UI.button_default, 104, sy, 32, 28, x+(width-height), y, height, height);
-	ctx.globalAlpha = 1;
 }
