@@ -207,6 +207,7 @@ function Monster(opts){
 	this.sensing = opts.sensing;
 	this.AI = opts.AI;
 	this.AIxy = 'x';
+	this.reverse = 0; // ticks to move backwards, after a successful attack
 };
 Monster.prototype.move = function(dx, dy){
 	if(this.animate_idx === 2){
@@ -222,11 +223,13 @@ Monster.prototype.move = function(dx, dy){
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
 	if(dx * Math.min(distanceToCharacter, this.speed) <= 1 && dx * Math.min(distanceToCharacter, this.speed) >= -1 && dy * Math.min(distanceToCharacter, this.speed) <= 1 && dy * Math.min(distanceToCharacter, this.speed) >= -1){
 		character.collidingmonsters.push(this);
+		this.attack(character);
 	}
-    if(DEBUG && frame%30 === 0){
-                 console.log(distanceToCharacter);
-                 console.log('%s: %s, %s', this.name, this.x, this.y);
-    }
+};
+
+Monster.prototype.attack = function(victim){
+    victim.takeDamage(this.damage);
+    this.reverse = 5; // how many ticks to move backwards
 };
 
 Monster.prototype.initAsRect = initAsRect;
@@ -253,6 +256,12 @@ Monster.prototype.walk = function(){
 		// otherwise we're going north - south
 		dx = 0;
 		dy = (this.direction - 1); // move one pixel up or down
+	}
+	if (this.reverse){
+	    // backing up
+	    dx *= -1;
+	    dy *= -1;
+	    this.reverse -= 1;
 	}
 	this.move(dx, dy);
 };
@@ -366,12 +375,12 @@ function Character(){
     this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
     this.weapon = 'dagger';
     this.attack = 'slash';
-    this.damage = [150, 200]
+    this.damage = [2, 5]
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
-    this.hp = [2, 100];
-    this.mp = [100, 100];
+    this.hp = [100, 100];
+    this.mp = [10, 100];
     this.collidingmonsters = [];
     
     // Mapping info and state
@@ -382,6 +391,14 @@ function Character(){
 }
 
 Character.prototype.initAsRect = initAsRect;
+
+Character.prototype.takeDamage = function(damage){
+    this.hp[0] -= damage;
+    if (this.hp[0] <= 0){
+        this.hp[0] = 0;
+        endGame();
+    }
+}
 
 Character.prototype.draw = function(ctx){
     var x = this.x - this.w/2, // x and y are the centre point
@@ -398,16 +415,6 @@ Character.prototype.draw = function(ctx){
 			ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}
 	}
-	if (DEBUG){
-	    var radius = 24;
-	    ctx.beginPath();
-	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
-	    ctx.stroke();
-        if(frame%30 === 0){
-	        console.log('%s: %s, %s', this.name, this.x, this.y);
-	    }
-    }
     if(keys.space){
     	this.animation = this.attack;
     	if(this.animation === 'spellcast'){
@@ -915,6 +922,13 @@ function pauseGame(){
 	}else{
 	    gameLoop = requestAnimationFrame(drawGame);
 	}
+}
+
+function endGame(){
+    var w = 200, h = 50;
+    new UITextbox('Game Over', WIDTH - w/2, HEIGHT - h/2, w, h);
+    pauseGame();
+    setTimeout(showMenu, 5000);
 }
 
 /////////////////////////////////////////
