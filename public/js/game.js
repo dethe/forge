@@ -207,6 +207,7 @@ function Monster(opts){
 	this.sensing = opts.sensing;
 	this.AI = opts.AI;
 	this.AIxy = 'x';
+	this.reverse = 0; // ticks to move backwards, after a successful attack
 };
 Monster.prototype.move = function(dx, dy){
 	if(this.animate_idx === 2){
@@ -222,11 +223,13 @@ Monster.prototype.move = function(dx, dy){
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
 	if(dx * Math.min(distanceToCharacter, this.speed) <= 1 && dx * Math.min(distanceToCharacter, this.speed) >= -1 && dy * Math.min(distanceToCharacter, this.speed) <= 1 && dy * Math.min(distanceToCharacter, this.speed) >= -1){
 		character.collidingmonsters.push(this);
+		this.attack(character);
 	}
-    if(DEBUG && frame%30 === 0){
-                 console.log(distanceToCharacter);
-                 console.log('%s: %s, %s', this.name, this.x, this.y);
-    }
+};
+
+Monster.prototype.attack = function(victim){
+    victim.takeDamage(this.damage);
+    this.reverse = 3; // how many ticks to move backwards
 };
 
 Monster.prototype.initAsRect = initAsRect;
@@ -253,6 +256,12 @@ Monster.prototype.walk = function(){
 		// otherwise we're going north - south
 		dx = 0;
 		dy = (this.direction - 1); // move one pixel up or down
+	}
+	if (this.reverse){
+	    // backing up
+	    dx *= -2;
+	    dy *= -2;
+	    this.reverse -= 1;
 	}
 	this.move(dx, dy);
 };
@@ -300,9 +309,10 @@ Monster.prototype.draw = function(ctx){
     }
 };
 
-Monster.prototype.hurt = function(damage){
+Monster.prototype.takeDamage = function(damage){
 	this.HP -= damage;
 	damagetext.push([this.x, this.y, this.w, this.h, damage, frame, 1]);
+	this.reverse = 5;
 	if(this.HP <= 0){
 		monsters.splice(monsters.indexOf(this), 1)
 	}
@@ -366,7 +376,7 @@ function Character(){
     this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
     this.weapon = 'dagger';
     this.attack = 'slash';
-    this.damage = [150, 200]
+    this.damage = [2, 5]
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
@@ -383,6 +393,14 @@ function Character(){
 
 Character.prototype.initAsRect = initAsRect;
 
+Character.prototype.takeDamage = function(damage){
+    this.hp[0] -= damage;
+    if (this.hp[0] <= 0){
+        this.hp[0] = 0;
+        endGame();
+    }
+}
+
 Character.prototype.draw = function(ctx){
     var x = this.x - this.w/2, // x and y are the centre point
         y = this.y - this.h/2,
@@ -398,16 +416,6 @@ Character.prototype.draw = function(ctx){
 			ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
 		}
 	}
-	if (DEBUG){
-	    var radius = 24;
-	    ctx.beginPath();
-	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
-	    ctx.stroke();
-        if(frame%30 === 0){
-	        console.log('%s: %s, %s', this.name, this.x, this.y);
-	    }
-    }
     if(keys.space){
     	this.animation = this.attack;
     	if(this.animation === 'spellcast'){
@@ -416,7 +424,7 @@ Character.prototype.draw = function(ctx){
     		this.maxsx = 384;
     		for(var i = 0;i < this.collidingmonsters.length; i++){
     			if(sx === 320 && frame%5===0){
-    				this.collidingmonsters[i].hurt(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
+    				this.collidingmonsters[i].takeDamage(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
     			}
     		}
     	}else if(this.animation === 'shoot'){
@@ -426,7 +434,11 @@ Character.prototype.draw = function(ctx){
     		if(this.animation === 'spellcast'){
     			ctx.drawImage(Clothes[this.animation + '_' + this.weapon], sx, sy, w, h, x+2, y+7, w, h);
     		}else{
-    			ctx.drawImage(Clothes[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
+    		    try{
+    			    ctx.drawImage(Clothes[this.animation + '_' + this.weapon], sx, sy, w, h, x, y, w, h);
+    			}catch(e){
+    			    console.log('Error while trying to draw the weapon at offset %s,%s', sx, sy);
+			    }
     		}
     		if((frame % 5 === 0)){
 				sx = this.sx += 64;
@@ -660,6 +672,14 @@ var gameLoop, menuLoop, settingsLoop;
 //starts the game
 function initGame(){
 	window.world = World();
+	world.ui = [
+    	UIBox('All the random text in the world goes here, and here it will stay until Arthur is once again king of all Britons.', 5, HEIGHT - 240, WIDTH-10, 240),
+    	UIButton('next', WIDTH-300, HEIGHT - 240 + 180, 180, 50, function(){world.ui[0].text = '';}),
+    	UIBox('     ' + character.name, 200, 40, 300, 120),
+    	new CharacterInfo()
+    ];
+    world.ui[0].fades = true;
+    world.ui[1].fades = true;
 }
 
 // show the menu
@@ -891,7 +911,7 @@ function drawGame(){
 		}
     }
     ctx.restore();
-    drawUI(ctx);
+    drawUI(world.ui, ctx);
 	gameLoop = requestAnimationFrame(drawGame);
 }
 
@@ -915,6 +935,11 @@ function pauseGame(){
 	}else{
 	    gameLoop = requestAnimationFrame(drawGame);
 	}
+}
+
+function endGame(){
+    var w = 200, h = 50;
+    world.ui = [(new UITextbox('Game Over', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h))];
 }
 
 /////////////////////////////////////////
