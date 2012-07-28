@@ -198,6 +198,16 @@ function UITextbox(text, x, y, w, h){
     return elem;
 }
 
+function UIText(text, x, y, positioning, size){
+	function draw(ctx){
+		ctx.fillStyle = '#fff';
+    	ctx.font = size + 'pt PressStart2PRegular';
+    	ctx.textAlign = positioning;
+    	ctx.fillText(text, x, y);
+	}
+	return new UIElement(text, x, y, 0, 0, draw);
+}
+
 function UIButton(text, x, y, w, h, trigger){
     function draw(ctx){
 	    if (this.fades){

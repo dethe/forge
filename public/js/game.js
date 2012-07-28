@@ -22,6 +22,7 @@ var daydirection = 0;
 var damagetext = [];
 var lf = 0;
 var FPS = 0;
+var pauseDisabled = false;
 
 
 // DISABLED - we should not be using setInterval or setTimeout - just put hooks into the main event loop HOW DO WE DO THAT? it has to trigger every second!
@@ -929,17 +930,28 @@ function dayfunction(){
 }
 
 function pauseGame(){
-    if (gameLoop){
-        cancelAnimationFrame(gameLoop);
-        gameLoop = null;
-	}else{
-	    gameLoop = requestAnimationFrame(drawGame);
+	if(pauseDisabled === false){
+		if (gameLoop){
+        	cancelAnimationFrame(gameLoop);
+        	gameLoop = null;
+		}else{
+	    	gameLoop = requestAnimationFrame(drawGame);
+		}
 	}
+    
 }
 
 function endGame(){
-    var w = 200, h = 50;
-    world.ui = [(new UITextbox('Game Over', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h))];
+    var w = 500, h = 300;
+    pauseGame();
+    world.ui = [
+    	new UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h),
+    	new UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
+    	new UIButton('menu', WIDTH/2 - 90, HEIGHT/2 - h/2 + 70, 180, 50, function(){
+    		
+    	})
+    ];
+    pauseDisabled = true;
 }
 
 /////////////////////////////////////////
