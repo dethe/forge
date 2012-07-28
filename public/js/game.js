@@ -25,10 +25,10 @@ var FPS = 0;
 
 
 // DISABLED - we should not be using setInterval or setTimeout - just put hooks into the main event loop HOW DO WE DO THAT? it has to trigger every second!
-//setInterval(function(){
-//	FPS = frame - lf;
-//	lf = frame;
-//}, 1000);
+setInterval(function(){
+	FPS = frame - lf;
+	lf = frame;
+}, 1000);
 
 
 var DEBUG = false;
@@ -370,7 +370,7 @@ function Character(){
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
-    this.hp = [2, 100];
+    this.hp = [100, 100];
     this.mp = [100, 100];
     this.collidingmonsters = [];
     
