@@ -54,20 +54,24 @@ CharacterInfo.prototype.draw = function(ctx){
 	//ctx.drawImage(UI.bar_hp_mp, 3, 48, 100 - (((character.mp[1] - character.mp[0])/character.mp[1])*100), 16, 284, 107, 200 - (((character.mp[1] - character.mp[0])/character.mp[1])*200), 32);
 	ctx.fillStyle = '#fff';
     ctx.font = '5pt PressStart2PRegular';
-    ctx.textAlign = 'center'
+    ctx.textAlign = 'center';
 	ctx.fillText('HP:'+ character.hp[0] +'/'+ character.hp[1], 384, 95);
 	ctx.fillText('MP:'+ character.mp[0] +'/'+ character.mp[1], 384, 109);
-}
+};
 
 CharacterInfo.prototype.containsPoint = function(x,y){
     return false;
-}
+};
 
 
 function UIElement(text, x, y, w, h, draw, trigger){
     this.text = text;
     this.x = x;
     this.y = y;
+    this.top = y;
+    this.left = x;
+    this.right = x + w;
+    this.bottom = y + h;
     this.w = w;
     this.h = h;
     this.draw = draw || function(){};
@@ -99,15 +103,15 @@ UIElement.prototype.wrapText = function(ctx, padding){
     }
     ctx.restore();
     this.textWrapped = true;
-}
+};
 
 UIElement.prototype.containsPoint = function(x,y){
-    if (x < this.x) return false;
-    if (y < this.y) return false;
-    if (x > this.x + this.w) return false;
-    if (y > this.y + this.h) return false;
+    if (x < this.left) return false;
+    if (y < this.top) return false;
+    if (x > this.right) return false;
+    if (y > this.bottom) return false;
     return true;
-}
+};
 
 function UITextbox(text, x, y, w, h){
 	function draw(ctx){
@@ -244,7 +248,7 @@ function UIBox(text, x, y, w, h){
 		ctx.drawImage(UI.confirm_bg, 32, 16, 32, 32, x+32, y+32, w-64, h-64);
 		ctx.fillStyle = '#fff';
         ctx.font = this.font;
-        ctx.textAlign = 'left'
+        ctx.textAlign = 'left';
         for (var i = 0; i < this.text.length; i++){
             ctx.fillText(this.text[i], this.x+20, this.y+35 + (20*i), WIDTH-20);
         }
@@ -260,7 +264,7 @@ function UITitle(text, x, y){
     function draw(ctx){
         ctx.fillStyle = '#900';
         ctx.font = '100pt PressStart2PRegular';
-        ctx.textAlign = 'center'
+        ctx.textAlign = 'center';
         ctx.fillText(text, x, y);
     }
     return new UIElement(text, 0, 0, WIDTH, 80, draw);

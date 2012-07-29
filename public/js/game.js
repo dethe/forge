@@ -32,8 +32,6 @@ setInterval(function(){
 }, 1000);
 
 
-var DEBUG = false;
-
 document.onmousemove = function(evt){
 	mouseX = evt.clientX;
 	mouseY = evt.clientY;
@@ -301,13 +299,6 @@ Monster.prototype.draw = function(ctx){
 	    sx = this.animate_idx * this.w,
 	    sy = this.direction * this.h;
 	ctx.drawImage(this.sprite, sx, sy, w, h, x, y, w, h);
-	if (DEBUG){
-	    var radius = 24;
-	    ctx.beginPath();
-	    ctx.strokeStyle = 'green';
-	    ctx.arc(this.x, this.y, radius, 0, Math.PI*2,true)
-	    ctx.stroke();
-    }
 };
 
 Monster.prototype.takeDamage = function(damage){
@@ -315,9 +306,9 @@ Monster.prototype.takeDamage = function(damage){
 	damagetext.push([this.x, this.y, this.w, this.h, damage, frame, 1]);
 	this.reverse = 5;
 	if(this.HP <= 0){
-		monsters.splice(monsters.indexOf(this), 1)
+		monsters.splice(monsters.indexOf(this), 1);
 	}
-}
+};
 
 var monsters = [
 	new Monster({
@@ -377,7 +368,7 @@ function Character(){
     this.clothes = ['robe_skirt', 'blonde_hair', 'white_shirt', 'leather_belt', 'leather_armor', 'brown_shoes'];
     this.weapon = 'dagger';
     this.attack = 'slash';
-    this.damage = [2, 5]
+    this.damage = [2, 5];
     this.animation = 'walk';
     this.maxsx = 576;
     this.attacked = false;
@@ -400,7 +391,7 @@ Character.prototype.takeDamage = function(damage){
         this.hp[0] = 0;
         endGame();
     }
-}
+};
 
 Character.prototype.draw = function(ctx){
     var x = this.x - this.w/2, // x and y are the centre point
@@ -548,7 +539,7 @@ NPC.prototype.draw = function(ctx){
 	}
 	ctx.fillStyle = '#000';
 	ctx.font = '6pt PressStart2PRegular';
-	ctx.textAlign = 'center'
+	ctx.textAlign = 'center';
 	ctx.fillText(this.name, x + 32, y + 10);
 };
 
@@ -642,7 +633,7 @@ var NPCs = [
 						'question1': {
 							'text': 'Can I start the tutorial now then?',
 							'answer': {
-								'text': 'Yes...',
+								'text': 'Yes...'
 								//SOMETHING HAPPENS!!!
 							}
 						}
@@ -655,12 +646,12 @@ var NPCs = [
 			'answer': {
 				'text': "I don't know. Thats what I asked you!"
 			}
-		},
+		}
 	}),
 	new NPC('Soldier', 174, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
 	new NPC('Soldier', 250, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
 	new NPC('Captain', 324, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['helmet', 'plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
-]
+];
 
 /////////////////////////////////////////
 //
@@ -704,6 +695,31 @@ function showGame(){
 	return false;
 }
 
+function gameOverClickHandler(evt){
+    world.ui.forEach(function(ui){
+        if (ui.containsPoint(evt.clientX, evt.clientY)){
+            ui.trigger();
+        }
+    });
+}
+
+function endGame(){
+    var w = 500, h = 300;
+    document.onkeydown = null;
+    document.onkeyup = null;
+    document.onclick = gameOverClickHandler;
+    cancelAnimationFrame(gameLoop);
+    gameLoop = null;
+    world.game_over = true;
+    world.ui = [
+    	UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h),
+    	UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
+    	UIButton('menu', WIDTH/2 - 90, HEIGHT/2 - h/2 + 70, 180, 50, function(){
+    		location.reload();
+    	})
+    ];
+}
+
 function showMenu(){
     clear();
     // turn off game loop and event handlers
@@ -716,10 +732,10 @@ function showMenu(){
     document.onclick = menuClick;
     document.onmousedown = function(){
     	click = true;
-    }
+    };
     document.onmouseup = function(){
     	click = false;
-    }
+    };
     document.onkeydown = function(evt){
         // console.log(evt);
         // console.log('character: %s', String.fromCharCode(evt.keyCode));
@@ -728,12 +744,12 @@ function showMenu(){
     	lastkeycode = keycode;
     	keycode = evt.keyCode; // To trap DELETE, use keyCode == 8 and return false;
     	return false;
-    }
+    };
     document.onkeyup = function(evt){
     	keydown = false;
     	keycode = 0;
     	lastkeycode = 0;
-    }
+    };
 }
 
 function showSettings(){
@@ -913,18 +929,20 @@ function drawGame(){
     }
     ctx.restore();
     drawUI(world.ui, ctx);
-	gameLoop = requestAnimationFrame(drawGame);
+    if (!world.game_over){
+	    gameLoop = requestAnimationFrame(drawGame);
+	}
 }
 
 function dayfunction(){
 	if(daydirection === 1){
 		setTimeout(function(){
 			daydirection = 1;
-		}, 60000*3.5)
+		}, 60000*3.5);
 	}else if(daydirection === 0){
 		setTimeout(function(){
 			daydirection = 1;
-		}, 60000*5)
+		}, 60000*5);
 	}
 	daydirection = 3;
 }
@@ -941,18 +959,6 @@ function pauseGame(){
     
 }
 
-function endGame(){
-    var w = 500, h = 300;
-    pauseGame();
-    world.ui = [
-    	new UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h),
-    	new UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
-    	new UIButton('menu', WIDTH/2 - 90, HEIGHT/2 - h/2 + 70, 180, 50, function(){
-    		
-    	})
-    ];
-    pauseDisabled = true;
-}
 
 /////////////////////////////////////////
 //
