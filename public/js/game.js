@@ -209,6 +209,7 @@ function Monster(opts){
 	this.reverse = 0; // ticks to move backwards, after a successful attack
 };
 Monster.prototype.move = function(dx, dy){
+    if (world.paused) return;
 	if(this.animate_idx === 2){
 		this.d = -1;
 	}else if(this.animate_idx === 0){
@@ -221,7 +222,6 @@ Monster.prototype.move = function(dx, dy){
 	this.x += dx * Math.min(distanceToCharacter, this.speed);
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
 	if(dx * Math.min(distanceToCharacter, this.speed) <= 1 && dx * Math.min(distanceToCharacter, this.speed) >= -1 && dy * Math.min(distanceToCharacter, this.speed) <= 1 && dy * Math.min(distanceToCharacter, this.speed) >= -1){
-		character.collidingmonsters.push(this);
 		this.attack(character);
 	}
 };
@@ -302,6 +302,7 @@ Monster.prototype.draw = function(ctx){
 };
 
 Monster.prototype.takeDamage = function(damage){
+    console.log('hit %s for %s damage', this.name, damage);
 	this.HP -= damage;
 	damagetext.push([this.x, this.y, this.w, this.h, damage, frame, 1]);
 	this.reverse = 5;
@@ -374,7 +375,6 @@ function Character(){
     this.attacked = false;
     this.hp = [100, 100];
     this.mp = [100, 100];
-    this.collidingmonsters = [];
     
     // Mapping info and state
     this.initAsRect(320, 320, 64, 64);
@@ -414,9 +414,10 @@ Character.prototype.draw = function(ctx){
     		this.maxsx = 448;
     	}else if(this.animation === 'slash'){
     		this.maxsx = 384;
-    		for(var i = 0;i < this.collidingmonsters.length; i++){
+    		var opponent = monsterInRange();
+    		if (opponent){
     			if(sx === 320 && frame%5===0){
-    				this.collidingmonsters[i].takeDamage(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
+    				opponent.takeDamage(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
     			}
     		}
     	}else if(this.animation === 'shoot'){
@@ -484,11 +485,13 @@ Character.prototype.draw = function(ctx){
 			this.attacked = true;
 		}
 	}
-	this.collidingmonsters = [];
 };
 
 var character = new Character();
 
+function monsterInRange(){
+    // implement me!
+}
 
 //lists what direction we're moving ( _m is to remember previous keys still pressed )
 var move = {
@@ -558,9 +561,7 @@ function endGame(){
     document.onkeydown = null;
     document.onkeyup = null;
     document.onclick = gameOverClickHandler;
-    cancelAnimationFrame(gameLoop);
-    gameLoop = null;
-    world.game_over = true;
+    pauseGame();
     world.ui = [
     	UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h),
     	UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
@@ -798,15 +799,7 @@ function dayfunction(){
 }
 
 function pauseGame(){
-	if(pauseDisabled === false){
-		if (gameLoop){
-        	cancelAnimationFrame(gameLoop);
-        	gameLoop = null;
-		}else{
-	    	gameLoop = requestAnimationFrame(drawGame);
-		}
-	}
-    
+    world.paused = !world.paused;
 }
 
 
