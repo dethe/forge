@@ -23,6 +23,7 @@ var damagetext = [];
 var lf = 0;
 var FPS = 0;
 var pauseDisabled = false;
+var inv = false;
 
 
 // DISABLED - we should not be using setInterval or setTimeout - just put hooks into the main event loop HOW DO WE DO THAT? it has to trigger every second!
@@ -523,6 +524,7 @@ function initGame(){
     	UIBox('     ' + character.name, 200, 40, 300, 120),
     	new CharacterInfo()
     ];
+    previousUI = world.ui.splice();
     world.ui[0].fades = true;
     world.ui[1].fades = true;
 }
@@ -567,8 +569,17 @@ function endGame(){
     	UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
     	UIButton('menu', WIDTH/2 - 90, HEIGHT/2 - h/2 + 70, 180, 50, function(){
     		location.reload();
-    	})
+    	}),
     ];
+}
+
+function drawInventory(){
+	var invScreen = previousUI.slice();
+	var w = 500, h = 300;
+	invScreen.push(UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h));
+	world.ui = invScreen;
+	pauseGame()
+	pauseDisabled = true;
 }
 
 function showMenu(){
@@ -730,6 +741,9 @@ function drawGame(){
 			character.mp[0] += 1;
 		}
 	}
+	if(inv === true){
+    	drawInventory();
+    }
 	ctx.save();
 	var offsetX = Math.round(-character.x + WIDTH/2 - character.w/2);
 	var offsetY = Math.round(-character.y + HEIGHT/2 - character.h/2);
@@ -849,13 +863,22 @@ var gameKeydown = function(event) {
 			
 			case 27: // 'esc' key
 			    showMenu();
-			    break;
+			break;
 			    
 			case 80: // 'p' key
 			    pauseGame();
-			    break;
-			    
+			break;
 			
+			case 73: // 'i' key
+			    if(inv === false){
+			    	inv = true;
+			    }else if(inv === true){
+			    	inv = false;
+			    	pauseDisabled = false;
+			    	pauseGame();
+			    	world.ui = previousUI;
+			    }
+			break;
 		}
 };
 
@@ -899,4 +922,5 @@ var gameKeyup = function(event) {
 };
 
 // Start everything
+
 window.onload = initMenu();
