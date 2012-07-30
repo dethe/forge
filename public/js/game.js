@@ -828,10 +828,11 @@ function pauseGame(){
         document.onclick = null;
     }else{
         move.up = move.up_m = move.left = move.left_m = move.down = move.down_m = move.right = move.right_m = false;
-        document.onkeydown = null;
+        document.onkeydown = pauseKeydown;
         document.onkeyup = null;
     }
     world.paused = !world.paused;
+    console.log('world.paused: %s', world.paused);
 }
 
 
@@ -840,6 +841,28 @@ function pauseGame(){
 //           USER INTERACTION
 //
 /////////////////////////////////////////
+
+var pauseKeydown = function(event){
+	switch (event.keyCode) {
+		case 27: // 'esc' key
+    	    showMenu();
+    	    break;
+    	case 80: // 'p' key
+    	    pauseGame();
+    	    break;
+	
+    	case 73: // 'i' key
+    	    if(inv === false){
+    	    	inv = true;
+    	    }else if(inv === true){
+    	    	inv = false;
+    	    	pauseDisabled = false;
+    	    	pauseGame();
+    	    	world.ui = previousUI;
+    	    }
+    	    break;
+    }
+};
 
 var gameKeydown = function(event) {
 		keydown = true;
