@@ -812,7 +812,6 @@ function dayfunction(){
 
 function pauseGame(){
 	if(pauseDisabled === false){
-		world.paused = !world.paused;
     	if (world.paused){
         	document.onkeydown = gameKeydown;
         	document.onkeyup = gameKeyup;
@@ -822,6 +821,7 @@ function pauseGame(){
         	document.onkeydown = pauseKeydown;
         	document.onkeyup = null;
     	}
+		world.paused = !world.paused;
 	}
 }
 
