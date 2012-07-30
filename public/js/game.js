@@ -810,12 +810,24 @@ function dayfunction(){
 	daydirection = 3;
 }
 
+var move = {
+	up: false,
+	up_m: false,
+	left: false,
+	left_m: false,
+	down: false,
+	down_m: false,
+	right: false,
+	right_m: false
+};
+
 function pauseGame(){
     if (world.paused){
         document.onkeydown = gameKeydown;
         document.onkeyup = gameKeyup;
         document.onclick = null;
     }else{
+        move.up = move.up_m = move.left = move.left_m = move.down = move.down_m = move.right = move.right_m = false;
         document.onkeydown = null;
         document.onkeyup = null;
     }
