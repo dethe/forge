@@ -810,17 +810,6 @@ function dayfunction(){
 	daydirection = 3;
 }
 
-var move = {
-	up: false,
-	up_m: false,
-	left: false,
-	left_m: false,
-	down: false,
-	down_m: false,
-	right: false,
-	right_m: false
-};
-
 function pauseGame(){
     if (world.paused){
         document.onkeydown = gameKeydown;
@@ -832,7 +821,6 @@ function pauseGame(){
         document.onkeyup = null;
     }
     world.paused = !world.paused;
-    console.log('world.paused: %s', world.paused);
 }
 
 
