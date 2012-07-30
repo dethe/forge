@@ -524,7 +524,7 @@ function initGame(){
     	UIBox('     ' + character.name, 200, 40, 300, 120),
     	new CharacterInfo()
     ];
-    previousUI = world.ui.splice();
+    previousUI = world.ui.slice();
     world.ui[0].fades = true;
     world.ui[1].fades = true;
 }
@@ -574,9 +574,9 @@ function endGame(){
 function drawInventory(){
 	var invScreen = previousUI.slice();
 	var w = 500, h = 300;
+	pauseGame();
 	invScreen.push(UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h));
 	world.ui = invScreen;
-	pauseGame()
 	pauseDisabled = true;
 }
 
