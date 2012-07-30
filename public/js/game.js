@@ -209,6 +209,7 @@ function Monster(opts){
 	this.reverse = 0; // ticks to move backwards, after a successful attack
 };
 Monster.prototype.move = function(dx, dy){
+    if (world.paused) return;
 	if(this.animate_idx === 2){
 		this.d = -1;
 	}else if(this.animate_idx === 0){
@@ -221,7 +222,6 @@ Monster.prototype.move = function(dx, dy){
 	this.x += dx * Math.min(distanceToCharacter, this.speed);
 	this.y += dy * Math.min(distanceToCharacter, this.speed);
 	if(dx * Math.min(distanceToCharacter, this.speed) <= 1 && dx * Math.min(distanceToCharacter, this.speed) >= -1 && dy * Math.min(distanceToCharacter, this.speed) <= 1 && dy * Math.min(distanceToCharacter, this.speed) >= -1){
-		character.collidingmonsters.push(this);
 		this.attack(character);
 	}
 };
@@ -302,6 +302,7 @@ Monster.prototype.draw = function(ctx){
 };
 
 Monster.prototype.takeDamage = function(damage){
+    console.log('hit %s for %s damage', this.name, damage);
 	this.HP -= damage;
 	damagetext.push([this.x, this.y, this.w, this.h, damage, frame, 1]);
 	this.reverse = 5;
@@ -374,7 +375,6 @@ function Character(){
     this.attacked = false;
     this.hp = [100, 100];
     this.mp = [100, 100];
-    this.collidingmonsters = [];
     
     // Mapping info and state
     this.initAsRect(320, 320, 64, 64);
@@ -414,9 +414,10 @@ Character.prototype.draw = function(ctx){
     		this.maxsx = 448;
     	}else if(this.animation === 'slash'){
     		this.maxsx = 384;
-    		for(var i = 0;i < this.collidingmonsters.length; i++){
+    		var opponent = monsterInRange();
+    		if (opponent){
     			if(sx === 320 && frame%5===0){
-    				this.collidingmonsters[i].takeDamage(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
+    				opponent.takeDamage(Math.floor(Math.random() * (this.damage[1] - this.damage[0] + 1)) + this.damage[0]);
     			}
     		}
     	}else if(this.animation === 'shoot'){
@@ -484,11 +485,13 @@ Character.prototype.draw = function(ctx){
 			this.attacked = true;
 		}
 	}
-	this.collidingmonsters = [];
 };
 
 var character = new Character();
 
+function monsterInRange(){
+    // implement me!
+}
 
 //lists what direction we're moving ( _m is to remember previous keys still pressed )
 var move = {
@@ -502,156 +505,6 @@ var move = {
 	right_m: false
 };
 
-/////////////////////////////////////////
-//
-//           NPC's
-//
-/////////////////////////////////////////
-
-function NPC(name, x, y, direction, speed, path, clothing, talk, talkObj){
-	this.animation = 'walk';
-	this.initAsRect(x,y,64,64);
-    this.sx= 0;
-    this.sy = 128;
-	this.direction = direction;
-	this.name = name;
-	this.path = path;
-	this.path_progress = 0;
-	this.clothes = clothing;
-	this.talk = talk;
-	this.talkObj = talkObj;
-	this.maxsx = 576;
-	this.animating = true;
-	this.AIxy = 'x';
-	this.speed = speed;
-};
-
-NPC.prototype.draw = function(ctx){
-    var sx = this.sx,
-        sy = this.sy,
-        x = this.x - this.w/2,
-        y = this.y - this.h/2,
-        w = this.w,
-        h = this.h;
-	ctx.drawImage(Clothes[this.animation + '_' + 'character'], sx, sy, w, h, x, y, w, h);
-	for(i=0; i < this.clothes.length; i++){
-		ctx.drawImage(Clothes[this.animation + '_' + this.clothes[i]], sx, sy, w, h, x, y, w, h);
-	}
-	ctx.fillStyle = '#000';
-	ctx.font = '6pt PressStart2PRegular';
-	ctx.textAlign = 'center';
-	ctx.fillText(this.name, x + 32, y + 10);
-};
-
-NPC.prototype.initAsRect = initAsRect;
-
-NPC.prototype.faceEast = function(){
-	this.direction = EAST;
-};
-NPC.prototype.faceWest = function(){
-	this.direction = WEST;
-};
-NPC.prototype.faceNorth = function(){
-	this.direction = NORTH;
-};
-NPC.prototype.faceSouth = function(){
-	this.direction = SOUTH;
-};
-
-NPC.prototype.useAI = function(){
-	var distanceX = this.path[this.path_progress][0] - this.x;
-	var distanceY = this.path[this.path_progress][1] - this.y;
-	if(distanceX < 2 && distanceX > -2 && distanceY < 2 && distanceY > -2){
-		this.path_progress += 1;
-		if(this.path_progress > (this.path.length - 1)){
-			this.path_progress = 0;
-		}
-	}else if(distanceX < 2 && distanceX > -2){
-		this.AIxy = 'y';
-	}else if(distanceY < 2 && distanceY > -2){
-		this.AIxy = 'x';
-	};
-	if(this.AIxy === 'x'){
-		if(distanceX > 0){
-			this.faceEast();
-		}else{
-			this.faceWest();
-		};
-	}else{
-		if(distanceY < 0){
-			this.faceNorth();
-		}else{
-			this.faceSouth();
-		};
-	};	
-	this.walk();
-};
-
-NPC.prototype.walk = function(){
-	var dx, dy;
-	if (this.direction % 2){
-		dx = (this.direction - 2); // move one pixel left or right
-		dy = 0;
-	}else{
-		dx = 0;
-		dy = (this.direction - 1); // move one pixel up or down
-	}
-	this.move(dx, dy);
-};
-
-NPC.prototype.move = function(dx, dy){
-	
-	if(this.animating){
-		if(frame%5 === 0){
-			this.sx += 64;
-		}
-		this.sy = this.direction*64;
-		if((this.path[this.path_progress][0] - this.x) < 10 && (this.path[this.path_progress][0] - this.x) > -10 && (this.path[this.path_progress][1] - this.y) < 10 && (this.path[this.path_progress][1] - this.y) > -10){
-			
-		}
-		this.x += dx*this.speed;
-		this.y += dy*this.speed;
-	}else{
-		this.sx = 0;
-	}
-	if(this.sx >= this.maxsx){
-		this.sx = 64;
-	}
-};
-
-var NPCs = [
-	new NPC('Soldier', 100, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {
-		'text': 'Hello strange person who are you?',
-		'question1': {
-			'text': 'Where am I?',
-			'answer': {
-				'text': 'You are in the game FORGE',
-				'question1': {
-					'text': 'So if I am in the game FORGE, why am I here?',
-					'answer': {
-						'text': 'To play FORGE of course',
-						'question1': {
-							'text': 'Can I start the tutorial now then?',
-							'answer': {
-								'text': 'Yes...'
-								//SOMETHING HAPPENS!!!
-							}
-						}
-					}
-				}
-			}
-		},
-		'question1': {
-			'text': 'Who am I?',
-			'answer': {
-				'text': "I don't know. Thats what I asked you!"
-			}
-		}
-	}),
-	new NPC('Soldier', 174, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
-	new NPC('Soldier', 250, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['plate_helmet', 'plate_armor', 'plate_pants', 'plate_shoes', 'plate_shoulder_armor', 'plate_gloves'], true, {}),
-	new NPC('Captain', 324, 100, 2, 2, [[500, 100], [500, 500], [100, 500], [100, 100]], ['helmet', 'plate_armor', 'robe_skirt', 'plate_shoes'], true, {})
-];
 
 /////////////////////////////////////////
 //
@@ -708,9 +561,7 @@ function endGame(){
     document.onkeydown = null;
     document.onkeyup = null;
     document.onclick = gameOverClickHandler;
-    cancelAnimationFrame(gameLoop);
-    gameLoop = null;
-    world.game_over = true;
+    pauseGame();
     world.ui = [
     	UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h),
     	UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
@@ -891,10 +742,10 @@ function drawGame(){
 		monster.useAI();
 		monster.draw(ctx);
 	});
-	NPCs.forEach(function(NPC){
-		NPC.useAI();
-		NPC.draw(ctx);
-	});
+    // NPCs.forEach(function(NPC){
+    //  NPC.useAI();
+    //  NPC.draw(ctx);
+    // });
 	character.draw(ctx);
 	world.drawtop(ctx);
     ctx.restore();
@@ -948,15 +799,7 @@ function dayfunction(){
 }
 
 function pauseGame(){
-	if(pauseDisabled === false){
-		if (gameLoop){
-        	cancelAnimationFrame(gameLoop);
-        	gameLoop = null;
-		}else{
-	    	gameLoop = requestAnimationFrame(drawGame);
-		}
-	}
-    
+    world.paused = !world.paused;
 }
 
 
