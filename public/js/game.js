@@ -319,7 +319,7 @@ var monsters = [
 	    speed: 2.2,
 	    HP: 7,
 	    sensing: 20,
-	    damage: 3,
+	    damage: 1,
 	    AI: 'normal'
 	}),
 	new Monster({
@@ -330,7 +330,7 @@ var monsters = [
 	    speed: 1.2,
 	    HP: 12,
 	    sensing: 10,
-	    damage: 5,
+	    damage: 1,
 	    AI: 'normal'
 	})
 ];
