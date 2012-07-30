@@ -822,16 +822,19 @@ var move = {
 };
 
 function pauseGame(){
-    if (world.paused){
-        document.onkeydown = gameKeydown;
-        document.onkeyup = gameKeyup;
-        document.onclick = null;
-    }else{
-        move.up = move.up_m = move.left = move.left_m = move.down = move.down_m = move.right = move.right_m = false;
-        document.onkeydown = null;
-        document.onkeyup = null;
-    }
-    world.paused = !world.paused;
+	if(pauseDisabled === false){
+		world.paused = !world.paused;
+    	if (world.paused){
+        	document.onkeydown = gameKeydown;
+        	document.onkeyup = gameKeyup;
+        	document.onclick = null;
+    	}else{
+        	move.up = move.up_m = move.left = move.left_m = move.down = move.down_m = move.right = move.right_m = false;
+        	document.onkeydown = null;
+        	document.onkeyup = null;
+    	}
+	}
+	
 }
 
 
