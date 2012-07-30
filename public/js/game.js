@@ -560,10 +560,8 @@ function gameOverClickHandler(evt){
 
 function endGame(){
     var w = 500, h = 300;
-    document.onkeydown = null;
-    document.onkeyup = null;
-    document.onclick = gameOverClickHandler;
     pauseGame();
+    document.onclick = gameOverClickHandler;
     world.ui = [
     	UIBox('', WIDTH/2 - w/2, HEIGHT/2 - h/2, w, h),
     	UIText('GameOver', WIDTH/2, HEIGHT/2 - h/2 + 50, 'center', 18),
@@ -813,6 +811,14 @@ function dayfunction(){
 }
 
 function pauseGame(){
+    if (world.paused){
+        document.onkeydown = gameKeydown;
+        document.onkeyup = gameKeyup;
+        document.onclick = null;
+    }else{
+        document.onkeydown = null;
+        document.onkeyup = null;
+    }
     world.paused = !world.paused;
 }
 
