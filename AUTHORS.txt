@@ -1,0 +1,155 @@
+Code authors
+============
+
+This program was written by the following people:
+ - Azlen Elza (primarily)
+ - Dethe Elza (helping)
+
+
+Asset attribution
+=================
+
+Assets were authored by the following people:
+
+Lanea Zimmerman
+ - grass.png
+ - dirt.png
+ - dirt2.png
+ - water.png
+ - watergrass.png
+ - barrels.png
+ - buckets.png
+ - cabinets.png
+ - cement.png
+ - cementstair.png
+ - chests.png
+ - country.png
+ - bridges.png
+ - dungeon.png
+ - grassalt.png
+ - hole.png
+ - house.png
+ - inside.png
+ - kitchen.png
+ - lava.png
+ - lavarock.png
+ - mountains.png
+ - rock.png
+ - signs.png
+ - stairs.png
+ - treetop.png
+ - trunk.png
+
+ 
+Stephen Challener
+ - male_walkcycle.png
+ - male_slash.png
+ - male_spellcast.png
+
+Charles Sanchez
+ - bat.png
+ - slime.png
+
+Daniel Armstrong
+ - castlewalls.png
+ - castlefloors.png
+ - castlefloors_outside.png
+ - castle_outside.png
+ 
+Daniel Eddeland
+ - sand.png
+ - sandandwater.png
+ - reeds.png
+ - wheat.png
+ - farmingfishing.png
+ - fence.png
+ - fencealt.png
+ - plants.png
+ - plowed soil
+ 
+Casper Nilsson
+ - wheelbarrow.png
+
+Guido Bos
+ - flowers.png
+ - miscellaneous.png
+ - wood_house_exterior.png
+ - white_house_exterior.png
+ 
+Thane Brimhall
+ - menu_xp.png
+ - bar_hp_mp.png
+ - button_default.png
+ - confirm_bg.png
+ - input.png
+
+Michele Bucelli
+ - Inventory_box.png
+ 
+Léo Villeveygoux
+ - Limestone_wall01.png
+
+Johannes Sjölund
+ WALKCYCLE
+ - BEHIND_quiver.png
+ - BELT_leather.png
+ - BELT_rope.png
+ - BODY_skeleton.png
+ - FEET_plate_armor_shoes.png
+ - FEET_shoes_brown.png
+ - HANDS_plate_armor_gloves.png
+ - HEAD_chain_armor_helmet.png
+ - HEAD_chain_armor_hood.png
+ - HEAD_hair_blonde.png
+ - HEAD_leather_armor_hat.png
+ - HEAD_plate_armor_helmet.png
+ - HEAD_robe_hood.png
+ - LEGS_pants_greenish.png
+ - LEGS_plate_armor_pants.png
+ - LEGS_robe_skirt.png
+ - TORSO_chain_armor_jacket_purple.png
+ - TORSO_chain_armor_torso.png
+ - TORSO_leather_armor_bracers.png
+ - TORSO_leather_armor_shirt_white.png
+ - TORSO_leather_armor_shoulders.png
+ - TORSO_leather_armor_torso.png
+ - TORSO_plate_armor_torso.png
+ - TORSO_plate_robe_shirt_brown.png
+ - Weapon_shield_cutout_body.png
+ - WEAPON_shield_cutout_chain_armor_helmet.png
+ 
+SLASH
+ - BEHIND_quiver.png
+ - BELT_leather.png
+ - BELT_rope.png
+ - BODY_skeleton.png
+ - FEET_plate_armor_shoes.png
+ - FEET_shoes_brown.png
+ - HANDS_plate_armor_gloves.png
+ - HEAD_chain_armor_helmet.png
+ - HEAD_chain_armor_hood.png
+ - HEAD_hair_blonde.png
+ - HEAD_leather_armor_hat.png
+ - HEAD_plate_armor_helmet.png
+ - HEAD_robe_hood.png
+ - LEGS_pants_greenish.png
+ - LEGS_plate_armor_pants.png
+ - LEGS_robe_skirt.png
+ - TORSO_chain_armor_jacket_purple.png
+ - TORSO_chain_armor_torso.png
+ - TORSO_leather_armor_bracers.png
+ - TORSO_leather_armor_shirt_white.png
+ - TORSO_leather_armor_shoulders.png
+ - TORSO_leather_armor_torso.png
+ - TORSO_plate_armor_torso.png
+ - TORSO_plate_robe_shirt_brown.png
+ - WEAPON_dagger
+ - Weapon_shield_cutout_body.png
+
+And a few we are still looking up:
+ - brickwalldark.png
+ - misc.png
+ - furniture2.png
+ - signpost.png
+ - limestone_wall01.png
+
